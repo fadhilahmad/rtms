@@ -1,0 +1,93 @@
+<?php
+
+namespace App\Http\Controllers\Auth;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+
+class LoginController extends Controller
+{
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles authenticating users for the application and
+    | redirecting them to your home screen. The controller uses a trait
+    | to conveniently provide its functionality to your applications.
+    |
+    */
+
+    use AuthenticatesUsers;
+
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/home';
+    
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function username () 
+    {
+        return 'username';
+    }
+    
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+    
+    public function login(Request $request)
+    {   
+        $input = $request->all();
+   
+        $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+   
+        if(auth()->attempt(array('username' => $input['username'], 'password' => $input['password'])))
+        {
+            if (auth()->user()->u_type == 1 OR auth()->user()->u_type == 2 AND auth()->user()->u_status == 1)  //CASE ADMIN
+            {
+                return redirect()->route('admin.home');
+            }
+            
+            elseif(auth()->user()->u_type == 3 OR auth()->user()->u_type == 4 OR auth()->user()->u_type == 5 AND auth()->user()->u_status == 1 ) //CASE DEPARTMENT
+            {
+                return redirect()->route('department.home');
+            }
+            
+            elseif(auth()->user()->u_type == 6 OR auth()->user()->u_type == 7 AND auth()->user()->u_status == 1 ) //CASE CUSTOMER 
+            {
+                return redirect()->route('customer.home');
+            }
+            
+            elseif(auth()->user()->u_status == 2)
+            {
+                return redirect()->route('login')
+                    ->with('error','Waiting for admin approval');
+            }
+            
+            elseif(auth()->user()->u_status == 0)
+            {
+                return redirect()->route('login')
+                    ->with('error','Please contact admin');
+            }
+            
+        }
+        else
+        {
+           return redirect()->route('login')
+                   ->with('error','password');
+
+        }
+          
+    }
+}

@@ -1,0 +1,235 @@
+<?php
+use App\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Model;
+
+class CreateUsersSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $user = [
+            //case status = 1 (active)
+            [
+               'username'=>'admin',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'admin',
+               'u_type'=>'1',
+               'email'=>'admin@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'1',
+            ],
+            [
+               'username'=>'manager',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'manager',
+               'u_type'=>'2',
+               'email'=>'manager@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'1',
+            ],
+            [
+               'username'=>'designer',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'designer',
+               'u_type'=>'3',
+               'email'=>'designer@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'1',
+            ],
+            [
+               'username'=>'taylor',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'taylor',
+               'u_type'=>'4',
+               'email'=>'taylor@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'1',
+            ],
+            [
+               'username'=>'print',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'print',
+               'u_type'=>'5',
+               'email'=>'print@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'1',
+            ],
+            [
+               'username'=>'agent',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'agent',
+               'u_type'=>'6',
+               'email'=>'agent@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'1',
+            ],
+            [
+               'username'=>'customer',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'customer',
+               'u_type'=>'7',
+               'email'=>'customer@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'1',
+            ],
+            //case status = 2 (application)
+            [
+               'username'=>'admin2',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'admin2',
+               'u_type'=>'1',
+               'email'=>'admin2@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'2',
+            ],
+            [
+               'username'=>'manager2',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'manager2',
+               'u_type'=>'2',
+               'email'=>'manager2@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'2',
+            ],
+            [
+               'username'=>'designer2',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'designer2',
+               'u_type'=>'3',
+               'email'=>'designer2@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'2',
+            ],
+            [
+               'username'=>'taylor2',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'taylor2',
+               'u_type'=>'4',
+               'email'=>'taylor2@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'2',
+            ],
+            [
+               'username'=>'print2',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'print2',
+               'u_type'=>'5',
+               'email'=>'print2@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'2',
+            ],
+            [
+               'username'=>'agent2',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'agent2',
+               'u_type'=>'6',
+               'email'=>'agent2@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'2',
+            ],
+            [
+               'username'=>'customer2',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'customer2',
+               'u_type'=>'7',
+               'email'=>'customer2@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'2',
+            ],
+            //case status = 0 (deactive)
+            [
+               'username'=>'admin0',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'admin0',
+               'u_type'=>'1',
+               'email'=>'admin0@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'0',
+            ],
+            [
+               'username'=>'manager0',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'manager0',
+               'u_type'=>'2',
+               'email'=>'manager0@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'0',
+            ],
+            [
+               'username'=>'designer0',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'designer0',
+               'u_type'=>'3',
+               'email'=>'designer0@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'0',
+            ],
+            [
+               'username'=>'taylor0',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'taylor0',
+               'u_type'=>'4',
+               'email'=>'taylor0@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'0',
+            ],
+            [
+               'username'=>'print0',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'print0',
+               'u_type'=>'5',
+               'email'=>'print0@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'0',
+            ],
+            [
+               'username'=>'agent0',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'agent0',
+               'u_type'=>'6',
+               'email'=>'agent0@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'0',
+            ],
+            [
+               'username'=>'customer0',
+               'password'=> bcrypt('12345678'),
+               'u_fullname'=>'customer0',
+               'u_type'=>'7',
+               'email'=>'customer0@rtms.com',
+               'phone'=>'0143256782',
+               'address'=>'Teratai Mewah Appartment,Setapak,Kuala Lumpur',
+               'u_status'=>'0',
+            ],
+        ];
+  
+        foreach ($user as $key => $value) {
+            User::create($value);
+        }
+    }
+}
