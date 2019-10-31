@@ -85,7 +85,7 @@ class LoginController extends Controller
         else
         {
            return redirect()->route('login')
-                   ->with('error','password');
+                   ->with('error','wrong password');
 
         }
           
