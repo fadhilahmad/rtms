@@ -13,13 +13,7 @@
               <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a  href="{{ url('/') }}" class="navbar-brand">
                   <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">{{ config('app.name', 'Rezeal Textile') }}</strong></div></a></div>
                 <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">                             
-                    <!-- profile/logout dropdown    -->   
-                    <!-- <li class="nav-item dropdown"><a id="profile" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"> <i class="fa fa-user"></i><span class="d-none d-sm-inline-block">username</span></a>
-                    <ul aria-labelledby="languages" class="dropdown-menu">
-                        <li><a rel="nofollow" href="#" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item"> <i class="fa fa-sign-out"></i><span>Logout </span></a></li>
-                    </ul>
-                    </li> -->
+                    <!-- profile/logout dropdown    -->                     
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -31,23 +25,20 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
+                        <li class="nav-item dropdown"><a id="user" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            class="nav-link user dropdown-toggle"> <i class="fa fa-user"></i><span class="d-none d-sm-inline-block">{{ Auth::user()->username }}</span></a>
+                            <ul aria-labelledby="languages" class="dropdown-menu">
+                                <li><a rel="nofollow" href="#" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
+                                <li><a rel="nofollow" href="{{ route('logout') }}" class="dropdown-item"
+                                        onclick="event.preventDefault();
+                                                      document.getElementById('logout-form').submit();"> 
+                                                      <i class="fa fa-sign-out"></i><span> Logout </span></a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
-                                    </form>
-                                </div>
-                            </li>
+                                    </form>                      
+                                </li>
+                            </ul>
+                        </li>
                         @endguest
                 </ul>
             </div>
@@ -58,16 +49,16 @@
       @include('layouts.footer')
     </div>
     <!-- JavaScript files-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/popper.js/umd/popper.min.js"> </script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
-    <script src="vendor/jquery.cookie/jquery.cookie.js"> </script>
-    <script src="vendor/chart.js/Chart.min.js"></script>
-    <script src="vendor/jquery-validation/jquery.validate.min.js"></script>
-    <script src="vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-    <script src="js/charts-home.js"></script>
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('vendor/popper.js/umd/popper.min.js') }}"> </script>
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/grasp_mobile_progress_circle-1.0.0.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery.cookie/jquery.cookie.js') }}"> </script>
+    <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+    <script src="{{ asset('vendor/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+    <script src="{{ asset('js/charts-home.js') }}"></script>
     <!-- Main File-->
-    <script src="js/front.js"></script>
+    <script src="{{ asset('js/front.js') }}"></script>
   </body>
-</html>
+</html>gia

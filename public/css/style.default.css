@@ -233,7 +233,7 @@ nav.navbar .badge {
   right: 0;
 }
 
-nav.navbar a.language span {
+nav.navbar a.user span {
   margin-left: .2rem;
   vertical-align: middle;
 }
