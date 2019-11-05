@@ -10,8 +10,11 @@
         <nav class="navbar">
           <div class="container-fluid">
             <div class="navbar-holder d-flex align-items-center justify-content-between">
-              <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a  href="{{ url('/') }}" class="navbar-brand">
-                  <div class="brand-text d-none d-md-inline-block"><strong class="text-primary">{{ config('app.name', 'Rezeal Textile') }}</strong></div></a></div>
+              <div class="navbar-header"><a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a>
+<!--                  <div class="brand-text d-none d-md-inline-block">
+                      <strong class="text-primary">{{ config('app.name', 'Rezeal Textile') }}</strong>
+                  </div>-->
+              </div>
                 <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">                             
                     <!-- profile/logout dropdown    -->                     
                         <!-- Authentication Links -->
@@ -28,7 +31,15 @@
                         <li class="nav-item dropdown"><a id="user" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             class="nav-link user dropdown-toggle"> <i class="fa fa-user"></i><span class="d-none d-sm-inline-block">{{ Auth::user()->username }}</span></a>
                             <ul aria-labelledby="languages" class="dropdown-menu">
-                                <li><a rel="nofollow" href="#" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
+                              @can('isAdmin')
+                                <li><a rel="nofollow" href="admin_profile" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
+                              @endcan
+                              @can('isDepartment')
+                                <li><a rel="nofollow" href="staff_profile" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
+                              @endcan
+                              @can('isCustomer')
+                                <li><a rel="nofollow" href="customer_profile" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
+                              @endcan
                                 <li><a rel="nofollow" href="{{ route('logout') }}" class="dropdown-item"
                                         onclick="event.preventDefault();
                                                       document.getElementById('logout-form').submit();"> 
@@ -46,7 +57,6 @@
         </nav>
       </header>
       @yield('content')
-      @include('layouts.footer')
     </div>
     <!-- JavaScript files-->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
@@ -61,4 +71,4 @@
     <!-- Main File-->
     <script src="{{ asset('js/front.js') }}"></script>
   </body>
-</html>gia
+</html>
