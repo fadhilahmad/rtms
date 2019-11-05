@@ -62,3 +62,11 @@ Route::get('customer/customer_profile', 'Customer\customerController@customerPro
 Route::get('customer/customer_orderlist', 'Customer\customerController@customerOrderlist')->middleware('customer');
 Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
 Route::get('customer/receipt', 'Customer\customerController@receipt')->middleware('customer');
+
+//register agent
+Route::get('register_agent','RegisterAgent@PageRegisterAgent');
+Route::post('register_agent','RegisterAgent@register');
+
+//register staff
+Route::get('register_staff','RegisterStaff@pageRegisterStaff');
+Route::post('register_staff','RegisterStaff@register');
