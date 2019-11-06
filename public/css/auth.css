@@ -1,0 +1,143 @@
+/* @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,900"; */
+@import "https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700";
+@import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
+html,body{
+background-image:url("/img/wallpaper.jpg");
+background-size: cover;
+background-repeat: no-repeat;
+height: 100%;
+font-family: 'Roboto', sans-serif;
+}
+
+.container{
+max-height: 100%;
+padding-top: 8%;
+align-content: center;
+}
+
+.card-login{
+display: flex;
+flex-direction: column;
+height: 500px;
+margin-top: 5%;
+margin-bottom: auto;
+width: 400px;
+border-radius: 20px;
+background-color: rgba(0,0,0,0.5) !important;
+}
+
+.card-register{
+display: flex;
+flex-direction: column;
+height: 600px;
+margin-top: 5%;
+margin-bottom: auto;
+width: 400px;
+border-radius: 20px;
+background-color: rgba(0,0,0,0.5) !important;
+}
+
+.card-reset{
+display: flex;
+flex-direction: column;
+height:380px;
+margin-top: 5%;
+margin-bottom: auto;
+width: 400px;
+border-radius: 20px;
+background-color: rgba(0,0,0,0.5) !important;
+}
+
+.social_icon span{
+font-size: 60px;
+margin-left: 10px;
+color: #33b35a;
+}
+
+.social_icon span:hover{
+color: white;
+cursor: pointer;
+}
+
+.card-header h3{
+color: white;
+/* text-align: center; */
+}
+
+.card-body p{
+    color: white;
+    /* text-align: center; */
+    }
+
+.social_icon{
+position: absolute;
+right: 20px;
+top: -45px;
+}
+
+.input-group-prepend span{
+width: 50px;
+background-color: #33b35a;
+color: black;
+border:0 !important;
+}
+
+input:focus{
+outline: 0 0 0 0  !important;
+box-shadow: 0 0 0 0 !important;
+
+}
+
+.remember{
+color: white;
+}
+
+.form-check-label{
+    color: white;
+}
+
+.remember input
+{
+width: 20px;
+height: 20px;
+margin-left: 15px;
+margin-right: 5px;
+}
+
+.login_btn{
+color: black;
+background-color: #33b35a;
+width: 100px;
+}
+
+.login_btn:hover{
+color: black;
+background-color: white;
+}
+
+.reg_btn{
+    color: black;
+    background-color: #33b35a;
+    width: 100px;
+    margin-top: 20px;
+}
+.reset_btn{
+    color: black;
+    background-color: #33b35a;
+    width: 200px;
+    margin-top: 20px;
+}
+.confirm_btn{
+    color: black;
+    background-color: #33b35a;
+    width: 150px;
+    margin-top: 20px;
+}
+    
+.links{
+color: white;
+}
+
+.links a{
+margin-left: 4px;
+}
