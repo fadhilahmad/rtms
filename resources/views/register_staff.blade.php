@@ -8,7 +8,7 @@
     </div>
 
     <div class="card-body">
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ url('register_staff') }}">
             @csrf
             <div class="input-group form-group">
                 <div class="input-group-prepend">
@@ -50,13 +50,29 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                 </div>
-                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" placeholder="Email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" placeholder="Email Address" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                 @error('email')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>
                     </span>
                 @enderror                
-            </div>        
+            </div>   
+            <div class="input-group form-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-child"></i></span>
+                </div>
+                <select id="department" name="department" class="form-control"  value="{{ old('department') }}" >
+                        <option value="" selected disabled >Choose Position</option>
+                        <option value="3">Designer</option>
+                        <option value="4">Tailor</option>
+                        <option value="5">Printing</option>
+                </select>  
+                @error('department')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                @enderror            
+            </div>      
             <div class="input-group form-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>

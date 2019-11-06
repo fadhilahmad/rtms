@@ -29,7 +29,7 @@ background-color: rgba(0,0,0,0.5) !important;
 .card-register{
 display: flex;
 flex-direction: column;
-height: 600px;
+height: 50%;
 margin-top: 5%;
 margin-bottom: auto;
 width: 400px;
