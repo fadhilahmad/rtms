@@ -24,7 +24,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('admin/manage_customer', 'HomeController@adminHome')->name('admin.home')->middleware('admin');
 Route::get('admin/agent_list', 'Admin\AdminController@agentList')->middleware('admin');
 Route::get('admin/add_customer', 'Admin\AdminController@addCustomer')->middleware('admin');
-Route::get('admin/add_agent', 'Admin\AdminController@agentList')->middleware('admin');
+Route::get('admin/add_agent', 'Admin\AdminController@addAgent')->middleware('admin');
 Route::get('admin/customer_application', 'Admin\AdminController@customerApplication')->middleware('admin');
 //manage staff dropdown
 Route::get('admin/manage_staff', 'Admin\AdminController@manageStaff')->middleware('admin');
@@ -63,10 +63,30 @@ Route::get('customer/customer_orderlist', 'Customer\customerController@customerO
 Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
 Route::get('customer/receipt', 'Customer\customerController@receipt')->middleware('customer');
 
-//register agent
+//register agent (by link)
 Route::get('register_agent','RegisterAgent@PageRegisterAgent');
 Route::post('register_agent','RegisterAgent@register');
 
-//register staff
+//register staff (by link)
 Route::get('register_staff','RegisterStaff@pageRegisterStaff');
 Route::post('register_staff','RegisterStaff@register');
+
+//show and update customer
+Route::any('admin/manage_customer','Admin\ManageCustomerController@CustomerList');
+Route::post('admin/manage_customer','Admin\ManageCustomerController@edit')->name('edit_customer');
+
+//show and update agent
+Route::any('admin/agent_list','Admin\ManageAgentController@AgentList');
+Route::post('admin/agent_list','Admin\ManageAgentController@edit')->name('edit_agent');
+
+//new user application (for admin)
+//Route::any('admin/customer_application','Admin\ManageCustomerController@applicationList');
+
+//admin register customer
+Route::post('admin/add_customer','Admin\RegisterCustomerController@register');
+
+//admin register agent
+Route::post('admin/add_agent','Admin\RegisterAgentController@register');
+
+//admin approve reject customer agent application
+Route::get('admin/customer_application/{id}/type/{type}','Admin\ManageCustomerController@approve')->name('approve');

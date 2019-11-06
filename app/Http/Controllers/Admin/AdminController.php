@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\User;
+use DB;
 
 class AdminController extends Controller
 {
@@ -33,7 +35,18 @@ class AdminController extends Controller
     
     public function customerApplication() 
     {
-        return \View::make('admin/customer_application');
+        //return \View::make('admin/customer_application');
+        $customer = User::selectRaw('*')
+                    ->where('u_type', 7)
+                    ->where('u_status','=',2)
+                    ->paginate(10);
+                    //->get();
+        $agent = User::selectRaw('*')
+                    ->where('u_type', 6)
+                    ->where('u_status','=',2)
+                    ->paginate(10);          
+
+        return view('admin/customer_application', compact('customer','agent'));
     }
     
     //manage staff dropdown

@@ -37,9 +37,9 @@
           <ul id="side-admin-menu" class="side-menu list-unstyled"> 
             <li><a href="#manageCustomerDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-user"></i> Manage Customer </a>
               <ul id="manageCustomerDropdown" class="collapse list-unstyled ">
-                <li><a href="manage_customer">Customer List</a></li>
+                <li><a href="manage_customer">End User List</a></li>
                 <li><a href="agent_list">Agent List</a></li>
-                <li><a href="add_customer">Add Customer</a></li>
+                <li><a href="add_customer">Add End User</a></li>
                 <li><a href="add_agent">Add Agent</a></li>              
                 <li><a href="customer_application">New Application</a></li>
               </ul>
