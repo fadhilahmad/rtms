@@ -57,11 +57,11 @@ Route::get('department/performance', 'Department\departmentController@performanc
 Route::get('department/leave', 'Department\departmentController@leave')->middleware('department');
 
 //navigation bar for customer
-Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
+//Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
 Route::get('customer/customer_profile', 'Customer\customerController@customerProfile')->middleware('customer');
 Route::get('customer/customer_orderlist', 'Customer\customerController@customerOrderlist')->middleware('customer');
-Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
-Route::get('customer/receipt', 'Customer\customerController@receipt')->middleware('customer');
+// Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
+// Route::get('customer/receipt', 'Customer\customerController@receipt')->middleware('customer');
 
 //register agent (by link)
 Route::get('register_agent','RegisterAgent@PageRegisterAgent');
@@ -102,3 +102,23 @@ Route::post('admin/add_newstaff','Admin\RegisterStaffController@register');
 Route::post('admin/leave_day','Admin\LeaveController@setting')->name('leave_setting');
 Route::post('admin/leave_day2','Admin\LeaveController@updateDay')->name('leave_update');
 Route::post('admin/leave_application/{id}/type/{type}','Admin\LeaveController@application')->name('leave_application');
+
+// // write route to multiple route (store, index, create, update, show, destroy, edit)
+// Route::resource('order', 'Customer\CustomerController');
+
+// route to new order page for customer
+Route::get('customer/neworder', 'Customer\CustomerController@newOrder')->name('customer.home')->middleware('customer');
+
+// route to customer order list page for customer
+Route::get('customer/orderlist', 'Customer\CustomerController@customerOrderList')->middleware('customer');
+
+// route to customer order list page for customer
+Route::get('customer/vieworder/{id}', 'Customer\CustomerController@customerViewOrder')->middleware('customer');
+
+// route to invoice page for customer
+Route::get('customer/invoice', 'Customer\CustomerController@invoice')->middleware('customer');
+
+// route to invoice page for customer
+Route::get('customer/receipt', 'Customer\CustomerController@receipt')->middleware('customer');
+
+Route::post('customer/neworder', 'Customer\CustomerController@store')->name('customer.store');

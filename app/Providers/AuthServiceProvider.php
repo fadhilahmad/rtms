@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
+// Add as GateContract
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
-// Add as GateContract
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -43,6 +44,7 @@ class AuthServiceProvider extends ServiceProvider
         //customer
         $gate->define('isCustomer', function($user){
             return $user->u_type == 7 || $user->u_type == 6;
+        
         });
 
     }
