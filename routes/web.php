@@ -90,3 +90,15 @@ Route::post('admin/add_agent','Admin\RegisterAgentController@register');
 
 //admin approve reject customer agent application
 Route::get('admin/customer_application/{id}/type/{type}','Admin\ManageCustomerController@approve')->name('approve');
+
+//admin edit staff
+Route::post('admin/manage_staff','Admin\ManageStaffController@edit')->name('edit_staff');
+//admin approve reject staff application
+Route::get('admin/staff_application/{id}/type/{type}','Admin\ManageStaffController@approve')->name('staff_approve');
+//admin register staff
+Route::post('admin/add_newstaff','Admin\RegisterStaffController@register');
+
+//admin leave setting and update and application
+Route::post('admin/leave_day','Admin\LeaveController@setting')->name('leave_setting');
+Route::post('admin/leave_day2','Admin\LeaveController@updateDay')->name('leave_update');
+Route::post('admin/leave_application/{id}/type/{type}','Admin\LeaveController@application')->name('leave_application');

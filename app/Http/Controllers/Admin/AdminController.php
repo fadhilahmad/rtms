@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use App\LeaveDay;
+use App\Leave;
 use DB;
 
 class AdminController extends Controller
@@ -52,12 +54,23 @@ class AdminController extends Controller
     //manage staff dropdown
     public function manageStaff() 
     {
-        return \View::make('admin/manage_staff');
+        $staffs = User::selectRaw('*')
+                    ->whereIn('u_type', array(3,4,5))
+                    ->where('u_status','=',1)
+                    ->paginate(30);
+         
+
+        return view('admin/manage_staff', compact('staffs'));
     }
     
     public function staffApplication() 
     {
-        return \View::make('admin/staff_application');
+        $staff = User::selectRaw('*')
+                    ->whereIn('u_type', array(3,4,5))
+                    ->where('u_status','=',2)
+                    ->paginate(10);        
+
+        return view('admin/staff_application', compact('staff'));
     }
     
     public function addStaff() 
@@ -72,17 +85,46 @@ class AdminController extends Controller
     
     public function leaveApplication() 
     {
-        return \View::make('admin/leave_application');
+        $leave = DB::table('leave')
+                    ->join('user', 'leave.u_id', '=', 'user.u_id')
+                    ->where('user.u_status','=',2)
+                    ->paginate(30);         
+                
+        return view('admin/leave_application', compact('leave'));
     }
     
     public function leaveDay() 
     {
-        return \View::make('admin/leave_day');
+        $staff = DB::table('leave_day')
+                    ->rightJoin('user', 'leave_day.u_id', '=', 'user.u_id')
+                    ->whereIn('user.u_type', array(3,4,5))
+                    ->where('user.u_status','=',1)
+                    ->paginate(30); 
+         
+        return view('admin/leave_day', compact('staff'));
     }
     
     public function staffPerformance() 
     {
-        return \View::make('admin/staff_performance');
+        $design = DB::table('order')
+                    ->rightJoin('user', 'order.u_id_designer', '=', 'user.u_id')
+                    ->where('user.u_type', 3)
+                    ->where('user.u_status','=',1)
+                    ->paginate(5);
+    
+        $print = DB::table('order')
+                    ->rightJoin('user', 'order.u_id_print', '=', 'user.u_id')
+                    ->where('user.u_type', 5)
+                    ->where('user.u_status','=',1)
+                    ->paginate(5);
+       
+        $tailor = DB::table('order')
+                    ->rightJoin('user', 'order.u_id_taylor', '=', 'user.u_id')
+                    ->where('user.u_type', 4)
+                    ->where('user.u_status','=',1)
+                    ->paginate(5);
+         
+        return view('admin/staff_performance', compact('design','print','tailor'));
     }
     
     //order dropdown

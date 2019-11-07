@@ -49,7 +49,7 @@
                 <li><a href="manage_staff">Staff List</a></li>
                 <li><a href="staff_application">New Application</a></li>
                 <li><a href="add_newstaff">Add Staff</a></li>
-                <li><a href="leave_list">Leave List</a></li>
+<!--                <li><a href="leave_list">Leave List</a></li>-->
                 <li><a href="leave_application">Leave Application</a></li>                
                 <li><a href="leave_day">Leave Setting</a></li>
                 <li><a href="staff_performance">Performance</a></li>
