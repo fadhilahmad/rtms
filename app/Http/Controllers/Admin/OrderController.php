@@ -156,12 +156,54 @@ class OrderController extends Controller
         return redirect('admin/order_setting')->with('message', 'Error');
     }
     
-    public static function getPrice($sl_id,$b_id,$n_id,$c_type){
+    public static function getPrice($sl_id,$b_id,$n_id,$c_type,$name){
         
-//        $price = Price::selectRaw('*')
-//                ->where('b_status','=',1)
-//                ->get();        
+        $price = Price::selectRaw('*')
+                ->where('b_id','=',$b_id)
+                ->where('sl_id','=',$sl_id)
+                ->where('n_id','=',$n_id)
+                ->where('u_type','=',$c_type)
+                ->first();
+
+        $display = $price['price'];
+        $id = $price['p_id'];
         
-        return 'sampai';
+        if($display==NULL){
+            $display='<a href="" class="addPrice" data-toggle="modal" data-target="#priceModal" data-tittle="Add Price" '
+                    . 'data-slid="'.$sl_id.'" data-bid="'.$b_id.'" data-nid="'.$n_id.'" data-utype="'.$c_type.'" data-name="'.$name.'" data-process="insert">+</a>';
+        }else{
+            $display=$display.'  <a href="" class="editPrice" data-toggle="modal" data-target="#priceModal" data-tittle="Edit Price" '
+                    . 'data-price="'.$display.'" data-name="'.$name.'" data-process="update" data-pid="'.$id.'">+</a>';            
+        }
+        return $display;
     }
-}
+    
+    public function editPrice(Request $request){
+        
+        $data = $request->all();
+        
+        if($data['process']=="insert"){
+            
+                DB::table('price')->insert([
+                     'b_id' => $data['b_id'],
+                     'sl_id'=> $data['sl_id'],
+                     'n_id'=> $data['n_id'],
+                     'u_type'=> $data['u_type'],
+                     'price'=> $data['price'],
+                     'created_at' => DB::raw('now()'),
+                     'updated_at' => DB::raw('now()')
+                    ]);
+                return redirect('admin/pricing')->with('message', 'New price added');
+        }
+        if($data['process']=="update"){
+            
+                DB::table('price')
+                    ->where('p_id', '=', $data['p_id'])
+                    ->update(array('price' => $data['price'],'updated_at'=>DB::raw('now()')));
+                
+                return redirect('admin/pricing')->with('message', 'Price updated');
+        }
+        
+        return redirect('admin/pricing')->with('message', 'error');
+    }
+}                

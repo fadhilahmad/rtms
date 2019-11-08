@@ -64,6 +64,7 @@ Route::post('admin/order_setting','Admin\OrderController@updateOrderSetting')->m
 Route::get('admin/order_list', 'Admin\AdminController@orderList')->middleware('admin');
 //page pricing
 Route::get('admin/pricing', 'Admin\AdminController@pricing')->middleware('admin');
+Route::post('admin/pricing', 'Admin\OrderController@editPrice')->middleware('admin')->name('admin_pricing');
 //page order_list
 Route::get('admin/order_list', 'Admin\AdminController@orderList')->middleware('admin');
 //page stock_list
