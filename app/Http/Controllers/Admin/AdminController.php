@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\LeaveDay;
 use App\Leave;
@@ -203,8 +205,57 @@ class AdminController extends Controller
     //profile
     public function adminProfile() 
     {
-        return \View::make('admin/admin_profile');
+       // Get the currently authenticated user's ID...
+       $admin = Auth::user();
+       return view('admin/admin_profile', compact('admin'));
+
     }
+   
+    //update profile
+    public function updateProfile(Request $request,  $id) 
+    {
+     
+       $admin = User::find($id);
+       $admin->u_fullname = $request->input('name');
+       $admin->email = $request->input('email');
+       $admin->phone = $request->input('phone');
+       $admin->address = $request->input('address');      
+       $admin->save();
+       
+       return back()->with('success','Your profile updated successfully');
+
+    }
+
+    //display admin password form
+    public function adminChangePassword () 
+    {
+       $admin = Auth::user();
+       
+       return view('admin/change_password', compact('admin'));
+      
+    }
+
+     //change admin password
+    public function updateChangePassword (Request $request,  $id) 
+    {       
+        $this->validate($request, [     
+            'old_password'     => 'required',
+            'new_password'     => 'required|min:8',
+            'confirm_password' => 'required|same:new_password',     
+        ]);
+
+        $admin = User::find($id);
+        $data = $request->all();
+
+        if(!\Hash::check($data['old_password'], $admin->password)){
+            return back()->with('error','You have entered wrong password');              
+                } else {       
+                    $admin->password = Hash::make($request->input('new_password'));        
+            }
+        $admin->save();
+        return back()->with('success','Your password updated successfully');
+    
+    }   
     
     public function pricing() 
     {
@@ -218,4 +269,5 @@ class AdminController extends Controller
         return view('admin/pricing', compact('body','sleeve'));
     }
     
+   
 }

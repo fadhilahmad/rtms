@@ -18,7 +18,7 @@ class DepartmentController extends Controller
     }
 
     /* display staff profile */
-    public function staffProfile(Request $request) 
+    public function staffProfile() 
     {       
         // Get the currently authenticated user's ID...
         $staff = Auth::user();
@@ -28,28 +28,48 @@ class DepartmentController extends Controller
     /* update staff profile */
     public function updateProfile(Request $request,  $id)
     {
-        // dd($request);
-        $this->validate($request, [          
-            'password' => 'nullable|string|min:8|confirmed',
-        ]);
-  
+      
         $staff = User::find($id);
         $staff->u_fullname = $request->input('name');
         $staff->email = $request->input('email');
         $staff->phone = $request->input('phone');
-        $staff->address = $request->input('address');
-       
-        if(!empty($request->input('password')))
-        {
-            $staff->password = Hash::make($request->input('password'));
-        }
+        $staff->address = $request->input('address');  
         $staff->save();
-        // return back(); 
-        return redirect()->route('staff.profile')
-                         ->with ('success','profile updated successfully');    
+
+        return back()->with('success','Your profile updated successfully');
     
     }
+
+    //display staff password form
+    public function staffChangePassword () 
+    {
+        $staff = Auth::user();
+
+        return view('department/change_password', compact('staff'));
     
+    }
+ 
+    //change staff password
+    public function updateChangePassword (Request $request,  $id) 
+    {       
+        $this->validate($request, [     
+            'old_password'     => 'required',
+            'new_password'     => 'required|min:8',
+            'confirm_password' => 'required|same:new_password',     
+        ]);
+
+        $staff = User::find($id);
+        $data = $request->all();
+
+        if(!\Hash::check($data['old_password'], $staff->password)){
+            return back()->with('error','You have entered wrong password');
+                } else{
+                    $staff->password = Hash::make($request->input('new_password'));
+        }
+        $staff->save();
+        return back()->with('success','Your password updated successfully');
+    }
+         
     public function departmentOrderlist() 
     {
         return view('department/department_orderlist');

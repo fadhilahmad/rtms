@@ -79,7 +79,10 @@ Route::get('admin/receipt_pending', 'Admin\AdminController@receiptPending')->mid
 //page sale
 Route::get('admin/sale', 'Admin\AdminController@sale')->middleware('admin');
 //page admin_profile
-Route::get('admin/admin_profile', 'Admin\AdminController@adminProfile')->middleware('admin');
+Route::get('admin/admin_profile', 'Admin\AdminController@adminProfile')->name('admin.profile')->middleware('admin');
+Route::patch('admin/admin_profile/update/{id}', 'Admin\AdminController@updateProfile')->name('admin.update')->middleware('admin');
+Route::get('admin/change_password', 'Admin\AdminController@adminChangePassword')->name('admin.changePassword')->middleware('admin');
+Route::patch('admin/change_password/update/{id}', 'Admin\AdminController@updateChangePassword')->name('admin.updatePassword')->middleware('admin');
 
 
 //////////////////////////////////////////////////////////////DEPARTMENT PAGE///////////////////////////////////////////////////////////////
@@ -87,6 +90,8 @@ Route::get('admin/admin_profile', 'Admin\AdminController@adminProfile')->middlew
 Route::get('department/department_orderlist', 'HomeController@departmentHome')->name('department.home')->middleware('department');
 Route::get('department/staff_profile', 'Department\departmentController@staffProfile') ->name('staff.profile')->middleware('department');
 Route::patch('department/staff_profile/update/{id}', 'Department\departmentController@updateProfile')->name('staff.update')->middleware('department');
+Route::get('department/change_password', 'Department\departmentController@staffChangePassword')->name('staff.changePassword')->middleware('department');
+Route::patch('department/change_password/update/{id}', 'Department\departmentController@updateChangePassword')->name('staff.updatePassword')->middleware('department');
 Route::get('department/joblist', 'Department\departmentController@joblist')->middleware('department');
 Route::get('department/performance', 'Department\departmentController@performance')->middleware('department');
 Route::get('department/leave', 'Department\departmentController@leave')->middleware('department');

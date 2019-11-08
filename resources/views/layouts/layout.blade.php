@@ -33,12 +33,15 @@
                             <ul aria-labelledby="languages" class="dropdown-menu">
                               @can('isAdmin')
                                 <li><a rel="nofollow" href="admin_profile" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
+                                <li><a rel="nofollow" href="change_password" class="dropdown-item"> <i class="fa fa-lock"></i><span>Change Password</span></a></li>
                               @endcan
                               @can('isDepartment')
                                 <li><a rel="nofollow" href="staff_profile" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
+                                <li><a rel="nofollow" href="change_password" class="dropdown-item"> <i class="fa fa-lock"></i><span>Change Password</span></a></li>
                               @endcan
                               @can('isCustomer')
                                 <li><a rel="nofollow" href="customer_profile" class="dropdown-item"> <i class="fa fa-address-book-o"></i><span>Profile</span></a></li>
+                                <li><a rel="nofollow" href="change_password" class="dropdown-item"> <i class="fa fa-lock"></i><span>Change Password</span></a></li>
                               @endcan
                                 <li><a rel="nofollow" href="{{ route('logout') }}" class="dropdown-item"
                                         onclick="event.preventDefault();
