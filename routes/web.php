@@ -80,7 +80,8 @@ Route::get('admin/admin_profile', 'Admin\AdminController@adminProfile')->middlew
 //////////////////////////////////////////////////////////////DEPARTMENT PAGE///////////////////////////////////////////////////////////////
 
 Route::get('department/department_orderlist', 'HomeController@departmentHome')->name('department.home')->middleware('department');
-Route::get('department/staff_profile', 'Department\departmentController@staffProfile')->middleware('department');
+Route::get('department/staff_profile', 'Department\departmentController@staffProfile') ->name('staff.profile')->middleware('department');
+Route::patch('department/staff_profile/update/{id}', 'Department\departmentController@updateProfile')->name('staff.update')->middleware('department');
 Route::get('department/joblist', 'Department\departmentController@joblist')->middleware('department');
 Route::get('department/performance', 'Department\departmentController@performance')->middleware('department');
 Route::get('department/leave', 'Department\departmentController@leave')->middleware('department');

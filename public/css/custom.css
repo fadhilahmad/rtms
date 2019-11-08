@@ -1,1 +1,16 @@
 /* your styles go here */
+.card-profile {
+    margin-top: 10%;
+    margin-bottom: 30px;
+    width: 70%;
+    -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border: 0 solid #eee;
+    border-radius: 0;
+  }
+
+  .form-label {
+    background-color: #33b35a;
+    color: black;
+}
