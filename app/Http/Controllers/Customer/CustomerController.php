@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
-// use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Response;
 // use Illuminate\Support\Facades\File;
 // // use the storage library
 // use Illuminate\Support\Facades\Storage;
@@ -54,11 +56,11 @@ class CustomerController extends Controller
         }
 
         // get data from tables
-        $materials = Material::all();
+        $materials = Material::where('m_status', 1)->get();
         $deliverysettings = DeliverySetting::all();
-        $bodies = Body::all();
-        $sleeves = Sleeve::all();
-        $necks = Neck::all();
+        $bodies = Body::where('b_status', 1)->get();
+        $sleeves = Sleeve::where('sl_status', 1)->get();
+        $necks = Neck::where('n_status', 1)->get();
         // return view with all the data from the tables
         return view('customer/neworder')
         ->with('materials', $materials)
@@ -76,13 +78,46 @@ class CustomerController extends Controller
         //     abort(404, "Sorry, you cannot do this action");
         // }
 
-        // // get the user id
-        // $user_id = auth()->user()->u_id;
-        // $user = User::find($user_id);
+        // get the user id
+        $user_id = auth()->user()->u_id;
+        $user = User::find($user_id);
 
-        $orders = Order::orderBy('updated_at', 'desc')->paginate(10);
-        // $orders = Order::where('u_id_customer', $user_id);
+        // get order id with status draft
+        //$ordercustdraft = Order::where('u_id_customer', $user_id)->where('o_status', 0)->get();
+        $ordercustdraft = Order::where('u_id_customer', $user_id)->where('o_status', '!=' , 1)->orWhereNull('o_status')->get();
+        $orderiddraft = $ordercustdraft->pluck('o_id')->all();
+        $ordersdraft = Order::find($orderiddraft);
 
+        // get order id with status pending
+        $ordercustpending = Order::where('u_id_customer', $user_id)->where('o_status', 1)->get();
+        $orderidpending = $ordercustpending->pluck('o_id')->all();
+        $orderspending = Order::find($orderidpending);
+
+        // get all order
+        $orders = Order::all();
+
+        if($orders != null){
+            // $orderid = Order::where('o_id', $orders->o_id)->get();
+            //$orders = Order::where('u_id_customer', $user_id);  ->where('u_status', 1)
+            
+            // get 
+            //$designdraft = Design::where('o_id', $orderiddraft)->get();
+
+            // $material = Order::where('o_id', $orderid)->get();
+            // $materialid = $material->pluck('m_id');
+            // $materialname = Material::find($materialid);
+
+            return view('customer/customer_orderlist')
+            ->with('orders', $orders)
+            ->with('ordersdraft', $ordersdraft)
+            ->with('orderspending', $orderspending);
+        }else{
+            return view('customer/customer_orderlist')->with('orders', $orders);
+        }
+        
+
+
+        //var_dump($orders);
 
         // // read from order table based on cust id
         // $order = Order::find($user_id);
@@ -92,14 +127,44 @@ class CustomerController extends Controller
         // $design = Design::where('o_id', $orderid);
         // $specs = Spec::where('o_id', $orderid);
         // $units = Unit::where('o_id', $orderid);
-
-        return view('customer/customer_orderlist')->with('orders', $orders);
-
         
         // ->with('order', $order)
         // ->with('design', $design)
         // ->with('specs', $specs)
         // ->with('units', $units)
+    }
+
+    public function requestConfirm(Request $request){
+
+        $orderidrequest = $request->input('orderid');
+        //$orderpendingid = $id;
+
+        var_dump($orderidrequest);
+        
+        // // get the user id
+        // $user_id = auth()->user()->u_id;
+        // $user = User::find($user_id);
+
+        // // get order id with status draft
+        // $ordercustdraft = Order::where('u_id_customer', $user_id)->where('o_status', '!=' , 1)->orWhereNull('o_status')->get();
+        // $orderiddraft = $ordercustdraft->pluck('o_id')->all();
+        // $ordersdraft = Order::find($orderiddraft);
+
+        // // get order id with status pending
+        // $ordercustpending = Order::where('u_id_customer', $user_id)->where('o_status', 1)->get();
+        // $orderidpending = $ordercustpending->pluck('o_id')->all();
+        // $orderspending = Order::find($orderidpending);
+
+        // // get all order
+        // $orders = Order::all();
+
+        // if($orders != null){
+
+        //     return view('customer/customer_orderlist')
+        //     ->with('orders', $orders)
+        //     ->with('ordersdraft', $ordersdraft)
+        //     ->with('orderspending', $orderspending);
+        // }
     }
 
     // method to view invoice page for customer
@@ -201,71 +266,14 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        // // make validation
-        // $this->validate($request, [
-        //     'title' => 'required',
-        //     'description' => 'required',
-        //     'amount' => 'required'
-            
-        // ]);
-
-        // ------------------ table order (one row) ---------------------------------- //
-        // get from form
-        $clothname;
-        $category;
-        $material;
-        $totalquantity;
-        $note;
-        // generated into table
-        $refnum;
-        // get from form
-        $deliverydate;
-        // generated into table
-        $orderstatus;
-        $customerid;
-        $designerid;
-        $printid;
-        $taylorid;
-        $datecreatedorder;
-
-        // ------------------ table design (many row) ---------------------------------- //
-        // get from other table
-        $orderid;
-        $unitid;
-        $designerid;
-        // get from form
-        $mockupdesign;
-        // generated into table
-        $designtype;  // assign 1 (mockup)
-        $datecreateddessign;
-        
-
-        // ------------------ table spec (many row) ---------------------------------- //
-        // get from other table
-        $orderid;
-        // get from form
-        $neckid; // if round neck, assign 0
-        $bodyid;
-        $sleeveid;
-        $collarcolor;
-        // generated into table
-        $datecreatedspec;
-
-        // ------------------ table unit (many row) ---------------------------------- //
-        // get from other table
-        $orderid;
-        $specid; // need explain, ask os
-        // get from form
-        $name; // if user choose nameset, assign name. Else assign null
-        $size;
-        $unitquantity;
-        // get from other table
-        $printid;
-        $taylorid;
-        $unitstatus; // assign 0, (uncomplete)
-        // generated into table
-        $datecreatedunit;
-
+        // make validation
+        $this->validate($request, [
+            'somedate' => 'required',
+            'cloth_name' => 'required',
+            'category' => 'required',
+            'cover_image' => 'image|required|max:1999'
+        ]);
+// set cover image max to 1999 because a lot of apache server not allowed user to upload image more than 2mb
 
         // ------------------ insert data into table order ---------------------------------- //
         // get from form
@@ -279,12 +287,73 @@ class CustomerController extends Controller
         // get from form
         $deliverydate = $request->input('somedate');
         // generated into table
-        $orderstatus = 0;
-        $customerid = 7; // currently auto assign
-        $designerid = 3; // currently auto assign
-        $printid = 5; // currently auto assign
-        $taylorid = 4; // currently auto assign
-        // $datecreatedorder; // auto assign to the table
+        $orderstatus = 0; // set to drafted
+        $customerid = auth()->user()->u_id;
+        $designerid; 
+        $printid = null; // currently auto assign
+        $taylorid = null; // currently auto assign
+        // // $datecreatedorder; // auto assign to the table
+
+        //var_dump("--------------- customer id ------------ Customer ID: ".$customerid);
+
+        // assign order design to designer
+        // get all designer id
+        $userdesigner = User::where('u_type', 3)->where('u_status', 1)->pluck('u_id')->toArray();
+
+        // $totaldesigner = count($userdesigner);
+        
+        // for($i = 0; $i < $totaldesigner; $i++){
+        //     var_dump("--------------- id designer ------------ ID: ".$userdesigner[$i]);
+        // }
+        // var_dump("--------------- total designer ------------Total Designer: ".$totaldesigner);
+
+
+        // check if order existed
+        $hasorder = Order::all()->toArray();
+        //var_dump("--------------- total order ------------Total Order: ".count($hasorder));
+
+        // if no order
+        if($hasorder == 0){
+
+            // assign first index of designer id to the first order
+            $designerid = $userdesigner[0];
+
+        }else{
+
+            // get array of designer id from order table 
+            $orderiddesigner = Order::all()->pluck('u_id_designer')->toArray();
+
+            // total designer
+            $totaldesigner = count($userdesigner);
+            // total order
+            $totalorder = count($orderiddesigner);
+
+            // check if total order is more than designer
+            if($totalorder >= $totaldesigner){
+
+                // get the remainder of the order
+                $remainderindex = $totalorder % $totaldesigner;
+                // get next designer id
+                $nextorderdesignerid = $userdesigner[$remainderindex];
+                // assign to variable
+                $designerid = $nextorderdesignerid;
+
+            }else{
+                // last designer id index
+                $lastiddesignerindex = count($orderiddesigner)-1;
+                //var_dump("--------------- last designer id index ------------Latest index ID: ".$lastiddesignerindex);
+                // get next designer id
+                $nextorderdesignerid = $userdesigner[$lastiddesignerindex + 1];
+                //var_dump("--------------- next designer id order ------------Next Order Designer ID: ".$nextorderdesignerid);
+                // assign to variable
+                $designerid = $nextorderdesignerid;
+            }
+            
+
+        }
+
+        
+
 
         // Create order model
         $order = new Order;
@@ -306,185 +375,387 @@ class CustomerController extends Controller
         // save it
         $order->save();
 
-
-
-
-        // ------------------ insert data into table design ---------------------------------- //
+        // ------------------ insert data into table spec ---------------------------------- //
         // get from other table
         $orderid = $order->o_id;
-        $unitid = 2;
-        $designerid = 3;
         // get from form
-        //$mockupdesign;
-        //$mockupdesign = $request->input('cover_image'); // update this later
-        // generated into table
-        $designtype = 1;  // assign 1 (mockup)
-        // $datecreateddessign; // auto assign to the table
+        $neckid; // if round neck, assign 0
+        $bodyid;
+        $sleeveid;
+        $collarcolor;
+
+        if(number_format($request->input('setamount')) == 0){
+            $totalset = 1;
+        }else{
+            // total number of set
+            $totalset = number_format($request->input('setamount'));
+        }
+        
+        for($i = 0; $i < $totalset; $i++){
+
+            // Create spec model
+            $spec = new Spec;
+
+            $spec->n_id = $request->input('necktype'.$i);
+            $bodyid = $request->input('type'.$i);
+            $sleeveid = $request->input('sleeve'.$i);
+            $collarcolor = $request->input('collar_color'.$i);
+
+            $spec->o_id = $orderid;
+            $spec->b_id = $bodyid;
+            $spec->sl_id = $sleeveid;
+            $spec->collar_color = $collarcolor;
+
+            // save it
+            $spec->save();
+            
+        }
+
+        // ------------------ insert data into table unit and design ---------------------------------- //
+        
+        // get from form
+        $name; // if user choose nameset, assign name. Else assign null
+        $size;
+        $unitquantity;
+        // get from other table
+        // $printid = null;  // self generate for now
+        // $taylorid = null;  // self generate for now
+        $unitstatus = 0; // assign 0, (uncomplete)
+        // // generated into table
+        // $datecreatedunit;
+
+        if($category == "Nameset"){
+
+            // get total nameset
+            if(number_format($request->input('totalcasenameset')) == 0){
+                $totalcasenameset = 1;
+            }else{
+                // total number of nameset
+                $totalcasenameset = number_format($request->input('totalcasenameset'));
+            }
+            //var_dump("--------------- unit nameset ------------Total Case Nameset: ".$totalcasenameset);
+
+            for($i = 0; $i < $totalcasenameset; $i++){
+
+                // Create unit model
+                $unit = new Unit;
+    
+                $name = $request->input('name'.$i);
+                $size = $request->input('size'.$i);
+                $unitquantity = $request->input('quantitysinglenameset'.$i); 
+    
+                // insert into table unit
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus;
+    
+                // save it
+                $unit->save();
+
+                // handle file upload
+                if($request->hasFile('cover_image')){
+
+                    // get the file name with the extension
+                    $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+                    // get just file name
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+                    // get just extension
+                    $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+                    // create filename to store
+                    $mockupdesign = $filename.'_'.time().'.'.$extension;
+
+                    // upload the image
+                    $destinationPath = 'orders/mockup';
+                    $image = $request->file('cover_image');
+                    $image->move($destinationPath, $mockupdesign);
+
+                    //$path = $request->file('cover_image')->storeAs('public/mockup_images', $fileNameToStore);
+                    // this will store to storage/app/public
+                    // Storage::disk('public')->put($cover->getFilename().'.'.$extension,  File::get($cover));
+
+                    // $image = $request->file('cover_image');                    
+                    // $destinationPath = 'orders/mockup'; // upload path
+                    // $profileImage = 'mockup'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+                    // //Storage::disk($destinationPath)->put($profileImage, $image);
+                    // $image->move($destinationPath, $profileImage);
+                    //$url = $destinationPath.$profileImage;
+
+                    // if (!$image->move($destinationPath, $profileImage)) {
+                    //     // return 'Error saving the file.';
+                    //     var_dump("error save file");
+                    // }else{
+                    //     var_dump("Image: ", $image);
+                    // }
+
+                }else{
+                    $mockupdesign = 'noimage.jpg';
+                    var_dump("no file");
+                }
+
+                // store to design table
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                
+            }
+
+            
+
+        }else{
+
+            $xxs = $request->input('quantitysinglexxs');
+            $xs = $request->input('quantitysinglexs');
+            $s = $request->input('quantitysingles');
+            $m = $request->input('quantitysinglem');
+            $l = $request->input('quantitysinglel');
+            $xl = $request->input('quantitysinglexl');
+            $xl2 = $request->input('quantitysingle2xl');
+            $xl3 = $request->input('quantitysingle3xl');
+            $xl4 = $request->input('quantitysingle4xl');
+            $xl5 = $request->input('quantitysingle5xl');
+            $xl6 = $request->input('quantitysingle6xl');
+            $xl7 = $request->input('quantitysingle7xl');
+
+            if($request->hasFile('cover_image')){
+                $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $extension = $request->file('cover_image')->getClientOriginalExtension();
+                $mockupdesign = $filename.'_'.time().'.'.$extension;
+                // upload the image
+                $destinationPath = 'orders/mockup';
+                $image = $request->file('cover_image');
+                $image->move($destinationPath, $mockupdesign);
+            }else{
+                $mockupdesign = 'noimage.jpg';
+            }
+
+            if($xxs != 0){
+                $name = null;
+                $size = "xxs";
+                $unitquantity = $xxs; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
+            }
+            if($xs != 0){
+                $name = null;
+                $size = "xs";
+                $unitquantity = $xs; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($s != 0){
+                $name = null;
+                $size = "s";
+                $unitquantity = $s; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($m != 0){
+                $name = null;
+                $size = "m";
+                $unitquantity = $m; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($l != 0){
+                $name = null;
+                $size = "l";
+                $unitquantity = $l; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($xl != 0){
+                $name = null;
+                $size = "xl";
+                $unitquantity = $xl; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($xl2 != 0){
+                $name = null;
+                $size = "2xl";
+                $unitquantity = $xl2; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($xl3 != 0){
+                $name = null;
+                $size = "3xl";
+                $unitquantity = $xl3; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($xl4 != 0){
+                $name = null;
+                $size = "4xl";
+                $unitquantity = $xl4; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save(); 
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($xl5 != 0){
+                $name = null;
+                $size = "5xl";
+                $unitquantity = $xl5; 
+                $unit = new Unit; 
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus; 
+                $unit->save();
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($xl6 != 0){
+                $name = null;
+                $size = "6xl";
+                $unitquantity = $xl6;
+                $unit = new Unit;
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus;
+                $unit->save();
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+            if($xl7 != 0){
+                $name = null;
+                $size = "7xl";
+                $unitquantity = $xl7;
+                $unit = new Unit;
+                $unit->o_id = $orderid;
+                $unit->name = $name; 
+                $unit->size = $size; 
+                $unit->un_quantity = $unitquantity;
+                $unit->u_id_print = $printid;
+                $unit->u_id_taylor = $taylorid;
+                $unit->un_status = $unitstatus;
+                $unit->save();
+                $idunit = $unit->un_id;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+            }
+
+        }
+
+        // redirect and set success message
+        return redirect('/customer/orderlist')->with('success', 'Order Created');
+
+    }
+
+    // function to store data to table design
+    public function storeDesign($unitid, $mockupdesign, $orderid, $designerid){
+
+        // $designerid = 3; // self assign for now
+
+        $designtype = 1; // set to 1 (mockup) 
 
         // Create design model
         $design = new Design;
 
         // insert into table design
         $design->o_id = $orderid;
-        $design->un_id = $unitid; // self assign for now
-        $design->u_id_designer = $designerid; // self assign for now
-        $design->d_url = "mockupdesign"; // self assign for now
+        $design->un_id = $unitid; 
+        $design->u_id_designer = $designerid; 
+        $design->d_url = $mockupdesign; 
         $design->d_type = $designtype;
 
         // save it
         $design->save();
 
-
-
-        // ------------------ insert data into table spec ---------------------------------- //
-        // get from other table
-        //$orderid = $order->o_id;
-        // get from form
-        // $neckid; // if round neck, assign 0
-        // $bodyid;
-        // $sleeveid;
-        // $collarcolor;
-        // // generated into table
-        // $datecreatedspec;
-
-        // // Create spec model
-        // $spec = new Spec;
-
-        // $specs = array();
-
-        // // total number of set
-        // $totalset = number_format($request->input('setamount'));
-
-        // for($i = 0; $i < $totalset; $i++){
-
-        //     $collartype = $request->input('collartype$i');
-        //     if($collartype == "Round Neck"){
-        //         $neckid = 0;
-        //     }else{
-        //         $neckid = $request->input('necktype$i');
-        //     }
-
-        //     $bodyid = $request->input('type$i');
-        //     $sleeveid = $request->input('sleeve$i');
-        //     $collarcolor = $request->input('collar_color$i');
-
-        //     $specs[] = new  Specs([
-        //         'o_id' => $orderid,
-        //         'n_id' => $neckid,
-        //         'b_id' => $bodyid,
-        //         'sl_id' => $sleeveid,
-        //         'collar_color' => $collarcolor,
-        //     ]);
-
-        //     // // Create spec model
-        //     // $spec = new Spec;
-
-        //     // // insert into table spec
-        //     // $spec->o_id = $orderid;
-        //     // $spec->n_id = $neckid; 
-        //     // $spec->b_id = $bodyid; 
-        //     // $spec->sl_id = $sleeveid;
-        //     // $spec->collar_color = $collarcolor;
-
-        //     // // save it
-        //     // $spec->save();
-            
-        // }
-
-        // //save  into the DB
-        // $spec->save();
-        // $spec->specs()->saveMany($specs);
-
-        // redirect and set success message
-        return redirect('/customer/orderlist')->with('success', 'Order Created');
-
-
-
-
-
-        // ------------------ insert data into table unit ---------------------------------- //
-        // get from other table
-        $orderid;
-        $specid; // need explain, ask os
-        // get from form
-        $name; // if user choose nameset, assign name. Else assign null
-        $size;
-        $unitquantity;
-        // get from other table
-        $printid;
-        $taylorid;
-        $unitstatus; // assign 0, (uncomplete)
-        // generated into table
-        $datecreatedunit;
-
-
-
-        //'cover_image' => 'image|max:1999|required'
-
-        // // handle file upload
-        // if($request->hasFile('cover_image')){
-
-        //     // get the file name with the extension
-        //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-
-        //     // get just file name
-        //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
-        //     // get just extension
-        //     $extension = $request->file('cover_image')->getClientOriginalExtension();
-
-        //     // create filename to store
-        //     $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
-        //     // upload the image
-        //     $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
-
-        // }else{
-        //     $fileNameToStore = 'noimage.jpg';
-        // }
-
-        // // create post
-        // $post = new Post;
-
-        // // add out var value and get it from submitted form
-        // $post->title = $request->input('title');
-        // $post->description = $request->input('description');
-        // $post->gender = $request->input('gender');
-        // $post->size = $request->input('size');
-        // $post->collar = $request->input('collar');
-        // $post->sleeve = $request->input('sleeve');
-        // $post->color = $request->input('color');
-        // // features array
-        // if($request->features != null){
-        //     $post->features = implode(", ", $request->features);
-        // }else{
-        //     $post->features = 'no feature';
-        // }
-        
-        // $post->material = $request->input('material');
-        // $post->amount = $request->input('amount');
-        // // get user id that create the order
-        // $post->user_id = auth()->user()->id;
-        // // insert the cover image into database
-        // $post->cover_image = $fileNameToStore;
-        // $post->status = "Submitted";
-        // $post->delivery = $request->input('delivery');
-
-        // // save it
-        // $post->save();
-
-        // $title = $request->input('title');
-        // $description = $request->input('description');
-        // $gender = $request->input('gender');
-        // $size = $request->input('size');
-        // $collar = $request->input('collar');
-        // $sleeve = $request->input('sleeve');
-        // $color = $request->input('color');
-
-        // return "Title: ".$title." Description: ".$description." Gender: ".$gender." Size: ".$size." Collar: ".$collar." Sleeve: ".$sleeve." Color: ".$color;
-        // // redirect and set success message
-        // return redirect('/home')->with('success', 'Order Created');
-    }
+    } 
 
     /**
      * Display the specified resource.

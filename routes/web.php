@@ -103,6 +103,7 @@ Route::post('department/leave', 'Department\departmentController@leaveApplicatio
 
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////
 
+
 //Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
 Route::get('customer/customer_profile', 'Customer\customerController@customerProfile')->middleware('customer');
 Route::get('customer/customer_orderlist', 'Customer\customerController@customerOrderlist')->middleware('customer');
@@ -117,6 +118,8 @@ Route::get('customer/neworder', 'Customer\CustomerController@newOrder')->name('c
 
 // route to customer order list page for customer
 Route::get('customer/orderlist', 'Customer\CustomerController@customerOrderList')->middleware('customer');
+//Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->middleware('customer');
+Route::post('customer/orderlist','Customer\CustomerController@requestConfirm')->name('customer.orderlist');
 
 // route to customer order list page for customer
 Route::get('customer/vieworder/{id}', 'Customer\CustomerController@customerViewOrder')->middleware('customer');
@@ -128,6 +131,8 @@ Route::get('customer/invoice', 'Customer\CustomerController@invoice')->middlewar
 Route::get('customer/receipt', 'Customer\CustomerController@receipt')->middleware('customer');
 
 Route::post('customer/neworder', 'Customer\CustomerController@store')->name('customer.store');
+
+//Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->name('customer.orderlist');
 
 /////////////////////////////////////////////////////////////////REGISTRATION PAGE///////////////////////////////////////////////////
 //register agent (by link)

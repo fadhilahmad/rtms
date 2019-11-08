@@ -137,7 +137,7 @@ class DepartmentController extends Controller
         if ($request->has('design')) {
 
            $image = $request->file('design');                    
-           $destinationPath = 'orders/'; // upload path
+           $destinationPath = 'orders/draft/'; // upload path
            $profileImage = 'draft'.date('YmdHis') . "." . $image->getClientOriginalExtension();
            $image->move($destinationPath, $profileImage);
            $url = $destinationPath.$profileImage;

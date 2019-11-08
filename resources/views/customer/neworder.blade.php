@@ -4,7 +4,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">New Order</div>
 
@@ -88,7 +88,8 @@
                             {{-- label for mockup design --}}
                             {{Form::label('mockup_design', 'Mockup Design')}}<br>
                             {{-- use laravel collective package --}} 
-                            {{Form::file('cover_image')}}
+                            {{-- {{Form::file('cover_image')}} --}}
+                            <input type="file" name="cover_image">
                             {{-- <input type="file" name="cover_image[]" multiple> --}}
                         </div>
                         {{-- note --}}
@@ -123,51 +124,51 @@
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">XXS</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantityxxs" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">XS</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantityxs" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">S</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantitys" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">M</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantitym" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">L</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantityl" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantityxl" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">2XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantity2xl" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">3XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantity3xl" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">4XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantity4xl" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">5XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantity5xl" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">6XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantity6xl" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl"></td>
                                                 </tr>
                                                 <tr>
                                                     <td id="namesetdata">7XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control" id="quantity7xl" name="quantitysingle"></td>
+                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl"></td>
                                                 </tr>
                                             </table>
                                         </div>
@@ -192,8 +193,8 @@
                                                     <th id="namesethead">Quantity</th> 
                                                 </tr>
                                                 <tr>
-                                                    <td id="namesetdata"><input type="text" class="form-control" id="name" name="name"></td>
-                                                    <td id="namesetdata"><select name="size" id="size" class="form-control">
+                                                    <td id="namesetdata"><input type="text" class="form-control" id="name0" name="name0"></td>
+                                                    <td id="namesetdata"><select name="size0" id="size0" class="form-control">
                                                             <option value="xxs">XXS</option>
                                                             <option value="xs">XS</option>
                                                             <option value="s">S</option>
@@ -208,7 +209,8 @@
                                                             <option value="7xl">7XL</option>
                                                         </select>
                                                     </td>
-                                                    <td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control" id="quantitynameset" name="quantitysinglenameset"></td>
+                                                    <td id="namesetdata"><input onblur="findTotalNameset()" class="form-control totalnameset" type="number" id="quantitynameset" name="quantitysinglenameset0"></td>
+                                                    
                                                 </tr>
                                             </table>  
                                         </div>
@@ -257,25 +259,24 @@
                                                     {{Form::label('type', 'Neck Type')}}
                                                     <br>
                         
-                                                    <input type='radio' onclick='javascript:collarType();' name="collartype0" id="roundneck" value="Round Neck"/> Round Neck<br>
+                                                    {{-- <input type='radio' onclick='javascript:collarType();' name="collartype0" id="roundneck" value="0"/> Round Neck<br>
                                                     <input type="radio" onclick="javascript:collarType();" name="collartype0" id="collar" value="Collar"/> Collar
                                                     
                                                     <div id="typecollar" style="display:none">
-                                                        <br>
-                                                        {{Form::label('collartype', 'Collar Type')}}<br>
+                                                        <br> --}}
+                                                    {{-- {{Form::label('collartype', 'Collar Type')}}<br> --}}
 
-                                                        <select name="necktype0" id="necktype0" class="form-control">
-                                                            {{-- radio field for collar neck --}}
-                                                            @if(count($necks) > 0)
-                                                                @foreach ($necks as $neck)
-                                                                    <option value="{{ $neck->n_id }}">{{ $neck->n_desc }}</option>
-                                                                @endforeach
-                                                            @else
-                                                                <option value="">No collar type recorded</option>
-                                                            @endif
-                                                        </select>
+                                                    {{-- <select name="necktype0" id="necktype0" class="form-control"> --}}
+                                                    {{-- radio field for collar neck --}}
+                                                    @if(count($necks) > 0)
+                                                        @foreach ($necks as $neck)
+                                                            <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }} <br>
+                                                            {{-- <option value="{{ $neck->n_id }}">{{ $neck->n_desc }}</option> --}}
+                                                        @endforeach
+                                                    @endif
+                                                    {{-- </select> --}}
                                                         
-                                                    </div>
+                                                    {{-- </div> --}}
                                                 </div>
 
 
@@ -303,6 +304,8 @@
                                 
                         </div>
                         <input type="hidden" id="setamount" name="setamount">
+                        <input type="hidden" id="totalcasenameset" name="totalcasenameset">
+                        <input type="hidden" id="totalcasesize" name="totalcasesize">
                         <br>
                         {{-- Submit button --}}
                         {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
@@ -334,7 +337,7 @@
 
     // function to calculate total quantity for case size
     function findTotal(){
-        var arr = document.getElementsByName('quantitysingle');
+        var arr = document.getElementsByClassName('totalnameset');
         var tot= 0;
         for(var i=0;i<arr.length;i++){
             if(parseInt(arr[i].value))
@@ -351,8 +354,9 @@
 
     // function to calculate total quantity for case nameset
     function findTotalNameset(){
-        var arr = document.getElementsByName('quantitysinglenameset');
+        var arr = document.getElementsByClassName('totalnameset');
         var tot= 0;
+        //console.log(arr.length);
         for(var i=0;i<arr.length;i++){
             if(parseInt(arr[i].value))
                 // console.log(arr[i].value);
@@ -366,31 +370,40 @@
         }
         
     }
-
+    
+    var totnameset = 1;
     // function to add one row in nameset table
     function addRow(numRow) {
-        var newRow = $('<tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name"></td><td id="namesetdata"><select name="size" id="size" class="form-control"><option value="xxs">XXS</option><option value="xs">XS</option><option value="s">S</option><option value="m">M</option><option value="l">L</option><option value="xl">XL</option><option value="2xl">2XL</option><option value="3xl">3XL</option><option value="4xl">4XL</option><option value="5xl">5XL</option><option value="6xl">6XL</option><option value="7xl">7XL</option></select></td><td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control"  id="quantitynameset" name="quantitysinglenameset"></td></tr>');
+        var newRow = $('<tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name'+ totnameset.toString() +'"></td><td id="namesetdata"><select name="size'+ totnameset.toString() +'" id="size" class="form-control"><option value="xxs">XXS</option><option value="xs">XS</option><option value="s">S</option><option value="m">M</option><option value="l">L</option><option value="xl">XL</option><option value="2xl">2XL</option><option value="3xl">3XL</option><option value="4xl">4XL</option><option value="5xl">5XL</option><option value="6xl">6XL</option><option value="7xl">7XL</option></select></td><td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset"  id="quantitynameset" name="quantitysinglenameset'+ totnameset.toString() +'"></td></tr>');
         $('#namesettable'+ numRow.toString() +' tr:last').after(newRow);
         numRow += 1;
+        totnameset += 1;
+        document.getElementById('totalcasenameset').value = totnameset;
+        //console.log(document.getElementById('totalcasenameset').value);
     }
 
     // function to remove one row in nameset table
     function removeRow(numRow) {
         $('#namesettable'+ numRow.toString() +' tr:last').remove();
         // update quantity for nameset
-        var arr = document.getElementsByName('quantitysinglenameset');
+        var arr = document.getElementById('quantitynameset');
         var tot= 0;
         for(var i=0;i<arr.length;i++){
             if(parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
+        totnameset -= 1;
         document.getElementById('total_quantity').value = tot;
+        document.getElementById('totalcasenameset').value = totnameset;
     }
 
+
+
+    // {{Form::label("type", "Neck Type")}}<br><input type="radio" onclick="javascript:collarTypeAdd('+ num.toString() +');" name="collartype'+ num.toString() +'" id="roundneck'+ num.toString() +'" value="Round Neck"/> Round Neck<br><input type="radio" onclick="javascript:collarTypeAdd('+ num.toString() +');" name="collartype'+ num.toString() +'" id="collar'+ num.toString() +'" value="Collar"/> Collar<br><br><div id="typecollar'+ num.toString() +'" style="display:none">
     // function to add a new set row for spec table (type0, sleeve0, collartype0, necktype0, collar_color0)
     var num = 1;
     function addSet() {
-        var newRow = $('<tr><td><hr><div class="form-group">{{Form::label("type", "Type")}}<br>@foreach ($bodies as $body)<input type="radio" name="type'+ num.toString() +'" id="idtype'+ num.toString() +'" value={{ $body->b_id }}/> {{ $body->b_desc }}<br>@endforeach</div><div class="form-group">{{Form::label("sleeve", "Sleeve")}}<br>@foreach ($sleeves as $sleeve)<input type="radio" name="sleeve'+ num.toString() +'" id="idsleeve'+ num.toString() +'" value={{ $sleeve->sl_id }}/> {{ $sleeve->sl_desc }}<br>@endforeach</div><div class="form-group">{{Form::label("type", "Neck Type")}}<br><input type="radio" onclick="javascript:collarTypeAdd('+ num.toString() +');" name="collartype'+ num.toString() +'" id="roundneck'+ num.toString() +'" value="Round Neck"/> Round Neck<br><input type="radio" onclick="javascript:collarTypeAdd('+ num.toString() +');" name="collartype'+ num.toString() +'" id="collar'+ num.toString() +'" value="Collar"/> Collar<br><br><div id="typecollar'+ num.toString() +'" style="display:none">{{Form::label("collartype", "Collar Type")}}<br><select name="necktype'+ num.toString() +'" id="necktype'+ num.toString() +'" class="form-control">@if(count($necks) > 0)@foreach ($necks as $neck)<option value="{{ $neck->n_id }}">{{ $neck->n_desc }}</option>@endforeach @else<option value="">No collar type recorded</option>@endif</select><br></div><div class="form-group">{{Form::label("collar_color", "Collar Color")}}{{Form::text("collar_color'+ num.toString() +'", "", ["class" => "form-control", "placeholder" => "Collar Color"])}}<br></div><div id="adddivsize'+ num.toString() +'" style="display:none"><div class="form-group">{{Form::label("size", "Case Size")}}<table id="namesettablesize" style="width:80%; margin: 0px auto;"><tr><th id="namesethead">Size</th><th id="namesethead">Quantity</th> </tr><tr><td id="namesetdata">XXS</td><td id="namesetdata"><input type="number" class="form-control" id="quantityxxs" name="quantityxxs"></td></tr><tr><td id="namesetdata">XS</td><td id="namesetdata"><input type="number" class="form-control" id="quantityxs" name="quantityxs"></td></tr><tr><td id="namesetdata">S</td><td id="namesetdata"><input type="number" class="form-control" id="quantitys" name="quantitys"></td></tr><tr><td id="namesetdata">M</td><td id="namesetdata"><input type="number" class="form-control" id="quantitym" name="quantitym"></td></tr><tr><td id="namesetdata">L</td><td id="namesetdata"><input type="number" class="form-control" id="quantityl" name="quantityl"></td></tr><tr><td id="namesetdata">XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantityxl" name="quantityxl"></td></tr><tr><td id="namesetdata">2XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity2xl" name="quantity2xl"></td></tr><tr><td id="namesetdata">3XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity3xl" name="quantity3xl"></td></tr><tr><td id="namesetdata">4XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity4xl" name="quantity4xl"></td></tr><tr><td id="namesetdata">5XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity5xl" name="quantity5xl"></td></tr><tr><td id="namesetdata">6XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity6xl" name="quantity6xl"></td></tr><tr><td id="namesetdata">7XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity7xl" name="quantity7xl"></td></tr></table></div></div><div id="adddivnameset'+ num.toString() +'" style="display:none"><div class="form-group">{{Form::label("nameset", "Case Nameset")}}<table id="namesettable'+ num.toString() +'" style="width:80%; margin: 0px auto;"><tr><th id="namesethead"><button type="button" style="float: right"; id="btnAddRow" onclick="addRow('+ num.toString() +')"><i class="fa fa-plus"></i></button><button type="button" style="float: right"; id="btnRemoveRow" onclick="removeRow('+ num.toString() +')"><i class="fa fa-minus"></i></button>Name</th> <th id="namesethead">Size</th><th id="namesethead">Quantity</th> </tr><tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name"></td><td id="namesetdata"><select name="size" id="size" class="form-control"><option value="xxs">XXS</option><option value="xs">XS</option><option value="s">S</option><option value="m">M</option><option value="l">L</option><option value="xl">XL</option><option value="2xl">2XL</option><option value="3xl">3XL</option><option value="4xl">4XL</option><option value="5xl">5XL</option><option value="6xl">6XL</option><option value="7xl">7XL</option></select></td><td id="namesetdata"><input type="number" class="form-control" id="quantity" name="quantity"></td></tr></table></div></div></td></tr><tr></tr>');
+        var newRow = $('<tr><td><hr><div class="form-group">{{Form::label("type", "Type")}}<br>@foreach ($bodies as $body)<input type="radio" name="type'+ num.toString() +'" id="idtype'+ num.toString() +'" value={{ $body->b_id }}> {{ $body->b_desc }}<br>@endforeach</div><div class="form-group">{{Form::label("sleeve", "Sleeve")}}<br>@foreach ($sleeves as $sleeve)<input type="radio" name="sleeve'+ num.toString() +'" id="idsleeve'+ num.toString() +'" value={{ $sleeve->sl_id }}> {{ $sleeve->sl_desc }}<br>@endforeach</div><div class="form-group">{{Form::label("type", "Neck Type")}}<br>@if(count($necks) > 0) @foreach ($necks as $neck)<input type="radio" name="necktype'+ num.toString() +'" id="necktype'+ num.toString() +'" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }} <br>@endforeach @endif<br></div><div class="form-group">{{Form::label("collar_color", "Collar Color")}}<input type="text" id="collar_color'+ num.toString() +'" name="collar_color'+ num.toString() +'" class="form-control"><br></div><div id="adddivsize'+ num.toString() +'" style="display:none"><div class="form-group">{{Form::label("size", "Case Size")}}<table id="namesettablesize" style="width:80%; margin: 0px auto;"><tr><th id="namesethead">Size</th><th id="namesethead">Quantity</th> </tr><tr><td id="namesetdata">XXS</td><td id="namesetdata"><input type="number" class="form-control" id="quantityxxs" name="quantityxxs"></td></tr><tr><td id="namesetdata">XS</td><td id="namesetdata"><input type="number" class="form-control" id="quantityxs" name="quantityxs"></td></tr><tr><td id="namesetdata">S</td><td id="namesetdata"><input type="number" class="form-control" id="quantitys" name="quantitys"></td></tr><tr><td id="namesetdata">M</td><td id="namesetdata"><input type="number" class="form-control" id="quantitym" name="quantitym"></td></tr><tr><td id="namesetdata">L</td><td id="namesetdata"><input type="number" class="form-control" id="quantityl" name="quantityl"></td></tr><tr><td id="namesetdata">XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantityxl" name="quantityxl"></td></tr><tr><td id="namesetdata">2XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity2xl" name="quantity2xl"></td></tr><tr><td id="namesetdata">3XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity3xl" name="quantity3xl"></td></tr><tr><td id="namesetdata">4XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity4xl" name="quantity4xl"></td></tr><tr><td id="namesetdata">5XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity5xl" name="quantity5xl"></td></tr><tr><td id="namesetdata">6XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity6xl" name="quantity6xl"></td></tr><tr><td id="namesetdata">7XL</td><td id="namesetdata"><input type="number" class="form-control" id="quantity7xl" name="quantity7xl"></td></tr></table></div></div><div id="adddivnameset'+ num.toString() +'" style="display:none"><div class="form-group">{{Form::label("nameset", "Case Nameset")}}<table id="namesettable'+ num.toString() +'" style="width:80%; margin: 0px auto;"><tr><th id="namesethead"><button type="button" style="float: right"; id="btnAddRow" onclick="addRow('+ num.toString() +')"><i class="fa fa-plus"></i></button><button type="button" style="float: right"; id="btnRemoveRow" onclick="removeRow('+ num.toString() +')"><i class="fa fa-minus"></i></button>Name</th> <th id="namesethead">Size</th><th id="namesethead">Quantity</th> </tr><tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name"></td><td id="namesetdata"><select name="size" id="size" class="form-control"><option value="xxs">XXS</option><option value="xs">XS</option><option value="s">S</option><option value="m">M</option><option value="l">L</option><option value="xl">XL</option><option value="2xl">2XL</option><option value="3xl">3XL</option><option value="4xl">4XL</option><option value="5xl">5XL</option><option value="6xl">6XL</option><option value="7xl">7XL</option></select></td><td id="namesetdata"><input type="number" class="form-control" id="quantity" name="quantity"></td></tr></table></div></div></td></tr><tr></tr>');
         $('#settable tr:last').after(newRow);
         num += 1;
         document.getElementById('setamount').value = num;
@@ -409,23 +422,23 @@
         table.deleteRow(rowCount -2);
     }
 
-    // function to display collar type if user choose collar
-    function collarType() {
-        if (document.getElementById('roundneck').checked) {
-            document.getElementById('typecollar').style.display = 'none';
-        } else if (document.getElementById('collar').checked) {
-            document.getElementById('typecollar').style.display = 'block';
-        }
-    }
+    // // function to display collar type if user choose collar
+    // function collarType() {
+    //     if (document.getElementById('roundneck').checked) {
+    //         document.getElementById('typecollar').style.display = 'none';
+    //     } else if (document.getElementById('collar').checked) {
+    //         document.getElementById('typecollar').style.display = 'block';
+    //     }
+    // }
 
-    // function to display collar type if user choose collar in added set div
-    function collarTypeAdd(num) {
-        if (document.getElementById('roundneck'+ num +'').checked) {
-            document.getElementById('typecollar'+ num +'').style.display = 'none';
-        } else if (document.getElementById('collar'+ num +'').checked) {
-            document.getElementById('typecollar'+ num +'').style.display = 'block';
-        }
-    }
+    // // function to display collar type if user choose collar in added set div
+    // function collarTypeAdd(num) {
+    //     if (document.getElementById('roundneck'+ num +'').checked) {
+    //         document.getElementById('typecollar'+ num +'').style.display = 'none';
+    //     } else if (document.getElementById('collar'+ num +'').checked) {
+    //         document.getElementById('typecollar'+ num +'').style.display = 'block';
+    //     }
+    // }
 
     // function to display or hide case nameset and size when user chose category
     function categoryType() {

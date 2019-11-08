@@ -12,21 +12,20 @@
                 <div class="card-body">
 
                     <div class="panel-body">
-                        <br>
-                        <p>File Name: {{$order->file_name}}</p>
                         {{-- <p>Url: {{$design}}</p> --}}
                         @foreach ($design as $object)
-                            <p>Url: {{ $object->d_url }} </p>
+                            <img style="width:80%" src="/orders/mockup/{{ $object->d_url }}">
+                            @break
                         @endforeach
                         {{-- ->d_url  ->collar_color  ->name --}}
                         {{-- <p>Collar Color: {{$spec}}</p> --}}
-                        @foreach ($spec as $object)
+                        {{-- @foreach ($spec as $object)
                             <p>Collar Color: {{ $object->collar_color }} </p>
-                        @endforeach
+                        @endforeach --}}
                         {{-- <p>Name Set: {{$unit}}</p> --}}
-                        @foreach ($unit as $object)
+                        {{-- @foreach ($unit as $object)
                             <p>Name Set: {{ $object->name }} </p>
-                        @endforeach
+                        @endforeach --}}
 
 
                         
