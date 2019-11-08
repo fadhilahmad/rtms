@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 use App\User;
 use App\LeaveDay;
 use App\Leave;
+use App\Body;
+use App\Neck;
+use App\Sleeve;
+use App\Material;
+use App\DeliverySetting;
 use DB;
 
 class AdminController extends Controller
@@ -106,20 +111,20 @@ class AdminController extends Controller
     
     public function staffPerformance() 
     {
-        $design = DB::table('order')
-                    ->rightJoin('user', 'order.u_id_designer', '=', 'user.u_id')
+        $design = DB::table('orders')
+                    ->rightJoin('user', 'orders.u_id_designer', '=', 'user.u_id')
                     ->where('user.u_type', 3)
                     ->where('user.u_status','=',1)
                     ->paginate(5);
     
-        $print = DB::table('order')
-                    ->rightJoin('user', 'order.u_id_print', '=', 'user.u_id')
+        $print = DB::table('orders')
+                    ->rightJoin('user', 'orders.u_id_print', '=', 'user.u_id')
                     ->where('user.u_type', 5)
                     ->where('user.u_status','=',1)
                     ->paginate(5);
        
-        $tailor = DB::table('order')
-                    ->rightJoin('user', 'order.u_id_taylor', '=', 'user.u_id')
+        $tailor = DB::table('orders')
+                    ->rightJoin('user', 'orders.u_id_taylor', '=', 'user.u_id')
                     ->where('user.u_type', 4)
                     ->where('user.u_status','=',1)
                     ->paginate(5);
@@ -127,15 +132,37 @@ class AdminController extends Controller
         return view('admin/staff_performance', compact('design','print','tailor'));
     }
     
-    //order dropdown
     public function orderSetting() 
     {
-        return \View::make('admin/order_setting');
+        $body = Body::selectRaw('*')
+                ->where('b_status','=',1)
+                ->get();
+    
+        $material = Material::selectRaw('*')
+                ->where('m_status','=',1)                
+                ->get();
+ 
+        $neck = Neck::selectRaw('*')
+                ->where('n_status','=',1)                
+                ->get();
+
+        $sleeve = Sleeve::selectRaw('*')
+                ->get();
+        
+        $delivery = DeliverySetting::selectRaw('*')
+                ->first()
+                ->get();
+        
+        return view('admin/order_setting', compact('body','material','neck','sleeve','delivery'));
     }
     
     public function orderList() 
     {
-        return view('admin/admin_orderlist');
+        $order = DB::table('orders')
+                    ->Join('user', 'orders.u_id_customer', '=', 'user.u_id')
+                    ->paginate(30);
+        
+        return view('admin/admin_orderlist',compact('order'));
     }
     
     //manage stock dropdown
@@ -173,6 +200,18 @@ class AdminController extends Controller
     public function adminProfile() 
     {
         return \View::make('admin/admin_profile');
+    }
+    
+    public function pricing() 
+    {
+        $body = Body::selectRaw('*')
+                ->where('b_status','=',1)
+                ->get();
+
+        $sleeve = Sleeve::selectRaw('*')
+                ->get();
+        
+        return view('admin/pricing', compact('body','sleeve'));
     }
     
 }

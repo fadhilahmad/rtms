@@ -13,7 +13,7 @@ class CreateOrderTable extends Migration
      */
     public function up()
     {
-        Schema::create('order', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('o_id');           
             $table->string('file_name')->nullable();
             $table->string('category')->nullable();
@@ -31,9 +31,9 @@ class CreateOrderTable extends Migration
             
             $table->foreign('material_id')->references('m_id')->on('material')->onDelete('cascade');
             $table->foreign('u_id_customer')->references('u_id')->on('user')->onDelete('cascade');
-            $table->foreign('u_id_designer')->references('u_id')->on('user')->onDelete('cascade');
-            $table->foreign('u_id_print')->references('u_id')->on('user')->onDelete('cascade');
-            $table->foreign('u_id_taylor')->references('u_id')->on('user')->onDelete('cascade');
+//            $table->foreign('u_id_designer')->references('u_id')->on('user')->onDelete('cascade');
+//            $table->foreign('u_id_print')->references('u_id')->on('user')->onDelete('cascade');
+//            $table->foreign('u_id_taylor')->references('u_id')->on('user')->onDelete('cascade');
         });
 
              

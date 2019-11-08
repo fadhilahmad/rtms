@@ -18,6 +18,7 @@ class CreatePriceTable extends Migration
             $table->unsignedBigInteger('n_id')->unsigned();   //neck id
             $table->unsignedBigInteger('b_id')->unsigned();   //body id
             $table->unsignedBigInteger('sl_id')->unsigned();  //sleeve id
+            $table->unsignedBigInteger('u_type')->unsigned()->nullable;
             $table->integer('price');
             $table->timestamps();
             

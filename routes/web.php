@@ -58,7 +58,12 @@ Route::post('admin/leave_day2','Admin\LeaveController@updateDay')->name('leave_u
 //page staff_performance
 Route::get('admin/staff_performance', 'Admin\AdminController@staffPerformance')->middleware('admin');
 //page order_setting
-Route::get('admin/order_setting', 'Admin\AdminController@orderSetting')->middleware('admin');
+Route::get('admin/order_setting','Admin\AdminController@OrderSetting')->middleware('admin');
+Route::post('admin/order_setting','Admin\OrderController@updateOrderSetting')->middleware('admin')->name('order_setting');
+//page order_list
+Route::get('admin/order_list', 'Admin\AdminController@orderList')->middleware('admin');
+//page pricing
+Route::get('admin/pricing', 'Admin\AdminController@pricing')->middleware('admin');
 //page order_list
 Route::get('admin/order_list', 'Admin\AdminController@orderList')->middleware('admin');
 //page stock_list

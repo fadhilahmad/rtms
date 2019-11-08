@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class Price extends Model
 {
     // table name and primary key
-    protected $table = 'orders';
-    protected $primaryKey = 'o_id';
+    protected $table = 'price';
+    protected $primaryKey = 'p_id';
 }

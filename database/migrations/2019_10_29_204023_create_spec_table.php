@@ -24,7 +24,7 @@ class CreateSpecTable extends Migration
             
             $table->foreign('o_id')
                   ->references('o_id')
-                  ->on('order')
+                  ->on('orders')
                   ->onDelete('cascade');
             
             $table->foreign('n_id')

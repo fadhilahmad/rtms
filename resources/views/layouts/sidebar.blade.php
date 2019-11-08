@@ -59,6 +59,7 @@
               <ul id="orderDropdown" class="collapse list-unstyled ">
                 <li><a href="order_setting">Order Setting</a></li>
                 <li><a href="order_list">Order List</a></li>
+                <li><a href="pricing">Pricing</a></li>
               </ul>
             </li>
             <li> <a href="stock_list"> <i class="icon-screen"> </i>Manage Stock </a></li>
