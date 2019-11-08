@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
@@ -33,7 +35,14 @@ class HomeController extends Controller
     
     public function departmentHome() 
     {
-        return \View::make('department/department_orderlist');
+        $u_id = Auth::id();
+        
+        $orders =  DB::table('orders')
+                    ->where('u_id_designer','=',$u_id)
+                    ->where('o_status','=','0')
+                    ->get();
+
+        return view('department/department_orderlist',compact('orders'));
     }
     
     public function customerHome() 

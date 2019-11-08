@@ -20,6 +20,7 @@ class CreateOrderTable extends Migration
             $table->unsignedBigInteger('material_id')->unsigned()->nullable();       //baca dari table material
             $table->integer('quantity_total');
             $table->text('note')->nullable();
+            $table->text('designer_note')->nullable();
             $table->integer('ref_num')->nullable();
             $table->date('delivery_date');
             $table->integer('o_status')->nullable();
@@ -29,7 +30,7 @@ class CreateOrderTable extends Migration
             $table->unsignedBigInteger('u_id_taylor')->unsigned()->nullable();
             $table->timestamps();
             
-            $table->foreign('material_id')->references('m_id')->on('material')->onDelete('cascade');
+//            $table->foreign('material_id')->references('m_id')->on('material')->onDelete('cascade');
             $table->foreign('u_id_customer')->references('u_id')->on('user')->onDelete('cascade');
 //            $table->foreign('u_id_designer')->references('u_id')->on('user')->onDelete('cascade');
 //            $table->foreign('u_id_print')->references('u_id')->on('user')->onDelete('cascade');

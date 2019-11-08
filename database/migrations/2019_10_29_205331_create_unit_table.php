@@ -20,8 +20,8 @@ class CreateUnitTable extends Migration
             $table->string('name')->nullable();
             $table->string('size')->nullable();
             $table->integer('un_quantity');
-            $table->unsignedBigInteger('u_id_print')->unsigned();
-            $table->unsignedBigInteger('u_id_taylor')->unsigned();
+            $table->unsignedBigInteger('u_id_print')->unsigned()->nullable();
+            $table->unsignedBigInteger('u_id_taylor')->unsigned()->nullable();
             $table->integer('un_status')->nullable();
             $table->timestamps();
             
@@ -35,15 +35,15 @@ class CreateUnitTable extends Migration
             //       ->on('spec')
             //       ->onDelete('cascade');
             
-            $table->foreign('u_id_print')
-                  ->references('u_id')
-                  ->on('user')
-                  ->onDelete('cascade');
-            
-            $table->foreign('u_id_taylor')
-                  ->references('u_id')
-                  ->on('user')
-                  ->onDelete('cascade'); 
+//            $table->foreign('u_id_print')
+//                  ->references('u_id')
+//                  ->on('user')
+//                  ->onDelete('cascade');
+//            
+//            $table->foreign('u_id_taylor')
+//                  ->references('u_id')
+//                  ->on('user')
+//                  ->onDelete('cascade'); 
         });
     }
 

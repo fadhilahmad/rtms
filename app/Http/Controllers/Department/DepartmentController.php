@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Order;
+use App\Leave;
+use App\LeaveDay;
 use DB;
 
 class DepartmentController extends Controller
@@ -72,7 +75,14 @@ class DepartmentController extends Controller
          
     public function departmentOrderlist() 
     {
-        return view('department/department_orderlist');
+//        $u_id = Auth::id();
+        
+//        $orders =  DB::table('orders')
+//                    ->where('u_id_designer','=','3')
+//                    ->where('o_status','=','0')
+//                    ->get();
+//
+//        return view('department/department_orderlist',compact('orders'));
     }
     
     public function joblist() 
@@ -87,6 +97,66 @@ class DepartmentController extends Controller
     
     public function leave() 
     {
-        return view('department/leave');
+        $staff = Auth::user();
+        $id = $staff->u_id;
+        $days = DB::table('leave_day')->where('u_id', '=', $id)->first();
+        
+        $leave = DB::table('leave')->where('u_id', '=', $id)->get();
+        
+        return view('department/leave', compact('staff','days','leave'));
+    }
+    
+    public function leaveApplication(Request $request)
+    {
+        
+        $this->validate($request, [
+            'start_date'     => 'required',
+            'end_date' => 'required', 
+            'reason' => 'required',
+        ]);
+        
+        $data = $request->all();
+        
+        DB::table('leave')->insert([
+                     'u_id' => $data['u_id'],
+                     'raeson'=> $data['reason'],
+                     'l_type'=> $data['leave_type'],
+                     'l_status'=> '2',
+                     'apply_date'=> DB::raw('now()'),
+                     'start_date'=> $data['start_date'],
+                     'end_date'=> $data['end_date'],
+                     'updated_date' => DB::raw('now()')
+                    ]);
+        return redirect('department/leave')->with('message', 'Success');        
+    }
+    
+    public function updateOrder(Request $request){
+        
+        $data = $request->all();
+        
+        if ($request->has('design')) {
+
+           $image = $request->file('design');                    
+           $destinationPath = 'orders/'; // upload path
+           $profileImage = 'draft'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+           $image->move($destinationPath, $profileImage);
+           $url = $destinationPath.$profileImage;
+               
+           DB::table('design')->insert([
+                  'o_id' => $data['o_id'],
+                  'u_id_designer'=>$data['u_id'],
+                  'd_url' =>$profileImage,
+                  'd_type'=>'2',
+                  'created_at' => DB::raw('now()'),
+                  'updated_at' => DB::raw('now()')
+                   ]);
+           
+           DB::table('orders')
+                 ->where('o_id', '=', $data['o_id'])
+                 ->update(array('designer_note' => $data['note'],
+                                'o_status'=>'1'));
+           
+           return redirect('department/department_orderlist')->with('message', 'Success'); 
+         }        
     }
 }

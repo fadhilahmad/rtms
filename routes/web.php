@@ -87,14 +87,19 @@ Route::patch('admin/change_password/update/{id}', 'Admin\AdminController@updateC
 
 //////////////////////////////////////////////////////////////DEPARTMENT PAGE///////////////////////////////////////////////////////////////
 
+//page orderlist
 Route::get('department/department_orderlist', 'HomeController@departmentHome')->name('department.home')->middleware('department');
+Route::post('department/department_orderlist', 'Department\DepartmentController@updateOrder')->name('update_order')->middleware('department');
+
 Route::get('department/staff_profile', 'Department\departmentController@staffProfile') ->name('staff.profile')->middleware('department');
 Route::patch('department/staff_profile/update/{id}', 'Department\departmentController@updateProfile')->name('staff.update')->middleware('department');
 Route::get('department/change_password', 'Department\departmentController@staffChangePassword')->name('staff.changePassword')->middleware('department');
 Route::patch('department/change_password/update/{id}', 'Department\departmentController@updateChangePassword')->name('staff.updatePassword')->middleware('department');
 Route::get('department/joblist', 'Department\departmentController@joblist')->middleware('department');
 Route::get('department/performance', 'Department\departmentController@performance')->middleware('department');
+//page leave
 Route::get('department/leave', 'Department\departmentController@leave')->middleware('department');
+Route::post('department/leave', 'Department\departmentController@leaveApplication')->name('department.leave')->middleware('department');
 
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////
 

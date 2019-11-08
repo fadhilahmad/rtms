@@ -94,7 +94,7 @@ class AdminController extends Controller
     {
         $leave = DB::table('leave')
                     ->join('user', 'leave.u_id', '=', 'user.u_id')
-                    ->where('user.u_status','=',2)
+                    ->where('leave.l_status','=',2)
                     ->paginate(30);         
                 
         return view('admin/leave_application', compact('leave'));
