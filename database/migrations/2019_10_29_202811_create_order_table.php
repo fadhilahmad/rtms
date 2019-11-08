@@ -24,9 +24,9 @@ class CreateOrderTable extends Migration
             $table->date('delivery_date');
             $table->integer('o_status')->nullable();
             $table->unsignedBigInteger('u_id_customer')->unsigned();
-            $table->unsignedBigInteger('u_id_designer')->unsigned();
-            $table->unsignedBigInteger('u_id_print')->unsigned();
-            $table->unsignedBigInteger('u_id_taylor')->unsigned();
+            $table->unsignedBigInteger('u_id_designer')->unsigned()->nullable();
+            $table->unsignedBigInteger('u_id_print')->unsigned()->nullable();
+            $table->unsignedBigInteger('u_id_taylor')->unsigned()->nullable();
             $table->timestamps();
             
             $table->foreign('material_id')->references('m_id')->on('material')->onDelete('cascade');
