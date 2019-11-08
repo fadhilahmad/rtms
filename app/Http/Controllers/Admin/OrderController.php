@@ -206,4 +206,31 @@ class OrderController extends Controller
         
         return redirect('admin/pricing')->with('message', 'error');
     }
+    
+    public function updateStock(Request $request){
+        
+        $data = $request->all();
+        
+        if($data['operator']=='add'){
+            $newstock = $data['oldvalue']+$data['value'];
+            
+                DB::table('material')
+                    ->where('m_id', '=', $data['m_id'])
+                    ->update(array('m_stock' => $newstock,'updated_at'=>DB::raw('now()')));
+                
+                return redirect('admin/stock_list')->with('message', 'Stock updated');           
+            
+        }
+        if($data['operator']=='minus'){
+            $newstock = $data['oldvalue']-$data['value'];
+            
+                DB::table('material')
+                    ->where('m_id', '=', $data['m_id'])
+                    ->update(array('m_stock' => $newstock,'updated_at'=>DB::raw('now()')));
+                
+                return redirect('admin/stock_list')->with('message', 'Stock updated');           
+            
+        }
+        
+    }
 }                

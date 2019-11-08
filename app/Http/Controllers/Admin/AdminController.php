@@ -168,7 +168,11 @@ class AdminController extends Controller
     //manage stock dropdown
     public function stockList() 
     {
-        return view('admin/stock_list');
+        $material = Material::selectRaw('*')
+                ->where('m_status','=',1)                
+                ->get();
+        
+        return view('admin/stock_list', compact('material'));
     }
     
     //invoice and receipt dropdown

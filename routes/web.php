@@ -65,10 +65,9 @@ Route::get('admin/order_list', 'Admin\AdminController@orderList')->middleware('a
 //page pricing
 Route::get('admin/pricing', 'Admin\AdminController@pricing')->middleware('admin');
 Route::post('admin/pricing', 'Admin\OrderController@editPrice')->middleware('admin')->name('admin_pricing');
-//page order_list
-Route::get('admin/order_list', 'Admin\AdminController@orderList')->middleware('admin');
 //page stock_list
 Route::get('admin/stock_list', 'Admin\AdminController@stockList')->middleware('admin');
+Route::post('admin/stock_list', 'Admin\OrderController@updateStock')->middleware('admin')->name('manage_stock');
 //page invoice_list
 Route::get('admin/invoice_list', 'Admin\AdminController@invoiceList')->middleware('admin');
 //page invoice_pending
