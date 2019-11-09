@@ -16,7 +16,7 @@ class CreateUnitTable extends Migration
         Schema::create('unit', function (Blueprint $table) {
             $table->bigIncrements('un_id');
             $table->unsignedBigInteger('o_id')->unsigned();
-            //$table->unsignedBigInteger('s_id')->unsigned();
+            $table->unsignedBigInteger('s_id')->unsigned();
             $table->string('name')->nullable();
             $table->string('size')->nullable();
             $table->integer('un_quantity');
