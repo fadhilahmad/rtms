@@ -33,6 +33,7 @@ use App\Unit;
 use App\User;
 use Gate;
 // use Illuminate\Support\Facades\Hash;
+use DB;
 
 class CustomerController extends Controller
 {
@@ -136,10 +137,57 @@ class CustomerController extends Controller
 
     public function requestConfirm(Request $request){
 
+
+        //-------------------- confirm design ----------------------//
         $orderidrequest = $request->input('orderid');
         //$orderpendingid = $id;
 
         var_dump($orderidrequest);
+
+        if($orderidrequest != null){
+
+            DB::table('orders')
+                        ->where('o_id', '=', $orderidrequest)
+                        ->update(array('o_status'=>'2'));
+                
+                return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
+
+        }else{
+
+            //-------------------- request redesign ----------------------//
+            $data = $request->all();
+            
+            if ($request->has('design')) {
+
+                //var_dump($data['uid']);
+
+                $image = $request->file('design');                    
+                $destinationPath = 'orders/draft/'; // upload path
+                $profileImage = 'draft'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+                $image->move($destinationPath, $profileImage);
+                $url = $destinationPath.$profileImage;
+                    
+                DB::table('design')->insert([
+                        'o_id' => $data['o_id'],
+                        'u_id_designer'=>$data['u_id'],
+                        'd_url' =>$profileImage,
+                        'd_type'=>'2',
+                        'created_at' => DB::raw('now()'),
+                        'updated_at' => DB::raw('now()')
+                        ]);
+                
+                DB::table('orders')
+                        ->where('o_id', '=', $data['o_id'])
+                        ->update(array('designer_note' => $data['note'],
+                                        'o_status'=>'10'));
+                
+                return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
+            }   
+
+        }
+
+
+        
         
         // // get the user id
         // $user_id = auth()->user()->u_id;
