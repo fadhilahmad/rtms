@@ -504,52 +504,52 @@ class CustomerController extends Controller
                 // save it
                 $unit->save();
 
-                // handle file upload
-                if($request->hasFile('cover_image')){
+                // // handle file upload
+                // if($request->hasFile('cover_image')){
 
-                    // get the file name with the extension
-                    $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                //     // get the file name with the extension
+                //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
 
-                    // get just file name
-                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                //     // get just file name
+                //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
 
-                    // get just extension
-                    $extension = $request->file('cover_image')->getClientOriginalExtension();
+                //     // get just extension
+                //     $extension = $request->file('cover_image')->getClientOriginalExtension();
 
-                    // create filename to store
-                    $mockupdesign = $filename.'_'.time().'.'.$extension;
+                //     // create filename to store
+                //     $mockupdesign = $filename.'_'.time().'.'.$extension;
 
-                    // upload the image
-                    $destinationPath = 'orders/mockup';
-                    $image = $request->file('cover_image');
-                    $image->move($destinationPath, $mockupdesign);
+                //     // upload the image
+                //     $destinationPath = 'orders/mockup';
+                //     $image = $request->file('cover_image');
+                //     $image->move($destinationPath, $mockupdesign);
 
-                    //$path = $request->file('cover_image')->storeAs('public/mockup_images', $fileNameToStore);
-                    // this will store to storage/app/public
-                    // Storage::disk('public')->put($cover->getFilename().'.'.$extension,  File::get($cover));
+                //     //$path = $request->file('cover_image')->storeAs('public/mockup_images', $fileNameToStore);
+                //     // this will store to storage/app/public
+                //     // Storage::disk('public')->put($cover->getFilename().'.'.$extension,  File::get($cover));
 
-                    // $image = $request->file('cover_image');                    
-                    // $destinationPath = 'orders/mockup'; // upload path
-                    // $profileImage = 'mockup'.date('YmdHis') . "." . $image->getClientOriginalExtension();
-                    // //Storage::disk($destinationPath)->put($profileImage, $image);
-                    // $image->move($destinationPath, $profileImage);
-                    //$url = $destinationPath.$profileImage;
+                //     // $image = $request->file('cover_image');                    
+                //     // $destinationPath = 'orders/mockup'; // upload path
+                //     // $profileImage = 'mockup'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+                //     // //Storage::disk($destinationPath)->put($profileImage, $image);
+                //     // $image->move($destinationPath, $profileImage);
+                //     //$url = $destinationPath.$profileImage;
 
-                    // if (!$image->move($destinationPath, $profileImage)) {
-                    //     // return 'Error saving the file.';
-                    //     var_dump("error save file");
-                    // }else{
-                    //     var_dump("Image: ", $image);
-                    // }
+                //     // if (!$image->move($destinationPath, $profileImage)) {
+                //     //     // return 'Error saving the file.';
+                //     //     var_dump("error save file");
+                //     // }else{
+                //     //     var_dump("Image: ", $image);
+                //     // }
 
-                }else{
-                    $mockupdesign = 'noimage.jpg';
-                    var_dump("no file");
-                }
+                // }else{
+                //     $mockupdesign = 'noimage.jpg';
+                //     var_dump("no file");
+                // }
 
-                // store to design table
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // // store to design table
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 
             }
 
@@ -570,18 +570,18 @@ class CustomerController extends Controller
             $xl6 = $request->input('quantitysingle6xl');
             $xl7 = $request->input('quantitysingle7xl');
 
-            if($request->hasFile('cover_image')){
-                $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                $extension = $request->file('cover_image')->getClientOriginalExtension();
-                $mockupdesign = $filename.'_'.time().'.'.$extension;
-                // upload the image
-                $destinationPath = 'orders/mockup';
-                $image = $request->file('cover_image');
-                $image->move($destinationPath, $mockupdesign);
-            }else{
-                $mockupdesign = 'noimage.jpg';
-            }
+            // if($request->hasFile('cover_image')){
+            //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+            //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            //     $extension = $request->file('cover_image')->getClientOriginalExtension();
+            //     $mockupdesign = $filename.'_'.time().'.'.$extension;
+            //     // upload the image
+            //     $destinationPath = 'orders/mockup';
+            //     $image = $request->file('cover_image');
+            //     $image->move($destinationPath, $mockupdesign);
+            // }else{
+            //     $mockupdesign = 'noimage.jpg';
+            // }
 
             if($xxs != 0){
                 $name = null;
@@ -596,8 +596,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
             }
             if($xs != 0){
                 $name = null;
@@ -612,8 +612,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($s != 0){
                 $name = null;
@@ -628,8 +628,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($m != 0){
                 $name = null;
@@ -644,8 +644,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($l != 0){
                 $name = null;
@@ -660,8 +660,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($xl != 0){
                 $name = null;
@@ -676,8 +676,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($xl2 != 0){
                 $name = null;
@@ -692,8 +692,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($xl3 != 0){
                 $name = null;
@@ -708,8 +708,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($xl4 != 0){
                 $name = null;
@@ -724,8 +724,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save(); 
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($xl5 != 0){
                 $name = null;
@@ -740,8 +740,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus; 
                 $unit->save();
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($xl6 != 0){
                 $name = null;
@@ -756,8 +756,8 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus;
                 $unit->save();
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
             if($xl7 != 0){
                 $name = null;
@@ -772,11 +772,40 @@ class CustomerController extends Controller
                 $unit->u_id_taylor = $taylorid;
                 $unit->un_status = $unitstatus;
                 $unit->save();
-                $idunit = $unit->un_id;
-                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                // $idunit = $unit->un_id;
+                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
             }
 
         }
+
+        // handle file upload
+        if($request->hasFile('cover_image')){
+
+            // get the file name with the extension
+            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+            // get just file name
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+            // get just extension
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+            // create filename to store
+            $mockupdesign = $filename.'_'.time().'.'.$extension;
+
+            // upload the image
+            $destinationPath = 'orders/mockup';
+            $image = $request->file('cover_image');
+            $image->move($destinationPath, $mockupdesign);
+
+        }else{
+            $mockupdesign = 'noimage.jpg';
+            var_dump("no file");
+        }
+
+        // store to design table
+        $idunit = null;
+        $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
 
         // redirect and set success message
         return redirect('/customer/orderlist')->with('success', 'Order Created');
