@@ -31,6 +31,8 @@ use App\Spec;
 use App\Unit;
 // bring in 'User' model
 use App\User;
+use App\Price;
+use App\Invoice;
 use Gate;
 // use Illuminate\Support\Facades\Hash;
 use DB;
@@ -149,31 +151,108 @@ class CustomerController extends Controller
             //$user = User::find($user_id);
 
             // make ref num to be inserted in table order
-
             // get array of ref num from order table based on user id
             $userrefnum = Order::where('ref_num', '!=' , null)->pluck('ref_num')->toArray();
-
-            // total order
+            // total ref num
             $totalrefnum = count($userrefnum);
-
-            var_dump("Total Ref Num: ".$totalrefnum);
-
-            // $ordercustdraft = Order::where('u_id_customer', $user_id)->where('o_status', '!=' , 1)->orWhereNull('o_status')->get();
-            // $orderiddraft = $ordercustdraft->pluck('o_id')->all();
-            // $ordersdraft = Order::find($orderiddraft);
-
-            // // update status in table design
+            $newrefnum = $totalrefnum + 1;
+            // // update ref num in table order
             // DB::table('orders')
             //     ->where('o_id', '=', $orderidrequest)
-            //     ->update(array('o_status'=>'2'));
+            //     ->update(array('ref_num' => $newrefnum,
+            //     'o_status'=>'2'));
 
-            // // calculate price
+            // calculate price
+            // get n_id, b_id, sl_id, u_type,
+            $orderid = $orderidrequest;
+            $neckid = Spec::where('o_id', '=' , $orderidrequest)->pluck('n_id')->toArray();
+            $bodyid = Spec::where('o_id', '=' , $orderidrequest)->pluck('b_id')->toArray();
+            $sleeveid = Spec::where('o_id', '=' , $orderidrequest)->pluck('sl_id')->toArray();
+            $specid = Spec::where('o_id', '=' , $orderidrequest)->pluck('s_id')->toArray();
+            $usertype = auth()->user()->u_type;
+            $category;
+            $size;
+            $price;
+            $totprice = 0;
 
-            // // insert into table invoice
+            $totorderrow = count($neckid);
+            //var_dump(": ".$totorderrow);
+            //var_dump(": ".$neckid[1]);
+
+            for($i = 0; $i < $totorderrow; $i++){
+                // get neck id to check if collar or not
+                if($neckid[$i] == 1){
+                    $checkneck = 1;
+                }else{
+                    $checkneck = 2;
+                }
+                //var_dump(": ".$checkneck);
+
+                $price = Price::where('n_id', '=', $checkneck)
+                    ->where('b_id', '=' , $bodyid[$i])
+                    ->where('sl_id', '=' , $sleeveid[$i])
+                    ->where('u_type', '=' , $usertype)->pluck('price');
+
+                $category = Order::where('o_id', '=', $orderidrequest)->pluck('category');
+                //var_dump(": ".$category);
+                //var_dump(": ".$price[$i]);
+                //var_dump(": ".$neckid[$i]);
+                
+                
+                //$units = Unit::where('o_id', $orderidrequest)->get();
+                $size = Unit::where('o_id', '=', $orderidrequest)->pluck('size');
+                $totsize = count($size);
+                $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
+                $totunits = count($specs);
+                //var_dump(": ".$specid[$i]);
+                //var_dump(": ".$totunits);
+                //var_dump(": ".$size[4]);
+
+
+                for($j = 0; $j < $totunits; $j++){
+
+                    $size = Unit::where('o_id', '=', $orderidrequest)
+                    ->where('s_id', '=', $specs[$i])
+                    ->pluck('size');
+                    $totsize = count($size);
+                    //var_dump(": ".$totsize);
+                    //var_dump(": ".$size[$j]);
+
+
+                    // quantity not taken yet!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    $pricecalc = $this->calcPrice($price, $category, $size[$j]); 
+                    $totprice += $pricecalc[0];
+                    var_dump(": ".$pricecalc);
+                    //var_dump(": ".$pricecalc);
+                    //var_dump(": ".$this->calcPrice($price, $category, $size[$j]));
+
+                    //var_dump(": ".$totprice);
+
+                }
+                // var_dump(": ".$totprice);
+
+                //$this->totalPrice($idunit, $mockupdesign, $orderid, $designerid); 
+
+                // var_dump(": ".$totsize);
+            }
+            //var_dump(": ".$totprice);
+
+            // // insert into invoice table
+            // $invoice = new Invoice;
+
+            // // insert into table order
+            // $invoice->o_id = $orderid;
+            // $invoice->i_status = 1;
+            // $invoice->total_price = $totprice;
+
+            // // save it
+            // $invoice->save();
+
+            
 
 
                 
-            // return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
+            //return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
 
         }else{
 
@@ -262,6 +341,36 @@ class CustomerController extends Controller
         //     ->with('ordersdraft', $ordersdraft)
         //     ->with('orderspending', $orderspending);
         // }
+    }
+
+    // method to calculate total price
+    public function calcPrice($price, $category, $size){
+
+        //var_dump(": ".$size);
+
+        $calcprice = 0;
+        if($category == "Nameset"){
+            $priceint = intval($price[0]);
+            $calcprice = $priceint + 4;
+        }else{
+            $calcprice = $price;
+        }
+        if($size == "4XL" || $size == "5XL"){
+            $priceint = intval($price[0]);
+            $calcprice = $priceint + 4;
+        }else{
+            $calcprice = $price;
+        }
+        if($size == "6XL" || $size == "7XL"){
+            $priceint = intval($price[0]);
+            // var_dump($x+1);
+            $calcprice = $priceint + 8;
+            //var_dump($calcprice);
+        }else{
+            $calcprice = $price;
+        }
+        return $calcprice;
+
     }
 
     // method to view mockup image
@@ -506,6 +615,10 @@ class CustomerController extends Controller
         $bodyid;
         $sleeveid;
         $collarcolor;
+        //$mockupdesign;
+        // $originalname;
+        // $originalextension;
+        // $imagerequestfile;
 
         if(number_format($request->input('setamount')) == 0){
             $totalset = 1;
@@ -536,38 +649,52 @@ class CustomerController extends Controller
             // $idspec = $spec->s_id;
             $idspec = DB::getPdo()->lastInsertId();
 
-            var_dump($idspec);
+            // var_dump($idspec);
             $name; // if user choose nameset, assign name. Else assign null
             $size;
             $unitquantity;
             $unitstatus = 0; // assign 0, (uncomplete)
 
-            // handle file upload
-            if($request->hasFile('cover_image')){
+            // if($i = 0){
 
-                // get the file name with the extension
-                $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+            //     //var_dump("=0");
 
-                // get just file name
-                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            //     // handle file upload
+            //     if($request->hasFile('cover_image')){
 
-                // get just extension
-                $extension = $request->file('cover_image')->getClientOriginalExtension();
+            //         // get the file name with the extension
+            //         $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+            //         $originalname = $request->file('cover_image')->getClientOriginalName();
+                    
 
-                // create filename to store
-                $mockupdesign = $filename.'_'.time().'.'.$extension;
+            //         // get just file name
+            //         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
 
-                // upload the image
-                $destinationPath = 'orders/mockup';
-                $image = $request->file('cover_image');
-                $image->move($destinationPath, $mockupdesign);
-                //$image->storeAs($destinationPath, $mockupdesign);
-                
+            //         // get just extension
+            //         $extension = $request->file('cover_image')->getClientOriginalExtension();
+            //         $originalextension = $request->file('cover_image')->getClientOriginalExtension();
 
-            }else{
-                $mockupdesign = 'noimage.jpg';
-                var_dump("no file");
-            }
+            //         // create filename to store
+            //         $mockupdesign = $filename.'_'.time().'.'.$extension;
+
+            //         // upload the image
+            //         $destinationPath = 'orders/mockup';
+            //         $image = $request->file('cover_image');
+            //         $imagerequestfile = $request->file('cover_image');
+            //         $image->move($destinationPath, $mockupdesign);
+            //         //$image->storeAs($destinationPath, $mockupdesign);
+            //         //$this->storeDesignName($mockupdesigns); 
+
+            //         //$GLOBALS['mockupdesign'] = $GLOBALS['mockupdesigns'];
+                    
+
+            //     }else{
+            //         $mockupdesign = 'noimage.jpg';
+            //         //var_dump("no file");
+            //     }
+
+            // }
+            
 
             if($category == "Nameset"){
                 // case nameset
@@ -580,6 +707,8 @@ class CustomerController extends Controller
                     $namesetnum = number_format($request->input('namesetnum'.$i));
                     var_dump("----------name set: ----------".$namesetnum);
                 }
+
+                
 
                 for($j = 0; $j < $namesetnum; $j++){
 
@@ -603,6 +732,53 @@ class CustomerController extends Controller
                     // save it
                     $unit->save();
 
+                    // if($request->hasFile('cover_image')){
+                    //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                    //     $originalname = $request->file('cover_image')->getClientOriginalName();
+                    //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    //     $extension = $request->file('cover_image')->getClientOriginalExtension();
+                    //     $originalextension = $request->file('cover_image')->getClientOriginalExtension();
+                    //     $mockupdesign = $filename.'_'.time().'.'.$extension;
+                    //     $destinationPath = 'orders/mockup';
+                    //     $image = $request->file('cover_image');
+                    //     $imagerequestfile = $request->file('cover_image');
+                    // }else{
+                    //     $mockupdesign = 'noimage.jpg';
+                    // }
+
+                    if($request->hasFile('cover_image')){
+
+                        // get the file name with the extension
+                        $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                        $originalname = $request->file('cover_image')->getClientOriginalName();
+                        
+    
+                        // get just file name
+                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+    
+                        // get just extension
+                        $extension = $request->file('cover_image')->getClientOriginalExtension();
+                        $originalextension = $request->file('cover_image')->getClientOriginalExtension();
+    
+                        // create filename to store
+                        $mockupdesign = $filename.'_'.time().'.'.$extension;
+    
+                        // upload the image
+                        $destinationPath = 'orders/mockup';
+                        $image = $request->file('cover_image');
+                        $imagerequestfile = $request->file('cover_image');
+                        if($j == 0){
+                            // $path = $request->file('cover_image')->storeAs($destinationPath, $mockupdesign);
+                            $image->move($destinationPath, $mockupdesign);
+                        }
+    
+                    }else{
+                        $mockupdesign = 'noimage.jpg';
+                        //var_dump("no file");
+                    }
+
+                    //$mockupdesign = $this->getDesignName();
+
                     $idunit = $unit->un_id;
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
                     
@@ -623,6 +799,8 @@ class CustomerController extends Controller
                 $xl5 = $request->input('quantitysingle5xl'.$i);
                 $xl6 = $request->input('quantitysingle6xl'.$i);
                 $xl7 = $request->input('quantitysingle7xl'.$i);
+
+                //$mockupdesign = $this->getDesignName();
 
                 // // handle file upload
                 // if($request->hasFile('cover_image')){
@@ -650,6 +828,56 @@ class CustomerController extends Controller
                 //     $mockupdesign = 'noimage.jpg';
                 //     var_dump("no file");
                 // }
+
+                // if($request->hasFile('cover_image')){
+                //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                //     $originalname = $request->file('cover_image')->getClientOriginalName();
+                //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                //     $extension = $request->file('cover_image')->getClientOriginalExtension();
+                //     $originalextension = $request->file('cover_image')->getClientOriginalExtension();
+                //     $mockupdesign = $filename.'_'.time().'.'.$extension;
+                //     $destinationPath = 'orders/mockup';
+                //     $image = $request->file('cover_image');
+                //     $imagerequestfile = $request->file('cover_image');
+                // }else{
+                //     $mockupdesign = 'noimage.jpg';
+                // }
+
+                if($request->hasFile('cover_image')){
+
+                    // get the file name with the extension
+                    $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                    $originalname = $request->file('cover_image')->getClientOriginalName();
+                    
+
+                    // get just file name
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+                    // get just extension
+                    $extension = $request->file('cover_image')->getClientOriginalExtension();
+                    $originalextension = $request->file('cover_image')->getClientOriginalExtension();
+
+                    // create filename to store
+                    $mockupdesign = $filename.'_'.time().'.'.$extension;
+
+                    // upload the image
+                    $destinationPath = 'orders/mockup';
+                    $image = $request->file('cover_image');
+                    $imagerequestfile = $request->file('cover_image');
+                    if($i == 0){
+                        $image->move($destinationPath, $mockupdesign);
+                    }
+                    
+                    //$image->storeAs($destinationPath, $mockupdesign);
+                    //$this->storeDesignName($mockupdesigns); 
+
+                    //$GLOBALS['mockupdesign'] = $GLOBALS['mockupdesigns'];
+                    
+
+                }else{
+                    $mockupdesign = 'noimage.jpg';
+                    //var_dump("no file");
+                }
 
                 if($xxs != 0){
                     $name = null;
@@ -862,12 +1090,44 @@ class CustomerController extends Controller
 
         // // store to design table
         // $idunit = null;
-        // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+        //$this->storeImage($originalname, $originalextension, $imagerequestfile);
 
         // redirect and set success message
         return redirect('/customer/orderlist')->with('success', 'Order Created');
 
     }
+
+    // public function storeDesignName($mockupdesign){
+    //     $mockupdesigns = $mockupdesign;
+    // }
+
+    // public function getDesignName(){
+    //     return $mockupdesigns;
+    // }
+
+    // public function storeImage($originalname, $originalextension, $imagerequestfile){
+
+    //     // get the file name with the extension
+    //     $filenameWithExt = $originalname;
+
+    //     // get just file name
+    //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+    //     // get just extension
+    //     $extension = $originalextension;
+
+    //     // create filename to store
+    //     $mockupdesign = $filename.'_'.time().'.'.$extension;
+
+    //     // upload the image
+    //     $destinationPath = 'orders/mockup';
+    //     $image = $imagerequestfile;
+    //     $image->move($destinationPath, $mockupdesign);
+    //     //$image->storeAs($destinationPath, $mockupdesign);
+            
+
+
+    // }
 
     // function to store data to table design
     public function storeDesign($unitid, $mockupdesign, $orderid, $designerid){
