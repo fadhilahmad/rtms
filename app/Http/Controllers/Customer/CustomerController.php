@@ -560,8 +560,8 @@ class CustomerController extends Controller
                 // upload the image
                 $destinationPath = 'orders/mockup';
                 $image = $request->file('cover_image');
-                //$image->move($destinationPath, $mockupdesign);
-                $image->storeAs($destinationPath, $mockupdesign);
+                $image->move($destinationPath, $mockupdesign);
+                //$image->storeAs($destinationPath, $mockupdesign);
                 
 
             }else{

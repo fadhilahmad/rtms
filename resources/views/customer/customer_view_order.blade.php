@@ -14,7 +14,8 @@
                     <div class="panel-body">
                         {{-- <p>Url: {{$design}}</p> --}}
                         @foreach ($designs as $design)
-                            <img style="width:80%" src="/orders/mockup/{{ $design->d_url }}">
+                            <img style="width:100%" src="/orders/mockup/{{ $design->d_url }}">
+                            <a href="/orders/mockup/{{ $design->d_url }}"><p class="text-center">Download Image</p></a>
                             @break
                         @endforeach
                         {{-- ->d_url  ->collar_color  ->name --}}
