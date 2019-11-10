@@ -121,8 +121,11 @@ Route::get('customer/orderlist', 'Customer\CustomerController@customerOrderList'
 //Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->middleware('customer');
 Route::post('customer/orderlist','Customer\CustomerController@requestConfirm')->name('customer.orderlist');
 
-// route to customer order list page for customer
+// route to customer view mockup image
 Route::get('customer/vieworder/{id}', 'Customer\CustomerController@customerViewOrder')->middleware('customer');
+
+// route to customer view design image
+Route::get('customer/viewdesign/{id}', 'Customer\CustomerController@customerViewDesign')->middleware('customer');
 
 // route to invoice page for customer
 Route::get('customer/invoice', 'Customer\CustomerController@invoice')->middleware('customer');

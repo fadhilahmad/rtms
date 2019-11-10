@@ -138,19 +138,42 @@ class CustomerController extends Controller
     public function requestConfirm(Request $request){
 
 
-        //-------------------- confirm design ----------------------//
+        
         $orderidrequest = $request->input('orderid');
-        //$orderpendingid = $id;
-
-        var_dump($orderidrequest);
 
         if($orderidrequest != null){
+            //-------------------- confirm design ----------------------//
 
-            DB::table('orders')
-                        ->where('o_id', '=', $orderidrequest)
-                        ->update(array('o_status'=>'2'));
+            // get the user id
+            $user_id = auth()->user()->u_id;
+            //$user = User::find($user_id);
+
+            // make ref num to be inserted in table order
+
+            // get array of ref num from order table based on user id
+            $userrefnum = Order::where('ref_num', '!=' , null)->pluck('ref_num')->toArray();
+
+            // total order
+            $totalrefnum = count($userrefnum);
+
+            var_dump("Total Ref Num: ".$totalrefnum);
+
+            // $ordercustdraft = Order::where('u_id_customer', $user_id)->where('o_status', '!=' , 1)->orWhereNull('o_status')->get();
+            // $orderiddraft = $ordercustdraft->pluck('o_id')->all();
+            // $ordersdraft = Order::find($orderiddraft);
+
+            // // update status in table design
+            // DB::table('orders')
+            //     ->where('o_id', '=', $orderidrequest)
+            //     ->update(array('o_status'=>'2'));
+
+            // // calculate price
+
+            // // insert into table invoice
+
+
                 
-                return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
+            // return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
 
         }else{
 
@@ -176,13 +199,39 @@ class CustomerController extends Controller
                         'updated_at' => DB::raw('now()')
                         ]);
                 
-                DB::table('orders')
+                if($data['note'] != null){
+                    DB::table('orders')
+                            ->where('o_id', '=', $data['o_id'])
+                            ->update(array('note' => $data['note'],
+                                            'o_status'=>'10'));
+                }else{
+                    DB::table('orders')
                         ->where('o_id', '=', $data['o_id'])
-                        ->update(array('designer_note' => $data['note'],
-                                        'o_status'=>'10'));
+                        ->update(array('o_status'=>'10'));
+                    return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
+                }
                 
                 return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-            }   
+            }else{
+
+                if($data['note'] != null){
+
+                    DB::table('orders')
+                        ->where('o_id', '=', $data['o_id'])
+                        ->update(array('note' => $data['note'],
+                        'o_status'=>'10'));
+                
+                    return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
+
+                }else{
+                    DB::table('orders')
+                        ->where('o_id', '=', $data['o_id'])
+                        ->update(array('o_status'=>'10'));
+                    return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
+                }
+                
+                
+            }
 
         }
 
@@ -215,7 +264,7 @@ class CustomerController extends Controller
         // }
     }
 
-    // method to view invoice page for customer
+    // method to view mockup image
     public function customerViewOrder($order_id)
     {
         // // read from order table based on cust id
@@ -223,7 +272,7 @@ class CustomerController extends Controller
         // $orderid = Order::where('o_id', $order->o_id);
         // // $orderid = $order->o_id;
         // read from design table based on order id
-        $design = Design::where('o_id', $order_id)->get();
+        $design = Design::where('o_id', $order_id)->where('d_type', 1)->get();
         $spec = Spec::where('o_id', $order_id)->get();
         $unit = Unit::where('o_id', $order_id)->get();
 
@@ -235,7 +284,33 @@ class CustomerController extends Controller
         $order = Order::find($order_id);
         return view('customer/customer_view_order')
         ->with('order', $order)
-        ->with('design', $design)
+        ->with('designs', $design)
+        ->with('spec', $spec)
+        ->with('unit', $unit);
+        
+    }
+
+    // method to view design image
+    public function customerViewDesign($order_id)
+    {
+        // // read from order table based on cust id
+        // $order = Order::find($user_id);
+        // $orderid = Order::where('o_id', $order->o_id);
+        // // $orderid = $order->o_id;
+        // read from design table based on order id
+        $design = Design::where('o_id', $order_id)->where('d_type', 2)->get();
+        $spec = Spec::where('o_id', $order_id)->get();
+        $unit = Unit::where('o_id', $order_id)->get();
+
+        // $design = Design::find($order_id);
+        // $specs = Spec::find($order_id);
+        // $units = Unit::find($order_id);
+
+
+        $order = Order::find($order_id);
+        return view('customer/customer_view_design')
+        ->with('order', $order)
+        ->with('designs', $design)
         ->with('spec', $spec)
         ->with('unit', $unit);
         
@@ -331,7 +406,7 @@ class CustomerController extends Controller
         $totalquantity = $request->input('total_quantity');
         $note = $request->input('note');
         // generated into table
-        $refnum = 3; // currently auto assign
+        $refnum = null; // currently auto assign
         // get from form
         $deliverydate = $request->input('somedate');
         // generated into table
@@ -420,7 +495,7 @@ class CustomerController extends Controller
         $order->u_id_print = $printid;
         $order->u_id_taylor = $taylorid;
 
-        // save it
+        // // save it
         $order->save();
 
         // ------------------ insert data into table spec ---------------------------------- //
@@ -456,351 +531,302 @@ class CustomerController extends Controller
 
             // save it
             $spec->save();
-            
-        }
 
-        // ------------------ insert data into table unit and design ---------------------------------- //
+            // ------------------ insert data into table unit and design ---------------------------------- //
+            // $idspec = $spec->s_id;
+            $idspec = DB::getPdo()->lastInsertId();
+
+            var_dump($idspec);
+            $name; // if user choose nameset, assign name. Else assign null
+            $size;
+            $unitquantity;
+            $unitstatus = 0; // assign 0, (uncomplete)
+
+            if($category == "Nameset"){
+                // case nameset
+
+                // get total row nameset
+                if(number_format($request->input('namesetnum'.$i)) == 0){
+                    $namesetnum = 1;
+                }else{
+                    // total number of row nameset
+                    $namesetnum = number_format($request->input('namesetnum'.$i));
+                }
+
+                for($i = 0; $i < $namesetnum; $i++){
+
+                    // Create unit model
+                    $unit = new Unit;
         
-        // get from form
-        $name; // if user choose nameset, assign name. Else assign null
-        $size;
-        $unitquantity;
-        // get from other table
-        // $printid = null;  // self generate for now
-        // $taylorid = null;  // self generate for now
-        $unitstatus = 0; // assign 0, (uncomplete)
-        // // generated into table
-        // $datecreatedunit;
+                    $name = $request->input('name'.$i);
+                    $size = $request->input('size'.$i);
+                    $unitquantity = $request->input('quantitysinglenamesetname'.$i); 
+        
+                    // insert into table unit
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec; 
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus;
+        
+                    // save it
+                    $unit->save();
+                    
+                }
 
-        if($category == "Nameset"){
-
-            // get total nameset
-            if(number_format($request->input('totalcasenameset')) == 0){
-                $totalcasenameset = 1;
             }else{
-                // total number of nameset
-                $totalcasenameset = number_format($request->input('totalcasenameset'));
+                // sace size
+
+                $xxs = $request->input('quantitysinglexxs'.$i);
+                $xs = $request->input('quantitysinglexs'.$i);
+                $s = $request->input('quantitysingles'.$i);
+                $m = $request->input('quantitysinglem'.$i);
+                $l = $request->input('quantitysinglel'.$i);
+                $xl = $request->input('quantitysinglexl'.$i);
+                $xl2 = $request->input('quantitysingle2xl'.$i);
+                $xl3 = $request->input('quantitysingle3xl'.$i);
+                $xl4 = $request->input('quantitysingle4xl'.$i);
+                $xl5 = $request->input('quantitysingle5xl'.$i);
+                $xl6 = $request->input('quantitysingle6xl'.$i);
+                $xl7 = $request->input('quantitysingle7xl'.$i);
+
+                // handle file upload
+                if($request->hasFile('cover_image')){
+
+                    // get the file name with the extension
+                    $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+                    // get just file name
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+                    // get just extension
+                    $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+                    // create filename to store
+                    $mockupdesign = $filename.'_'.time().'.'.$extension;
+
+                    // upload the image
+                    $destinationPath = 'orders/mockup';
+                    $image = $request->file('cover_image');
+                    //$image->move($destinationPath, $mockupdesign);
+                    $image->storeAs($destinationPath, $mockupdesign);
+                    
+
+                }else{
+                    $mockupdesign = 'noimage.jpg';
+                    var_dump("no file");
+                }
+
+                if($xxs != 0){
+                    $name = null;
+                    $size = "XXS";
+                    $unitquantity = $xxs; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
+                }
+                if($xs != 0){
+                    $name = null;
+                    $size = "XS";
+                    $unitquantity = $xs; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($s != 0){
+                    $name = null;
+                    $size = "S";
+                    $unitquantity = $s; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($m != 0){
+                    $name = null;
+                    $size = "M";
+                    $unitquantity = $m; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($l != 0){
+                    $name = null;
+                    $size = "L";
+                    $unitquantity = $l; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($xl != 0){
+                    $name = null;
+                    $size = "XL";
+                    $unitquantity = $xl; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($xl2 != 0){
+                    $name = null;
+                    $size = "2XL";
+                    $unitquantity = $xl2; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($xl3 != 0){
+                    $name = null;
+                    $size = "3XL";
+                    $unitquantity = $xl3; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($xl4 != 0){
+                    $name = null;
+                    $size = "4XL";
+                    $unitquantity = $xl4; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save(); 
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($xl5 != 0){
+                    $name = null;
+                    $size = "5XL";
+                    $unitquantity = $xl5; 
+                    $unit = new Unit; 
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus; 
+                    $unit->save();
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($xl6 != 0){
+                    $name = null;
+                    $size = "6XL";
+                    $unitquantity = $xl6;
+                    $unit = new Unit;
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus;
+                    $unit->save();
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+                if($xl7 != 0){
+                    $name = null;
+                    $size = "7XL";
+                    $unitquantity = $xl7;
+                    $unit = new Unit;
+                    $unit->o_id = $orderid;
+                    $unit->s_id = $idspec;
+                    $unit->name = $name; 
+                    $unit->size = $size; 
+                    $unit->un_quantity = $unitquantity;
+                    $unit->u_id_print = $printid;
+                    $unit->u_id_taylor = $taylorid;
+                    $unit->un_status = $unitstatus;
+                    $unit->save();
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                }
+
             }
-            //var_dump("--------------- unit nameset ------------Total Case Nameset: ".$totalcasenameset);
-
-            for($i = 0; $i < $totalcasenameset; $i++){
-
-                // Create unit model
-                $unit = new Unit;
-    
-                $name = $request->input('name'.$i);
-                $size = $request->input('size'.$i);
-                $unitquantity = $request->input('quantitysinglenameset'.$i); 
-    
-                // insert into table unit
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus;
-    
-                // save it
-                $unit->save();
-
-                // // handle file upload
-                // if($request->hasFile('cover_image')){
-
-                //     // get the file name with the extension
-                //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-
-                //     // get just file name
-                //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
-                //     // get just extension
-                //     $extension = $request->file('cover_image')->getClientOriginalExtension();
-
-                //     // create filename to store
-                //     $mockupdesign = $filename.'_'.time().'.'.$extension;
-
-                //     // upload the image
-                //     $destinationPath = 'orders/mockup';
-                //     $image = $request->file('cover_image');
-                //     $image->move($destinationPath, $mockupdesign);
-
-                //     //$path = $request->file('cover_image')->storeAs('public/mockup_images', $fileNameToStore);
-                //     // this will store to storage/app/public
-                //     // Storage::disk('public')->put($cover->getFilename().'.'.$extension,  File::get($cover));
-
-                //     // $image = $request->file('cover_image');                    
-                //     // $destinationPath = 'orders/mockup'; // upload path
-                //     // $profileImage = 'mockup'.date('YmdHis') . "." . $image->getClientOriginalExtension();
-                //     // //Storage::disk($destinationPath)->put($profileImage, $image);
-                //     // $image->move($destinationPath, $profileImage);
-                //     //$url = $destinationPath.$profileImage;
-
-                //     // if (!$image->move($destinationPath, $profileImage)) {
-                //     //     // return 'Error saving the file.';
-                //     //     var_dump("error save file");
-                //     // }else{
-                //     //     var_dump("Image: ", $image);
-                //     // }
-
-                // }else{
-                //     $mockupdesign = 'noimage.jpg';
-                //     var_dump("no file");
-                // }
-
-                // // store to design table
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-                
-            }
-
             
-
-        }else{
-
-            $xxs = $request->input('quantitysinglexxs');
-            $xs = $request->input('quantitysinglexs');
-            $s = $request->input('quantitysingles');
-            $m = $request->input('quantitysinglem');
-            $l = $request->input('quantitysinglel');
-            $xl = $request->input('quantitysinglexl');
-            $xl2 = $request->input('quantitysingle2xl');
-            $xl3 = $request->input('quantitysingle3xl');
-            $xl4 = $request->input('quantitysingle4xl');
-            $xl5 = $request->input('quantitysingle5xl');
-            $xl6 = $request->input('quantitysingle6xl');
-            $xl7 = $request->input('quantitysingle7xl');
-
-            // if($request->hasFile('cover_image')){
-            //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-            //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            //     $extension = $request->file('cover_image')->getClientOriginalExtension();
-            //     $mockupdesign = $filename.'_'.time().'.'.$extension;
-            //     // upload the image
-            //     $destinationPath = 'orders/mockup';
-            //     $image = $request->file('cover_image');
-            //     $image->move($destinationPath, $mockupdesign);
-            // }else{
-            //     $mockupdesign = 'noimage.jpg';
-            // }
-
-            if($xxs != 0){
-                $name = null;
-                $size = "xxs";
-                $unitquantity = $xxs; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
-            }
-            if($xs != 0){
-                $name = null;
-                $size = "xs";
-                $unitquantity = $xs; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($s != 0){
-                $name = null;
-                $size = "s";
-                $unitquantity = $s; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($m != 0){
-                $name = null;
-                $size = "m";
-                $unitquantity = $m; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($l != 0){
-                $name = null;
-                $size = "l";
-                $unitquantity = $l; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($xl != 0){
-                $name = null;
-                $size = "xl";
-                $unitquantity = $xl; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($xl2 != 0){
-                $name = null;
-                $size = "2xl";
-                $unitquantity = $xl2; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($xl3 != 0){
-                $name = null;
-                $size = "3xl";
-                $unitquantity = $xl3; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($xl4 != 0){
-                $name = null;
-                $size = "4xl";
-                $unitquantity = $xl4; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save(); 
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($xl5 != 0){
-                $name = null;
-                $size = "5xl";
-                $unitquantity = $xl5; 
-                $unit = new Unit; 
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus; 
-                $unit->save();
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($xl6 != 0){
-                $name = null;
-                $size = "6xl";
-                $unitquantity = $xl6;
-                $unit = new Unit;
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus;
-                $unit->save();
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-            if($xl7 != 0){
-                $name = null;
-                $size = "7xl";
-                $unitquantity = $xl7;
-                $unit = new Unit;
-                $unit->o_id = $orderid;
-                $unit->name = $name; 
-                $unit->size = $size; 
-                $unit->un_quantity = $unitquantity;
-                $unit->u_id_print = $printid;
-                $unit->u_id_taylor = $taylorid;
-                $unit->un_status = $unitstatus;
-                $unit->save();
-                // $idunit = $unit->un_id;
-                // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
-            }
-
-        }
-
-        // handle file upload
-        if($request->hasFile('cover_image')){
-
-            // get the file name with the extension
-            $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-
-            // get just file name
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
-            // get just extension
-            $extension = $request->file('cover_image')->getClientOriginalExtension();
-
-            // create filename to store
-            $mockupdesign = $filename.'_'.time().'.'.$extension;
-
-            // upload the image
-            $destinationPath = 'orders/mockup';
-            $image = $request->file('cover_image');
-            $image->move($destinationPath, $mockupdesign);
-
-        }else{
-            $mockupdesign = 'noimage.jpg';
-            var_dump("no file");
         }
 
         // store to design table
@@ -814,8 +840,6 @@ class CustomerController extends Controller
 
     // function to store data to table design
     public function storeDesign($unitid, $mockupdesign, $orderid, $designerid){
-
-        // $designerid = 3; // self assign for now
 
         $designtype = 1; // set to 1 (mockup) 
 

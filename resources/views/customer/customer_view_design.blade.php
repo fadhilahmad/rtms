@@ -10,11 +10,11 @@
             <div class="card">
 
                 <div class="card-body">
-
+                    {{-- <p>{{ $designs->d_url }}</p> --}}
                     <div class="panel-body">
                         {{-- <p>Url: {{$design}}</p> --}}
                         @foreach ($designs as $design)
-                            <img style="width:80%" src="/orders/mockup/{{ $design->d_url }}">
+                            <img style="width:80%" src="/orders/draft/{{ $design->d_url }}">
                             @break
                         @endforeach
                         {{-- ->d_url  ->collar_color  ->name --}}

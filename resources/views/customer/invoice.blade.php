@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Invoice</div>
+                <div class="card-header">Invoice Page</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,7 +14,11 @@
                         </div>
                     @endif
 
-                    Invoice page
+                    <p><b>Customer Name:</b> </p>
+                    <p><b>Invoice Date:</b> </p>
+                    <p><b>File Name:</b> </p>
+                    <p><b>Category:</b> </p>
+                    
                 </div>
             </div>
         </div>

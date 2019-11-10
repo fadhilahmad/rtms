@@ -50,6 +50,7 @@
                                     <?php $no=1; ?>
                                     @foreach($ordersdraft as $singleorderrow)
                                         <tr>
+
                                             
                                             <th scope="row"><?php echo $no; ?></th>
                                             <td>{{$singleorderrow->file_name}}</td>
@@ -57,7 +58,14 @@
                                             <td>{{$singleorderrow->category}}</td>
                                             <td>{{$singleorderrow->note}}</td>
                                             <td>{{$singleorderrow->delivery_date}}</td>
-                                            <td><a href="/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a></td>
+                                            <td>
+                                                @if($singleorderrow->o_status==0)
+                                                    <a href="/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a>
+                                                 @endif
+                                                 @if($singleorderrow->o_status!=0)
+                                                    <a href="/customer/viewdesign/{{$singleorderrow->o_id}}">View Design</a>
+                                                 @endif 
+                                            </td>
                                             <td>
                                                 @if($singleorderrow->o_status==1)
                                                     Waiting for design
@@ -137,8 +145,8 @@
                                                 <td>{{$singleorderpendingrow->file_name}}</td>
                                                 <td>{{$singleorderpendingrow->quantity_total}}</td>
                                                 <td>{{$singleorderpendingrow->category}}</td>
-                                                <td>{{$singleorderpendingrow->note}}</td>
-                                                <td><a href="/customer/vieworder/{{$singleorderpendingrow->o_id}}">View Design</a></td>
+                                                <td>{{$singleorderpendingrow->designer_note}}</td>
+                                                <td><a href="/customer/viewdesign/{{$singleorderpendingrow->o_id}}">View Design</a></td>
                                                 <td>
                                                     
                                                     {!!Form::open( array( 'route'=>'customer.orderlist', $singleorderpendingrow->o_id, 'method' => 'POST') )!!}
@@ -171,40 +179,40 @@
 
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
+            <div class="modal-content">
               <form enctype="multipart/form-data" method="POST" id="designform" name="designform" action="{{ route('customer.orderlist') }}">
                   @csrf
-            <div class="modal-header">
-              <h5 class="modal-title" id="modalTitle">Request Redesign</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Request Redesign</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
+                            <div class="form-group row">
+                            <label for="note" class="col-sm-4 col-form-label">Note</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="note" name="note" >
+                                <input type="hidden" name="u_id" id="uid">
+                                <input type="hidden" name="o_id" id="oid">
+                            </div>
+                            </div> 
+            
+                            <div class="form-group row" id="neckdiv">
+                            <label for="design" class="col-sm-4 col-form-label">Mockup</label>
+                            <div class="col-sm-8">
+                                <input id="design" type="file" class="form-control" name="design">
+                            </div>
+                            </div>          
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="validateForm()" type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-body">
-                  
-                    <div class="form-group row">
-                      <label for="note" class="col-sm-4 col-form-label">Note</label>
-                      <div class="col-sm-8">
-                          <input type="text" class="form-control" id="note" name="note" >
-                          <input type="hidden" name="u_id" id="uid">
-                          <input type="hidden" name="o_id" id="oid">
-                      </div>
-                    </div> 
-      
-                    <div class="form-group row" id="neckdiv">
-                      <label for="design" class="col-sm-4 col-form-label">Mockup</label>
-                      <div class="col-sm-8">
-                          <input id="design" type="file" class="form-control" name="design">
-                      </div>
-                    </div>          
-                  
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" onclick="validateForm()" type="submit" class="btn btn-primary">Save</button>
-            </div>
-           </form>
-          </div>
         </div>
       </div>
 
@@ -223,16 +231,23 @@ $(document).on("click", ".edit", function () {
 
   function validateForm() {
     var x = document.forms["designform"]["design"].value;
-        if (x == "") 
-        {
-        alert("Please insert image");
-        return false;
-        }
-        else
-        {
-          document.getElementById("designform").submit();  
-        }       
+        // if (x == "") 
+        // {
+        // //alert("Please insert image");
+        // //return false;
+        // }
+        // else
+        // {
+        //   document.getElementById("designform").submit();  
+        // }
+        document.getElementById("designform").submit();         
     }
 </script>
 
 @endsection
+
+<style>
+    form {    
+        display: inline;
+    }
+</style>
