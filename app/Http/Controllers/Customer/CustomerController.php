@@ -865,7 +865,7 @@ class CustomerController extends Controller
         // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
 
         // redirect and set success message
-        //return redirect('/customer/orderlist')->with('success', 'Order Created');
+        return redirect('/customer/orderlist')->with('success', 'Order Created');
 
     }
 
