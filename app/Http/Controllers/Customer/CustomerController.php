@@ -542,6 +542,33 @@ class CustomerController extends Controller
             $unitquantity;
             $unitstatus = 0; // assign 0, (uncomplete)
 
+            // handle file upload
+            if($request->hasFile('cover_image')){
+
+                // get the file name with the extension
+                $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+
+                // get just file name
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+
+                // get just extension
+                $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+                // create filename to store
+                $mockupdesign = $filename.'_'.time().'.'.$extension;
+
+                // upload the image
+                $destinationPath = 'orders/mockup';
+                $image = $request->file('cover_image');
+                //$image->move($destinationPath, $mockupdesign);
+                $image->storeAs($destinationPath, $mockupdesign);
+                
+
+            }else{
+                $mockupdesign = 'noimage.jpg';
+                var_dump("no file");
+            }
+
             if($category == "Nameset"){
                 // case nameset
 
@@ -551,16 +578,17 @@ class CustomerController extends Controller
                 }else{
                     // total number of row nameset
                     $namesetnum = number_format($request->input('namesetnum'.$i));
+                    var_dump("----------name set: ----------".$namesetnum);
                 }
 
-                for($i = 0; $i < $namesetnum; $i++){
+                for($j = 0; $j < $namesetnum; $j++){
 
                     // Create unit model
                     $unit = new Unit;
         
-                    $name = $request->input('name'.$i);
-                    $size = $request->input('size'.$i);
-                    $unitquantity = $request->input('quantitysinglenamesetname'.$i); 
+                    $name = $request->input('name'.$j);
+                    $size = $request->input('size'.$j);
+                    $unitquantity = $request->input('quantitysinglenamesetname'.$j); 
         
                     // insert into table unit
                     $unit->o_id = $orderid;
@@ -574,6 +602,9 @@ class CustomerController extends Controller
         
                     // save it
                     $unit->save();
+
+                    $idunit = $unit->un_id;
+                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
                     
                 }
 
@@ -593,32 +624,32 @@ class CustomerController extends Controller
                 $xl6 = $request->input('quantitysingle6xl'.$i);
                 $xl7 = $request->input('quantitysingle7xl'.$i);
 
-                // handle file upload
-                if($request->hasFile('cover_image')){
+                // // handle file upload
+                // if($request->hasFile('cover_image')){
 
-                    // get the file name with the extension
-                    $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                //     // get the file name with the extension
+                //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
 
-                    // get just file name
-                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                //     // get just file name
+                //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
 
-                    // get just extension
-                    $extension = $request->file('cover_image')->getClientOriginalExtension();
+                //     // get just extension
+                //     $extension = $request->file('cover_image')->getClientOriginalExtension();
 
-                    // create filename to store
-                    $mockupdesign = $filename.'_'.time().'.'.$extension;
+                //     // create filename to store
+                //     $mockupdesign = $filename.'_'.time().'.'.$extension;
 
-                    // upload the image
-                    $destinationPath = 'orders/mockup';
-                    $image = $request->file('cover_image');
-                    //$image->move($destinationPath, $mockupdesign);
-                    $image->storeAs($destinationPath, $mockupdesign);
+                //     // upload the image
+                //     $destinationPath = 'orders/mockup';
+                //     $image = $request->file('cover_image');
+                //     //$image->move($destinationPath, $mockupdesign);
+                //     $image->storeAs($destinationPath, $mockupdesign);
                     
 
-                }else{
-                    $mockupdesign = 'noimage.jpg';
-                    var_dump("no file");
-                }
+                // }else{
+                //     $mockupdesign = 'noimage.jpg';
+                //     var_dump("no file");
+                // }
 
                 if($xxs != 0){
                     $name = null;
@@ -829,12 +860,12 @@ class CustomerController extends Controller
             
         }
 
-        // store to design table
-        $idunit = null;
-        $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+        // // store to design table
+        // $idunit = null;
+        // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
 
         // redirect and set success message
-        return redirect('/customer/orderlist')->with('success', 'Order Created');
+        //return redirect('/customer/orderlist')->with('success', 'Order Created');
 
     }
 

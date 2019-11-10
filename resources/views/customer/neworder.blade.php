@@ -430,7 +430,7 @@
                                 '<tr><td id="namesetdata">S</td>'+
                                     '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">M</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem'+ num.toString() +''+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">L</td>'+
                                     '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">XL</td>'+
