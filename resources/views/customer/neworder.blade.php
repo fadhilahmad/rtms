@@ -644,8 +644,8 @@
                                                             <th id="namesethead">Quantity</th> 
                                                         </tr>
                                                         <tr>
-                                                            <td id="namesetdata"><input type="text" class="form-control" id="name0" name="name0"></td>
-                                                            <td id="namesetdata"><select name="size0" id="size0" class="form-control">
+                                                            <td id="namesetdata"><input type="text" class="form-control" id="name0" name="name0-0"></td>
+                                                            <td id="namesetdata"><select name="size0-0" id="size0" class="form-control">
                                                                     <option value="xxs">XXS</option>
                                                                     <option value="xs">XS</option>
                                                                     <option value="s">S</option>
@@ -660,7 +660,8 @@
                                                                     <option value="7xl">7XL</option>
                                                                 </select>
                                                             </td>
-                                                            <td id="namesetdata"><input onblur="findTotalNameset()" class="form-control totalnameset" type="number" id="quantitynameset" name="quantitysinglenamesetname0"></td>
+                                                            <td id="namesetdata"><input onblur="findTotalNameset()" class="form-control totalnameset" 
+                                                                type="number" id="quantitynameset" name="quantitysinglenamesetname0-0"></td>
                                                             
                                                         </tr>
                                                     </table>  
@@ -746,6 +747,7 @@
     }
     
     var totnameset = 1;
+    var namesetnumamount;
     // function to add one row in nameset table
     function addRow(numRow) {
 
@@ -753,14 +755,33 @@
         var namesetnumamount = document.getElementById('namesetnum'+numRow).value;
         //console.log(namesetnumamount);
         
-        var newRow = $('<tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name'+ namesetnumamount.toString() +'"></td><td id="namesetdata"><select name="size'+ namesetnumamount.toString() +'" id="size" class="form-control"><option value="xxs">XXS</option><option value="xs">XS</option><option value="s">S</option><option value="m">M</option><option value="l">L</option><option value="xl">XL</option><option value="2xl">2XL</option><option value="3xl">3XL</option><option value="4xl">4XL</option><option value="5xl">5XL</option><option value="6xl">6XL</option><option value="7xl">7XL</option></select></td><td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset"  id="quantitynameset" name="quantitysinglenamesetname'+ namesetnumamount.toString() +'"></td></tr>');
+        var newRow = $('<tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name'+ numRow.toString() +'-'+ namesetnumamount.toString() +'"></td>'+
+            '<td id="namesetdata"><select name="size'+ numRow.toString() +'-'+ namesetnumamount.toString() +'" id="size" class="form-control">'+
+                '<option value="xxs">XXS</option>'+
+                '<option value="xs">XS</option>'+
+                '<option value="s">S</option>'+
+                '<option value="m">M</option>'+
+                '<option value="l">L</option>'+
+                '<option value="xl">XL</option>'+
+                '<option value="2xl">2XL</option>'+
+                '<option value="3xl">3XL</option>'+
+                '<option value="4xl">4XL</option>'+
+                '<option value="5xl">5XL</option>'+
+                '<option value="6xl">6XL</option>'+
+                '<option value="7xl">7XL</option>'+
+            '</select></td>'+
+            '<td id="namesetdata">'+
+                '<input onblur="findTotalNameset()" type="number" class="form-control totalnameset"  '+
+                'id="quantitynameset" name="quantitysinglenamesetname'+ numRow.toString() +'-'+ namesetnumamount.toString() +'">'+
+            '</td></tr>');
         $('#namesettable'+ numRow.toString() +' tr:last').after(newRow);
         totnameset += 1;
         namesetnumamount = parseInt(namesetnumamount)+1;
         document.getElementById('namesetnum'+numRow).value = namesetnumamount;
         document.getElementById('totalcasenameset').value = totnameset;
-        console.log(document.getElementById('namesetnum'+numRow).value);
+        //console.log(document.getElementById('namesetnum'+numRow).value);
         numRow += 1;
+        console.log("After add: "+document.getElementById('namesetnum'+numRow).value)
         //console.log(document.getElementById('totalcasenameset').value);
     }
 
@@ -775,6 +796,9 @@
                 tot += parseInt(arr[i].value);
         }
         totnameset -= 1;
+        namesetnumamount = parseInt(namesetnumamount)-1;
+        document.getElementById('namesetnum'+numRow).value = namesetnumamount;
+        console.log("After remove: "+document.getElementById('namesetnum'+numRow).value)
         document.getElementById('total_quantity').value = tot;
         document.getElementById('totalcasenameset').value = totnameset;
     }
@@ -784,7 +808,7 @@
     // {{Form::label("type", "Neck Type")}}<br><input type="radio" onclick="javascript:collarTypeAdd('+ num.toString() +');" name="collartype'+ num.toString() +'" id="roundneck'+ num.toString() +'" value="Round Neck"/> Round Neck<br><input type="radio" onclick="javascript:collarTypeAdd('+ num.toString() +');" name="collartype'+ num.toString() +'" id="collar'+ num.toString() +'" value="Collar"/> Collar<br><br><div id="typecollar'+ num.toString() +'" style="display:none">
     // function to add a new set row for spec table (type0, sleeve0, collartype0, necktype0, collar_color0)
     var num = 1;
-    var numnameset = 0;
+    var numnameset = 1;
     function addSet() {
         var newRow = $('<tr><td><hr><div class="row">'+
                         '<div class="col-sm">'+
@@ -838,8 +862,8 @@
                                         '<th id="namesethead">Size</th>'+
                                         '<th id="namesethead">Quantity</th> '+
                                     '</tr>'+
-                                    '<tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name'+ numnameset.toString() +'"></td>'+
-                                        '<td id="namesetdata"><select name="size'+ numnameset.toString() +'" id="size" class="form-control">'+
+                                    '<tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name'+ numnameset.toString() +'-0"></td>'+
+                                        '<td id="namesetdata"><select name="size'+ numnameset.toString() +'-0" id="size" class="form-control">'+
                                             '<option value="xxs">XXS</option><option value="xs">XS</option>'+
                                             '<option value="s">S</option><option value="m">M</option>'+
                                             '<option value="l">L</option><option value="xl">XL</option>'+
@@ -848,7 +872,9 @@
                                             '<option value="6xl">6XL</option><option value="7xl">7XL</option>'+
                                             '</select>'+
                                         '</td>'+
-                                        '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity" name="quantitysinglenamesetname'+ numnameset.toString() +'"></td>'+
+                                        '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset"'+
+                                            ' id="quantity" name="quantitysinglenamesetname'+ numnameset.toString() +'-0">'+
+                                        '</td>'+
                                     '</tr>'+
                                 '</table>'+
                             '</div>'+
@@ -858,7 +884,7 @@
         numnameset += 1;
         document.getElementById('setamount').value = num;
         document.getElementById('totset').value = num;
-        console.log(document.getElementById('setamount').value);
+        //console.log(document.getElementById('setamount').value);
         // console.log(typeof(document.getElementById('setamount').value));
 
         var totalsetnum = document.getElementById('totset').value -1;

@@ -44,10 +44,10 @@
                                             <td>{{$singleorderrow->note}}</td>
                                             <td>{{$singleorderrow->delivery_date}}</td>
                                             <td>
-                                                @if($singleorderrow->o_status!=1)
+                                                @if($singleorderrow->o_status==0)
                                                     <a href="/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a>
                                                  @endif
-                                                 @if($singleorderrow->o_status==1)
+                                                 @if($singleorderrow->o_status!=0)
                                                     <a href="/customer/viewdesign/{{$singleorderrow->o_id}}">View Design</a>
                                                  @endif 
                                             </td>

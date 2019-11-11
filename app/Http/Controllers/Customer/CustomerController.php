@@ -835,46 +835,6 @@ class CustomerController extends Controller
             $size;
             $unitquantity;
             $unitstatus = 0; // assign 0, (uncomplete)
-
-            // if($i = 0){
-
-            //     //var_dump("=0");
-
-            //     // handle file upload
-            //     if($request->hasFile('cover_image')){
-
-            //         // get the file name with the extension
-            //         $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-            //         $originalname = $request->file('cover_image')->getClientOriginalName();
-                    
-
-            //         // get just file name
-            //         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
-            //         // get just extension
-            //         $extension = $request->file('cover_image')->getClientOriginalExtension();
-            //         $originalextension = $request->file('cover_image')->getClientOriginalExtension();
-
-            //         // create filename to store
-            //         $mockupdesign = $filename.'_'.time().'.'.$extension;
-
-            //         // upload the image
-            //         $destinationPath = 'orders/mockup';
-            //         $image = $request->file('cover_image');
-            //         $imagerequestfile = $request->file('cover_image');
-            //         $image->move($destinationPath, $mockupdesign);
-            //         //$image->storeAs($destinationPath, $mockupdesign);
-            //         //$this->storeDesignName($mockupdesigns); 
-
-            //         //$GLOBALS['mockupdesign'] = $GLOBALS['mockupdesigns'];
-                    
-
-            //     }else{
-            //         $mockupdesign = 'noimage.jpg';
-            //         //var_dump("no file");
-            //     }
-
-            // }
             
 
             if($category == "Nameset"){
@@ -896,9 +856,9 @@ class CustomerController extends Controller
                     // Create unit model
                     $unit = new Unit;
         
-                    $name = $request->input('name'.$j);
-                    $size = $request->input('size'.$j);
-                    $unitquantity = $request->input('quantitysinglenamesetname'.$j); 
+                    $name = $request->input('name'.$i.'-'.$j);
+                    $size = $request->input('size'.$i.'-'.$j);
+                    $unitquantity = $request->input('quantitysinglenamesetname'.$i.'-'.$j); 
         
                     // insert into table unit
                     $unit->o_id = $orderid;
@@ -912,20 +872,6 @@ class CustomerController extends Controller
         
                     // save it
                     $unit->save();
-
-                    // if($request->hasFile('cover_image')){
-                    //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-                    //     $originalname = $request->file('cover_image')->getClientOriginalName();
-                    //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    //     $extension = $request->file('cover_image')->getClientOriginalExtension();
-                    //     $originalextension = $request->file('cover_image')->getClientOriginalExtension();
-                    //     $mockupdesign = $filename.'_'.time().'.'.$extension;
-                    //     $destinationPath = 'orders/mockup';
-                    //     $image = $request->file('cover_image');
-                    //     $imagerequestfile = $request->file('cover_image');
-                    // }else{
-                    //     $mockupdesign = 'noimage.jpg';
-                    // }
 
                     if($request->hasFile('cover_image')){
 
@@ -950,7 +896,7 @@ class CustomerController extends Controller
                         $imagerequestfile = $request->file('cover_image');
                         if($j == 0){
                             // $path = $request->file('cover_image')->storeAs($destinationPath, $mockupdesign);
-                            $image->move($destinationPath, $mockupdesign);
+                            //$image->move($destinationPath, $mockupdesign);
                         }
     
                     }else{
