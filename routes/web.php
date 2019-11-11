@@ -95,10 +95,22 @@ Route::get('department/staff_profile', 'Department\departmentController@staffPro
 Route::patch('department/staff_profile/update/{id}', 'Department\departmentController@updateProfile')->name('staff.update')->middleware('department');
 Route::get('department/change_password', 'Department\departmentController@staffChangePassword')->name('staff.changePassword')->middleware('department');
 Route::patch('department/change_password/update/{id}', 'Department\departmentController@updateChangePassword')->name('staff.updatePassword')->middleware('department');
-Route::get('department/joblist', 'Department\departmentController@joblist')->middleware('department');
-Route::get('department/performance', 'Department\departmentController@performance')->middleware('department');
+//page job list
+Route::get('department/joblist', 'Department\JobListController@joblist')->name('job_list')->middleware('department');
+Route::post('department/joblist', 'Department\JobListController@updateJob')->name('update.job')->middleware('department');
+//page job design
+Route::get('department/job_design/{oid}', 'Department\JobListController@caseDesigner')->name('job_design')->middleware('department');
+Route::post('department/job_design', 'Department\JobListController@updateDesign')->name('update.design')->middleware('department');
+//page job print
+Route::get('department/job_print/{oid}', 'Department\JobListController@casePrinter')->name('job_print')->middleware('department');
+Route::post('department/job_print', 'Department\JobListController@updatePrint')->name('update.print')->middleware('department');
+//page job sew
+Route::get('department/job_sew/{oid}', 'Department\JobListController@caseTailor')->name('job_sew')->middleware('department');
+Route::post('department/job_sew', 'Department\JobListController@updateSew')->name('update.sew')->middleware('department');
+//page performance
+Route::get('department/performance', 'Department\departmentController@performance')->name('performance')->middleware('department');
 //page leave
-Route::get('department/leave', 'Department\departmentController@leave')->middleware('department');
+Route::get('department/leave', 'Department\departmentController@leave')->name('leave')->middleware('department');
 Route::post('department/leave', 'Department\departmentController@leaveApplication')->name('department.leave')->middleware('department');
 
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////

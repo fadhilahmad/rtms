@@ -10,6 +10,8 @@ use App\User;
 use App\Order;
 use App\Leave;
 use App\LeaveDay;
+use App\Design;
+use App\Unit;
 use DB;
 
 class DepartmentController extends Controller
@@ -85,13 +87,36 @@ class DepartmentController extends Controller
 //        return view('department/department_orderlist',compact('orders'));
     }
     
-    public function joblist() 
-    {
-        return view('department/joblist');
-    }
-    
     public function performance() 
     {
+        $u_id = Auth::user()->u_id;
+        $u_type = Auth::user()->u_type;
+        $orders = Order::all();
+        $unit = Unit::all();
+        $design = Design::all();
+        
+        if($u_type==3)
+        {
+            $order_completed = $orders->where('u_id_designer',$u_id)->count();
+            $unit_completed = $design->where('u_id_designer')->count();
+            
+             return view('department/performance')->with('unit',$unit_completed)->with('order',$order_completed);
+        }
+        if($u_type==5)
+        {
+            $order_completed = $orders->where('u_id_print',$u_id)->count();
+            $unit_completed = $unit->where('u_id_print')->count();
+            
+             return view('department/performance')->with('unit',$unit_completed)->with('order',$order_completed);
+        }
+        if($u_type==4)
+        {
+            $order_completed = $orders->where('u_id_taylor',$u_id)->count();
+            $unit_completed = $unit->where('u_id_taylor')->count();
+            
+             return view('department/performance')->with('unit',$unit_completed)->with('order',$order_completed);
+        }        
+        
         return view('department/performance');
     }
     
@@ -133,6 +158,10 @@ class DepartmentController extends Controller
     public function updateOrder(Request $request){
         
         $data = $request->all();
+        $role = $data['role'];
+        $u_id = Auth::user()->u_id;
+        
+        if($role=="designer"){
         
         if ($request->has('design')) {
 
@@ -157,6 +186,34 @@ class DepartmentController extends Controller
                                 'o_status'=>'1'));
            
            return redirect('department/department_orderlist')->with('message', 'Success'); 
-         }        
+         } 
+        }
+        if($role=="print"){
+           DB::table('orders')
+                 ->where('o_id', '=', $data['oid'])
+                 ->update(array('u_id_print' => $u_id,
+                                'o_status'=>'4',
+                                'updated_at' => DB::raw('now()')));
+           DB::table('unit')
+                 ->where('o_id', '=', $data['oid'])
+                 ->update(array('u_id_print' => $u_id,
+                                'updated_at' => DB::raw('now()')));
+           
+           return redirect('department/joblist');
+        }
+        if($role=="tailor"){
+           DB::table('orders')
+                 ->where('o_id', '=', $data['oid'])
+                 ->update(array('u_id_taylor' => $u_id,
+                                'o_status'=>'6',
+                                'updated_at' => DB::raw('now()')));
+
+           DB::table('unit')
+                 ->where('o_id', '=', $data['oid'])
+                 ->update(array('u_id_taylor' => $u_id,
+                                'updated_at' => DB::raw('now()')));           
+           
+           return redirect('department/joblist');            
+        }
     }
 }

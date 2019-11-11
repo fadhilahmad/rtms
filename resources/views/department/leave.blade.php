@@ -43,6 +43,7 @@ text-align: center;
             </div>
             <div class="card-body">
                 <div class="form-group row">
+                    @if(!$leave->isempty())
                     <table class="table table-bordered">
                       <thead>
                         <tr>
@@ -92,7 +93,10 @@ text-align: center;
                         No leave application
                         @endforelse
                       </tbody>
-                    </table>                    
+                    </table>
+                    @else
+                    No leave application
+                    @endif
                 </div>                 
             </div>
         </div>    

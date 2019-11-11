@@ -35,18 +35,59 @@ class HomeController extends Controller
     
     public function departmentHome() 
     {
-        $u_id = Auth::id();
+        $u_id = Auth::user()->u_id;
         
-        $orders =  DB::table('orders')
-                    ->where('u_id_designer','=',$u_id)
-                    ->where('o_status','=','0')
-                    ->get();
+        $department = Auth::user()->u_type;
+        
+        if($department==3)
+        {      
+            $orders =  DB::table('orders')
+                        ->join('material', 'orders.material_id', '=', 'material.m_id')
+                        ->where('orders.u_id_designer','=',$u_id)
+                        ->whereIn('orders.o_status', [0,10])
+                        ->get();
+           // dd($orders);            
 
-        return view('department/department_orderlist',compact('orders'));
+            return view('department/department_orderlist',compact('orders'))->with('department',$department);
+        }
+        elseif($department==5)
+        {
+            $orders =  DB::table('orders')
+                       ->join('material', 'orders.material_id', '=', 'material.m_id')
+                        ->where('orders.o_status','=','3')
+                        ->get();
+            //dd($orders);
+            return view('department/department_orderlist',compact('orders'))->with('department',$department);          
+        }
+        elseif($department==4)
+        {
+            $orders =  DB::table('orders')
+                       ->join('material', 'orders.material_id', '=', 'material.m_id')
+                        ->where('orders.o_status','=','5')
+                        ->get();
+            //dd($orders);
+            return view('department/department_orderlist',compact('orders'))->with('department',$department);             
+        }
     }
     
     public function customerHome() 
     {
         return \View::make('customer/neworder');
+    }
+    
+    public static function getMockup($o_id){
+        
+       $design =  DB::table('design')
+                        ->where('o_id','=',$o_id)
+                        ->where('d_type','=',1)
+                        ->get();
+       
+       foreach ($design as $mock)
+       {
+           $url = $mock->d_url;
+           $show = '<img class="" src="{{url("orders/mockup/'.$url.')}}" width="200" height="200">';
+       }
+ 
+       return $url;
     }
 }

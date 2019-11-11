@@ -24,10 +24,10 @@
     @can('isDepartment')
         <div class="department-menu">
           <ul id="side-main-menu" class="side-menu list-unstyled">     
-            <li><a href="department_orderlist"> <i class="fa fa-list-ol"></i> Order List</a></li>
-            <li><a href="joblist"> <i class="fa fa-list"></i> Job List</a></li>
-            <li><a href="performance"> <i class="fa fa-tachometer"></i> Performance</a></li>
-            <li><a href="leave"> <i class="fa fa-file-text"></i>  Leave Application</a></li>                      
+            <li><a href="{{ route('department.home') }}"> <i class="fa fa-list-ol"></i> Order List</a></li>
+            <li><a href="{{ route('job_list') }}"> <i class="fa fa-list"></i> Job List</a></li>
+            <li><a href="{{ route('performance') }}"> <i class="fa fa-tachometer"></i> Performance</a></li>
+            <li><a href="{{ route('leave') }}"> <i class="fa fa-file-text"></i>  Leave Application</a></li>                      
           </ul>
         </div>
     @endcan

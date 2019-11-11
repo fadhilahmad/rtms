@@ -8,5 +8,5 @@ class Design extends Model
 {
     // table name and primary key
     protected $table = 'design';
-    protected $primaryKey = 'design_id';
+    protected $primaryKey = 'id';
 }

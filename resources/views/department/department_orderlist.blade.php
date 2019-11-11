@@ -1,6 +1,9 @@
 @extends('layouts.layout')
 
 @section('content')
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -9,46 +12,126 @@
                         <div class="alert alert-success">
                             {{ session()->get('message') }}
                         </div>
-                @endif
-               
-                <div class="card-header">Order List</div>
+                @endif               
 
                 <div class="card-body">
-                            <table class="table table-hover">
-                                <thead class="thead-dark">
-                                  <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Cloth Name</th>
-                                    <th scope="col">Category</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Note</th>
-                                    <th scope="col">Delivery Date</th>
-                                    <th scope="col">Mockup Design</th>
-                                    <th scope="col">Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                    @php $no=1; @endphp
-                                    @foreach($orders as $order)
-                                  <tr>
-                                    <td>{{$no}}</td>
-                                    <td>{{$order->file_name}}</td>
-                                    <td>{{$order->category}}</td>
-                                    <td>{{$order->quantity_total}}</td>
-                                    <td>{{$order->note}}</td>
-                                    <td>{{$order->delivery_date}}</td>
-                                    <td><button class="btn btn-primary">View</button></td>
-                                    <td>
+                    @if(Auth::user()->u_type==3)
+                        <div class="card-header">DESIGNER ORDER LIST</div><br>
+                        @php $no=1; @endphp
+                        @foreach($orders as $order)
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Order Status : @if($order->o_status==0) Draft @else Customer Request Redesign @endif</div>                                                                  
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">File name</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->file_name}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-3">Category</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->category}}</div>
+                                    </div><br> 
+                                    <div class="row">
+                                        <div class="col-sm-3">Quantity</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->quantity_total}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-3">Material</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->m_desc}}</div>
+                                    </div><br>                                    
+                                    <div class="row">
+                                        <div class="col-sm-3">Note</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->note}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-3">Delivery Date</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->delivery_date}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-3">Mockup Design</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">
+                                    @php
+                                        $show = App\Http\Controllers\HomeController::getMockup($order->o_id);
+                                    @endphp                                            
+                                        <img class="" src="{{url('orders/mockup/'.$show)}}" width="200" height="200">
+                                        </div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-8">
                                         <button 
-                                            class="btn btn-primary edit" data-toggle="modal" data-target="#Modal" data-tittle="Update Design" 
+                                            class="btn btn-primary edit" data-toggle="modal" data-target="#Modal" data-tittle="Update Design" data-role="designer" 
                                             data-oid="{{$order->o_id}}" data-uid="{{$order->u_id_designer}}">Update Design
-                                        </button>                                       
-                                    </td>
-                                  </tr>
-                                  @php $no++; @endphp
-                                  @endforeach
-                                </tbody>
-                            </table> 
+                                        </button>                                         
+                                        </div>                                                                                 
+                                    </div>                                    
+                                </div>                                
+                            </div>
+                          @php $no++; @endphp
+                         @endforeach
+                    @endif
+
+                    @if($department==4 || $department==5)
+                        <div class="card-header">ORDER LIST</div><br>
+                        @php $no=1; @endphp
+                        @foreach($orders as $order)
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">Order Status : @if($order->o_status=3) Waiting to print @else($order->o_status=5) Waiting to sew @endif</div>                                                                  
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">File name</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->file_name}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-3">Category</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->category}}</div>
+                                    </div><br> 
+                                    <div class="row">
+                                        <div class="col-sm-3">Quantity</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->quantity_total}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-3">Material</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->m_desc}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-3">Note</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->note}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-3">Delivery Date</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">{{$order->delivery_date}}</div>
+                                    </div><br>
+                                    <div class="row">
+                                        <div class="col-sm-4"></div>
+                                        <div class="col-sm-8">
+                                            <form class="lock" action="{{ route('update_order') }}" method="POST">
+                                                {{ csrf_field() }}
+                                                <input type="hidden" name="oid" value=" {{$order->o_id}}">
+                                                @php if(Auth::user()->u_type==5){$role='print';}if(Auth::user()->u_type==4){$role='tailor';} @endphp
+                                                <input type="hidden" name="role" value=" {{$role}}">
+                                            <input class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to lock this order?')" value="Lock">
+                                            </form>                                        
+                                        </div>                                                                                 
+                                    </div>                                    
+                                </div>                                
+                            </div>
+                          @php $no++; @endphp
+                         @endforeach
+                    @endif                    
+                                      
                 </div>
             </div>
         </div>
@@ -74,6 +157,7 @@
                     <input type="text" class="form-control" id="note" name="note" >
                     <input type="hidden" name="u_id" id="uid">
                     <input type="hidden" name="o_id" id="oid">
+                    <input type="hidden" name="role" id="role">
                 </div>
               </div> 
 
@@ -100,10 +184,12 @@ $(document).on("click", ".edit", function () {
      var name = $(this).data('tittle');
      var oid = $(this).data('oid');
      var uid = $(this).data('uid');
+     var role = $(this).data('role');
      $(".modal-title").text( name );
      $(".modal-body #oid").val( oid );
      $(".modal-body #uid").val( uid );
      $(".modal-body #note").val( "" );
+     $(".modal-body #role").val( role );
 
 });
 
