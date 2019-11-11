@@ -20,7 +20,7 @@
                             </thead>
                             <tbody>
                                 <?php $no=1; ?>
-                                @foreach($design as $des)
+                                @foreach($user as $des)
                               <tr>
                                 <th scope="row"><?php echo $no; ?></th>
                                 <td>{{$des->u_fullname}}</td> 
@@ -35,12 +35,16 @@
                                            Printing
                                         @endif                                
                                 </td>
-                                <td>{{$des->quantity_total}}</td>
-                                <td>{{$des->quantity_total}}</td>
+                                <td>
+                                    @php $id=$des->u_id;  
+                                     $job_design = $designs->where('u_id_designer',$id)->where('d_type','3')->count();
+                                     $design_order = $order->where('u_id_designer',$id)->where('o_status','9')->count();
+                                    @endphp
+                                    {{$design_order}}</td>
+                                <td>{{$job_design}}</td>
                               </tr>
                               <?php $no++; ?>
                               @endforeach
-                              {{ $design->links() }}
                             </tbody>
                           </table>
                 </div>
@@ -77,12 +81,16 @@
                                            Printing
                                         @endif                                
                                 </td>
-                                <td>{{$pri->quantity_total}}</td>
-                                <td>{{$pri->quantity_total}}</td>
+                                <td>
+                                    @php $id=$pri->u_id;  
+                                     $job_print = $unit->where('u_id_print',$id)->whereIn('un_status',['2','1'])->count();
+                                     $print_order = $order->where('u_id_print',$id)->where('o_status','9')->count();
+                                    @endphp
+                                    {{$print_order}}</td>
+                                <td>{{$job_print}}</td>
                               </tr>
                               <?php $no++; ?>
                               @endforeach
-                              {{ $print->links() }}
                             </tbody>
                           </table>
                 </div>
@@ -119,12 +127,16 @@
                                            Printing
                                         @endif                                
                                 </td>
-                                <td>{{$tai->quantity_total}}</td>
-                                <td>{{$tai->quantity_total}}</td>
+                                <td>
+                                    @php $id=$tai->u_id;  
+                                     $job_tailor = $unit->where('u_id_taylor',$id)->where('un_status','2')->count();
+                                     $tailor_order = $order->where('u_id_taylor',$id)->where('o_status','9')->count();
+                                    @endphp
+                                    {{$tailor_order}}</td>
+                                <td>{{$job_tailor}}</td>
                               </tr>
                               <?php $no++; ?>
                               @endforeach
-                              {{ $tailor->links() }}
                             </tbody>
                           </table>
                 </div>

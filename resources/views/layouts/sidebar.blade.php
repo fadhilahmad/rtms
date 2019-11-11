@@ -37,45 +37,45 @@
           <ul id="side-admin-menu" class="side-menu list-unstyled"> 
             <li><a href="#manageCustomerDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-user"></i> Manage Customer </a>
               <ul id="manageCustomerDropdown" class="collapse list-unstyled ">
-                <li><a href="manage_customer">End User List</a></li>
-                <li><a href="agent_list">Agent List</a></li>
-                <li><a href="add_customer">Add End User</a></li>
-                <li><a href="add_agent">Add Agent</a></li>              
-                <li><a href="customer_application">New Application</a></li>
+                <li><a href="{{ route('admin.home') }}">End User List</a></li>
+                <li><a href="{{ route('admin.agentlist') }}">Agent List</a></li>
+                <li><a href="{{ route('admin.addcustomer') }}">Add End User</a></li>
+                <li><a href="{{ route('admin.addagent') }}">Add Agent</a></li>              
+                <li><a href="{{ route('admin.newapplication') }}">New Application</a></li>
               </ul>
             </li>
             <li><a href="#manageStaffDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-child"></i> Manage Staff </a>
               <ul id="manageStaffDropdown" class="collapse list-unstyled ">
-                <li><a href="manage_staff">Staff List</a></li>
-                <li><a href="staff_application">New Application</a></li>
-                <li><a href="add_newstaff">Add Staff</a></li>
+                <li><a href="{{ route('admin.managestaff') }}">Staff List</a></li>
+                <li><a href="{{ route('admin.staffapplication') }}">New Application</a></li>
+                <li><a href="{{ route('admin.addstaff') }}">Add Staff</a></li>
 <!--                <li><a href="leave_list">Leave List</a></li>-->
-                <li><a href="leave_application">Leave Application</a></li>                
-                <li><a href="leave_day">Leave Setting</a></li>
-                <li><a href="staff_performance">Performance</a></li>
+                <li><a href="{{ route('admin.leaveapplication') }}">Leave Application</a></li>                
+                <li><a href="{{ route('admin.leavesetting') }}">Leave Setting</a></li>
+                <li><a href="{{ route('admin.staffperformance') }}">Performance</a></li>
               </ul>
             </li>
             <li><a href="#orderDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-plus-square"></i> Order </a>
               <ul id="orderDropdown" class="collapse list-unstyled ">
-                <li><a href="order_setting">Order Setting</a></li>
-                <li><a href="order_list">Order List</a></li>
-                <li><a href="pricing">Pricing</a></li>
+                <li><a href="{{ route('admin.ordersetting') }}">Order Setting</a></li>
+                <li><a href="{{ route('admin.orderlist') }}">Order List</a></li>
+                <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>
               </ul>
             </li>
-            <li> <a href="stock_list"> <i class="icon-screen"> </i>Manage Stock </a></li>
+            <li> <a href="{{ route('admin.stocklist') }}"> <i class="icon-screen"> </i>Manage Stock </a></li>
             <li><a href="#invoiceDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file"></i> Invoice </a>
               <ul id="invoiceDropdown" class="collapse list-unstyled ">
-                <li><a href="invoice_list">List</a></li>
-                <li><a href="invoice_pending">Pending</a></li>
+                <li><a href="{{ route('admin.invoicelist') }}">List</a></li>
+                <li><a href="{{ route('admin.invoicepending') }}">Pending</a></li>
               </ul>
             </li>
             <li><a href="#receiptDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file-text-o"></i> Receipt </a>
               <ul id="receiptDropdown" class="collapse list-unstyled ">
-                <li><a href="receipt_list">List</a></li>
-                <li><a href="receipt_pending">Pending</a></li>
+                <li><a href="{{ route('admin.receiptlist') }}">List</a></li>
+                <li><a href="{{ route('admin.receiptpending') }}">Pending</a></li>
               </ul>
             </li>
-            <li> <a href="sale"> <i class="fa fa-money"> </i>Sale</a></li>
+            <li> <a href="{{ route('admin.sale') }}"> <i class="fa fa-money"> </i>Sale</a></li>
           </ul>
         </div>
     @endcan

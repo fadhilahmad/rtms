@@ -16,10 +16,8 @@
                                 <th scope="col">File name</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Delivery Date</th>
-                                <th scope="col">Designer</th>
-                                <th scope="col">Printing</th>
-                                <th scope="col">Tailor</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Details</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -31,9 +29,6 @@
                                 <td>{{$ord->file_name}}</td>
                                 <td>{{$ord->quantity_total}}</td>
                                 <td>{{$ord->delivery_date}}</td>
-                                <td>{{$ord->u_fullname}}</td>
-                                <td>{{$ord->u_fullname}}</td>
-                                <td>{{$ord->u_fullname}}</td>
                                 <td>
                                         @if($ord->o_status==1)
                                            Waiting for design
@@ -69,6 +64,7 @@
                                            Draft
                                         @endif
                                 </td>
+                                <td><a href="{{route('order_info',$ord->o_id)}}"><button class="btn btn-primary">View</button></a></td>
                               </tr>
                          
                               @endforeach

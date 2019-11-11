@@ -14,6 +14,9 @@ use App\Neck;
 use App\Sleeve;
 use App\Material;
 use App\DeliverySetting;
+use App\Design;
+use App\Unit;
+use App\Order;
 use DB;
 
 class AdminController extends Controller
@@ -113,25 +116,26 @@ class AdminController extends Controller
     
     public function staffPerformance() 
     {
-        $design = DB::table('orders')
-                    ->rightJoin('user', 'orders.u_id_designer', '=', 'user.u_id')
-                    ->where('user.u_type', 3)
-                    ->where('user.u_status','=',1)
+        
+        $unit = Unit::all();
+        $designs = Design::all();
+        $order = Order::all();
+        $user = DB::table('user')
+                    ->where('u_type', 3)
+                    ->where('u_status','=',1)
                     ->paginate(5);
     
-        $print = DB::table('orders')
-                    ->rightJoin('user', 'orders.u_id_print', '=', 'user.u_id')
-                    ->where('user.u_type', 5)
-                    ->where('user.u_status','=',1)
+        $print = DB::table('user')
+                    ->where('u_type', 5)
+                    ->where('u_status','=',1)
                     ->paginate(5);
        
-        $tailor = DB::table('orders')
-                    ->rightJoin('user', 'orders.u_id_taylor', '=', 'user.u_id')
-                    ->where('user.u_type', 4)
-                    ->where('user.u_status','=',1)
+        $tailor = DB::table('user')
+                    ->where('u_type', 4)
+                    ->where('u_status','=',1)
                     ->paginate(5);
          
-        return view('admin/staff_performance', compact('design','print','tailor'));
+        return view('admin/staff_performance', compact('user','print','tailor','unit','designs','order'));
     }
     
     public function orderSetting() 

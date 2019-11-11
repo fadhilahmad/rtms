@@ -8,6 +8,9 @@ use DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\Price;
+use App\Design;
+use App\Unit;
+use App\User;
 
 class OrderController extends Controller
 {
@@ -232,5 +235,28 @@ class OrderController extends Controller
             
         }
         
+    }
+    
+    public function orderInfo($o_id){
+        
+             $orders =  DB::table('orders')
+                       ->join('material', 'orders.material_id', '=', 'material.m_id')
+                       ->where('orders.o_id','=',$o_id)
+                       ->get();
+             
+             $specs = DB::table('spec')
+                     ->leftJoin('body', 'spec.b_id','=','body.b_id')
+                     ->leftJoin('sleeve', 'spec.sl_id', '=', 'sleeve.sl_id')
+                     ->leftJoin('neck', 'spec.n_id','=','neck.n_id')
+                     ->where('spec.o_id','=',$o_id)
+                     ->get();
+             
+             $user = User::all();
+             
+             $units = Unit::all();
+             
+             $design = Design::all();
+            //dd($orders);
+            return view('admin/order_info',compact('orders','specs','units','design','user')); 
     }
 }                

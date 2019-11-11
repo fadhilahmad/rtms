@@ -25,64 +25,66 @@ Route::get('admin/manage_customer', 'HomeController@adminHome')->name('admin.hom
 Route::any('admin/manage_customer','Admin\ManageCustomerController@CustomerList');
 Route::post('admin/manage_customer','Admin\ManageCustomerController@edit')->name('edit_customer');
 //page agent_list
-Route::get('admin/agent_list', 'Admin\AdminController@agentList')->middleware('admin');
+Route::get('admin/agent_list', 'Admin\AdminController@agentList')->name('admin.agentlist')->middleware('admin');
 Route::any('admin/agent_list','Admin\ManageAgentController@AgentList');
 Route::post('admin/agent_list','Admin\ManageAgentController@edit')->name('edit_agent');
 //page add_customer
-Route::get('admin/add_customer', 'Admin\AdminController@addCustomer')->middleware('admin');
+Route::get('admin/add_customer', 'Admin\AdminController@addCustomer')->name('admin.addcustomer')->middleware('admin');
 Route::post('admin/add_customer','Admin\RegisterCustomerController@register');
 //page add_agent
-Route::get('admin/add_agent', 'Admin\AdminController@addAgent')->middleware('admin');
+Route::get('admin/add_agent', 'Admin\AdminController@addAgent')->name('admin.addagent')->middleware('admin');
 Route::post('admin/add_agent','Admin\RegisterAgentController@register');
 //page customer_application
-Route::get('admin/customer_application', 'Admin\AdminController@customerApplication')->middleware('admin');
+Route::get('admin/customer_application', 'Admin\AdminController@customerApplication')->name('admin.newapplication')->middleware('admin');
 Route::get('admin/customer_application/{id}/type/{type}','Admin\ManageCustomerController@approve')->name('approve');
 //manage manage_staff
-Route::get('admin/manage_staff', 'Admin\AdminController@manageStaff')->middleware('admin');
+Route::get('admin/manage_staff', 'Admin\AdminController@manageStaff')->name('admin.managestaff')->middleware('admin');
 Route::post('admin/manage_staff','Admin\ManageStaffController@edit')->name('edit_staff');
 //page staff_application
-Route::get('admin/staff_application', 'Admin\AdminController@staffApplication')->middleware('admin');
+Route::get('admin/staff_application', 'Admin\AdminController@staffApplication')->name('admin.staffapplication')->middleware('admin');
 Route::get('admin/staff_application/{id}/type/{type}','Admin\ManageStaffController@approve')->name('staff_approve');
 //page add_newstaff
-Route::get('admin/add_newstaff', 'Admin\AdminController@addStaff')->middleware('admin');
+Route::get('admin/add_newstaff', 'Admin\AdminController@addStaff')->name('admin.addstaff')->middleware('admin');
 Route::post('admin/add_newstaff','Admin\RegisterStaffController@register');
 //page leave_list
-Route::get('admin/leave_list', 'Admin\AdminController@leaveList')->middleware('admin');
+Route::get('admin/leave_list', 'Admin\AdminController@leaveList')->name('admin.leavelist')->middleware('admin');
 //page leave_application
-Route::get('admin/leave_application', 'Admin\AdminController@leaveApplication')->middleware('admin');
+Route::get('admin/leave_application', 'Admin\AdminController@leaveApplication')->name('admin.leaveapplication')->middleware('admin');
 Route::post('admin/leave_application/{id}/type/{type}','Admin\LeaveController@application')->name('leave_application');
 //page leave_day
-Route::get('admin/leave_day', 'Admin\AdminController@leaveDay')->middleware('admin');
+Route::get('admin/leave_day', 'Admin\AdminController@leaveDay')->name('admin.leavesetting')->middleware('admin');
 Route::post('admin/leave_day','Admin\LeaveController@setting')->name('leave_setting');
 Route::post('admin/leave_day2','Admin\LeaveController@updateDay')->name('leave_update');
 //page staff_performance
-Route::get('admin/staff_performance', 'Admin\AdminController@staffPerformance')->middleware('admin');
+Route::get('admin/staff_performance', 'Admin\AdminController@staffPerformance')->name('admin.staffperformance')->middleware('admin');
 //page order_setting
-Route::get('admin/order_setting','Admin\AdminController@OrderSetting')->middleware('admin');
+Route::get('admin/order_setting','Admin\AdminController@OrderSetting')->name('admin.ordersetting')->middleware('admin');
 Route::post('admin/order_setting','Admin\OrderController@updateOrderSetting')->middleware('admin')->name('order_setting');
 //page order_list
-Route::get('admin/order_list', 'Admin\AdminController@orderList')->middleware('admin');
+Route::get('admin/order_list', 'Admin\AdminController@orderList')->name('admin.orderlist')->middleware('admin');
 //page pricing
-Route::get('admin/pricing', 'Admin\AdminController@pricing')->middleware('admin');
+Route::get('admin/pricing', 'Admin\AdminController@pricing')->name('admin.pricing')->middleware('admin');
 Route::post('admin/pricing', 'Admin\OrderController@editPrice')->middleware('admin')->name('admin_pricing');
 //page stock_list
-Route::get('admin/stock_list', 'Admin\AdminController@stockList')->middleware('admin');
+Route::get('admin/stock_list', 'Admin\AdminController@stockList')->name('admin.stocklist')->middleware('admin');
 Route::post('admin/stock_list', 'Admin\OrderController@updateStock')->middleware('admin')->name('manage_stock');
 //page invoice_list
-Route::get('admin/invoice_list', 'Admin\AdminController@invoiceList')->middleware('admin');
+Route::get('admin/invoice_list', 'Admin\AdminController@invoiceList')->name('admin.invoicelist')->middleware('admin');
 //page invoice_pending
-Route::get('admin/invoice_pending', 'Admin\AdminController@invoicePending')->middleware('admin');
+Route::get('admin/invoice_pending', 'Admin\AdminController@invoicePending')->name('admin.invoicepending')->middleware('admin');
 //page receipt_list
-Route::get('admin/receipt_list', 'Admin\AdminController@receiptList')->middleware('admin');
+Route::get('admin/receipt_list', 'Admin\AdminController@receiptList')->name('admin.receiptlist')->middleware('admin');
 //page receipt_pending
-Route::get('admin/receipt_pending', 'Admin\AdminController@receiptPending')->middleware('admin');
+Route::get('admin/receipt_pending', 'Admin\AdminController@receiptPending')->name('admin.receiptpending')->middleware('admin');
 //page sale
-Route::get('admin/sale', 'Admin\AdminController@sale')->middleware('admin');
+Route::get('admin/sale', 'Admin\AdminController@sale')->name('admin.sale')->middleware('admin');
 //page admin_profile
 Route::get('admin/admin_profile', 'Admin\AdminController@adminProfile')->name('admin.profile')->middleware('admin');
 Route::patch('admin/admin_profile/update/{id}', 'Admin\AdminController@updateProfile')->name('admin.update')->middleware('admin');
 Route::get('admin/change_password', 'Admin\AdminController@adminChangePassword')->name('admin.changePassword')->middleware('admin');
 Route::patch('admin/change_password/update/{id}', 'Admin\AdminController@updateChangePassword')->name('admin.updatePassword')->middleware('admin');
+//order info
+Route::get('admin/order_info/{oid}', 'Admin\OrderController@orderInfo')->name('order_info')->middleware('admin');
 
 
 //////////////////////////////////////////////////////////////DEPARTMENT PAGE///////////////////////////////////////////////////////////////
