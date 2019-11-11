@@ -17,21 +17,6 @@
                     <div class="panel-body">
 
                         @if(count($orders) > 0)
-                        
-                            {{-- @foreach($orders as $singleorderrow)
-                                <p>Cloth Name: {{$singleorderrow->file_name}}</p>
-                            @endforeach
-                            @foreach ($spec as $singlespecrow)
-                                <p>Collar Color: {{ $singlespecrow->collar_color }} </p>
-                            @endforeach
-                            @foreach ($unit as $singleunitrow)
-                                <p>Size: {{ $singleunitrow->size }} </p>
-                            @endforeach
-                            @foreach ($design as $singledesignrow)
-                                <img src="/orders/mockup/{{ $singledesignrow->d_url }}">
-                                <p>Url: {{ $singledesignrow->d_url }} </p>
-                                @break
-                            @endforeach --}}
 
                             <table class="table table-hover">
                                 <thead class="thead-dark">
@@ -59,10 +44,10 @@
                                             <td>{{$singleorderrow->note}}</td>
                                             <td>{{$singleorderrow->delivery_date}}</td>
                                             <td>
-                                                @if($singleorderrow->o_status==0)
+                                                @if($singleorderrow->o_status!=1)
                                                     <a href="/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a>
                                                  @endif
-                                                 @if($singleorderrow->o_status!=0)
+                                                 @if($singleorderrow->o_status==1)
                                                     <a href="/customer/viewdesign/{{$singleorderrow->o_id}}">View Design</a>
                                                  @endif 
                                             </td>

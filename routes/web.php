@@ -129,11 +129,14 @@ Route::get('customer/viewdesign/{id}', 'Customer\CustomerController@customerView
 
 // route to invoice page for customer
 Route::get('customer/invoice', 'Customer\CustomerController@invoice')->middleware('customer');
+Route::get('customer/view_invoice', 'Customer\CustomerController@viewInvoice')->middleware('customer');
 
-// route to invoice page for customer
+// route to receipt page for customer
 Route::get('customer/receipt', 'Customer\CustomerController@receipt')->middleware('customer');
 
 Route::post('customer/neworder', 'Customer\CustomerController@store')->name('customer.store');
+
+Route::post('customer/viewinvoice','Customer\CustomerController@viewInvoice')->name('customer.viewinvoice');
 
 //Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->name('customer.orderlist');
 

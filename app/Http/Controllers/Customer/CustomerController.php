@@ -156,11 +156,11 @@ class CustomerController extends Controller
             // total ref num
             $totalrefnum = count($userrefnum);
             $newrefnum = $totalrefnum + 1;
-            // // update ref num in table order
-            // DB::table('orders')
-            //     ->where('o_id', '=', $orderidrequest)
-            //     ->update(array('ref_num' => $newrefnum,
-            //     'o_status'=>'2'));
+            // update ref num in table order
+            DB::table('orders')
+                ->where('o_id', '=', $orderidrequest)
+                ->update(array('ref_num' => $newrefnum,
+                'o_status'=>'2'));
 
             // calculate price
             // get n_id, b_id, sl_id, u_type,
@@ -214,15 +214,20 @@ class CustomerController extends Controller
                     $size = Unit::where('o_id', '=', $orderidrequest)
                     ->where('s_id', '=', $specs[$i])
                     ->pluck('size');
+                    // get the quantity
+                    $quantity = Unit::where('o_id', '=', $orderidrequest)
+                    ->where('s_id', '=', $specs[$i])
+                    ->pluck('un_quantity');
                     $totsize = count($size);
                     //var_dump(": ".$totsize);
                     //var_dump(": ".$size[$j]);
+                    //var_dump(": ".$quantity[$j]);
 
 
-                    // quantity not taken yet!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    $pricecalc = $this->calcPrice($price, $category, $size[$j]); 
-                    $totprice += $pricecalc[0];
-                    var_dump(": ".$pricecalc);
+                    $pricecalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]); 
+                    //$priceint = intval($pricecalc[0]);
+                    $totprice += $pricecalc;
+                    //var_dump(": ".$pricecalc);
                     //var_dump(": ".$pricecalc);
                     //var_dump(": ".$this->calcPrice($price, $category, $size[$j]));
 
@@ -235,24 +240,24 @@ class CustomerController extends Controller
 
                 // var_dump(": ".$totsize);
             }
-            //var_dump(": ".$totprice);
+            var_dump(": ".$totprice);
 
-            // // insert into invoice table
-            // $invoice = new Invoice;
+            // insert into invoice table
+            $invoice = new Invoice;
 
-            // // insert into table order
-            // $invoice->o_id = $orderid;
-            // $invoice->i_status = 1;
-            // $invoice->total_price = $totprice;
+            // insert into table order
+            $invoice->o_id = $orderid;
+            $invoice->i_status = 1;
+            $invoice->total_price = $totprice;
 
-            // // save it
-            // $invoice->save();
+            // save it
+            $invoice->save();
 
             
 
 
                 
-            //return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
+            return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
 
         }else{
 
@@ -344,32 +349,47 @@ class CustomerController extends Controller
     }
 
     // method to calculate total price
-    public function calcPrice($price, $category, $size){
+    public function calcPrice($price, $category, $size, $quantity){
 
         //var_dump(": ".$size);
 
-        $calcprice = 0;
+        $pricecalc = 0;
         if($category == "Nameset"){
             $priceint = intval($price[0]);
-            $calcprice = $priceint + 4;
+            $quantityint = intval($quantity);
+            $pricecalc = $priceint + 4;
+            $pricecalc *= $quantityint;
         }else{
-            $calcprice = $price;
+            $pricecalc = intval($price[0]);
+            $quantityint = intval($quantity);
+            $pricecalc *= $quantityint;
         }
         if($size == "4XL" || $size == "5XL"){
             $priceint = intval($price[0]);
-            $calcprice = $priceint + 4;
+            $quantityint = intval($quantity);
+            $pricecalc = $priceint + 4;
+            $pricecalc *= $quantityint;
         }else{
-            $calcprice = $price;
+            $pricecalc = intval($price[0]);
+            $quantityint = intval($quantity);
+            $pricecalc *= $quantityint;
         }
         if($size == "6XL" || $size == "7XL"){
             $priceint = intval($price[0]);
-            // var_dump($x+1);
-            $calcprice = $priceint + 8;
-            //var_dump($calcprice);
+            $quantityint = intval($quantity);
+            //var_dump($priceint*$quantityint);
+            $pricecalc = $priceint + 8;
+            $pricecalc *= $quantityint;
+            //var_dump($pricecalc);
+            //var_dump($pricecalc);
         }else{
-            $calcprice = $price;
+            $pricecalc = intval($price[0]);
+            $quantityint = intval($quantity);
+            $pricecalc *= $quantityint;
         }
-        return $calcprice;
+        //$priceint = intval($price[0]);
+        //$pricecalc = $priceint;
+        return $pricecalc;
 
     }
 
@@ -428,13 +448,123 @@ class CustomerController extends Controller
     // method to view invoice page for customer
     public function invoice()
     {
-        return view('customer/invoice');
+
+        $user_id = auth()->user()->u_id;
+        $orderconfirm = Order::where('u_id_customer', '=' , $user_id)
+        ->where('o_status', '!=' , 0)
+        ->where('o_status', '!=' , 1)
+        ->get();
+
+        $materials = Material::all();
+        $invoices = Invoice::all();
+
+        //var_dump($orderconfirm);
+
+        return view('customer/invoice')
+        ->with('orders', $orderconfirm)
+        ->with('materials', $materials)
+        ->with('invoices', $invoices);
     }
 
     // method to view receipt page for customer
     public function receipt()
     {
         return view('customer/receipt');
+    }
+
+    // method to view or print invoice details
+    public function viewInvoice(Request $request){
+
+        $action = $request->input('actionbutton');
+        $orderid = $request->input('orderid');
+
+        // var_dump($action);
+
+        if($action == "View"){
+
+            $userid = auth()->user()->u_id;
+            $user = User::where('u_id', '=' , $userid)->get();
+            $orderconfirm = Order::where('o_id', '=' , $orderid)->get();
+
+            $units = Unit::where('o_id', '=', $orderid)->get();
+            $specsget = Spec::where('o_id', '=', $orderid)->get();
+            $invoices = Invoice::where('o_id', '=', $orderid)->get();
+
+            //var_dump($bodytype);
+            $materials = Material::all();
+            $bodies = Body::all();
+            $sleeves = Sleeve::all();
+            $necks = Neck::all();
+            //$prices = Price::all();
+            $usertype = auth()->user()->u_type;
+            $prices = array();
+
+            $neckid = Spec::where('o_id', '=' , $orderid)->pluck('n_id')->toArray();
+            $bodyid = Spec::where('o_id', '=' , $orderid)->pluck('b_id')->toArray();
+            $sleeveid = Spec::where('o_id', '=' , $orderid)->pluck('sl_id')->toArray();
+            $specid = Spec::where('o_id', '=' , $orderid)->pluck('s_id')->toArray();
+            $category;
+            $size;
+            $price;
+            $totprice = 0;
+
+            $totorderrow = count($neckid);
+
+            for($i = 0; $i < $totorderrow; $i++){
+                if($neckid[$i] == 1){
+                    $checkneck = 1;
+                }else{
+                    $checkneck = 2;
+                }
+
+                $price = Price::where('n_id', '=', $checkneck)
+                    ->where('b_id', '=' , $bodyid[$i])
+                    ->where('sl_id', '=' , $sleeveid[$i])
+                    ->where('u_type', '=' , $usertype)->pluck('price');
+
+                $category = Order::where('o_id', '=', $orderid)->pluck('category');
+                
+                $size = Unit::where('o_id', '=', $orderid)->pluck('size');
+                $totsize = count($size);
+                $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
+                $totunits = count($specs);
+
+
+                for($j = 0; $j < $totunits; $j++){
+
+                    $size = Unit::where('o_id', '=', $orderid)
+                    ->where('s_id', '=', $specs[$i])
+                    ->pluck('size');
+                    
+                    $quantity = Unit::where('o_id', '=', $orderid)
+                    ->where('s_id', '=', $specs[$i])
+                    ->pluck('un_quantity');
+                    $totsize = count($size);
+
+
+                    $pricescalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]);
+                    array_push($prices, $pricescalc); 
+                }
+            }
+
+            // for($j = 0; $j < 6; $j++){
+            //     var_dump($prices[$j]);
+            // }
+
+            return view('customer/view_invoice')
+            ->with('users', $user)
+            ->with('orders', $orderconfirm)
+            ->with('invoices', $invoices)
+            ->with('orderid', $orderid)
+            ->with('units', $units)
+            ->with('specs', $specsget)
+            ->with('bodies', $bodies)
+            ->with('sleeves', $sleeves)
+            ->with('necks', $necks)
+            ->with('prices', $prices)
+            ->with('usertype', $usertype);
+        }
+
     }
 
 // -------------------------------------- Add order to db --------------------------------------------------
