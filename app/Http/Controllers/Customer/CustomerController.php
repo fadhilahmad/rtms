@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Response;
 // use Illuminate\Support\Facades\File;
@@ -47,9 +49,58 @@ class CustomerController extends Controller
     
     public function customerProfile() 
     {
-        return view('customer/customer_profile');
+        // Get the currently authenticated user's ID...
+        $customer = Auth::user();
+        return view('customer/customer_profile', compact('customer'));
     }
     
+     //update customer profile
+     public function updateProfile(Request $request,  $id) 
+     {
+      
+        $customer = User::find($id);
+        $customer->u_fullname = $request->input('name');
+        $customer->email = $request->input('email');
+        $customer->phone = $request->input('phone');
+        $customer->address = $request->input('address');      
+        $customer->save();
+        
+        return back()->with('success','Your profile updated successfully');
+ 
+     }
+ 
+     //display admin password form
+     public function customerChangePassword () 
+     {
+        $customer = Auth::user();
+        
+        return view('customer/change_password', compact('customer'));
+       
+     }
+ 
+     //change admin password
+     public function updateChangePassword (Request $request,  $id) 
+     {       
+         $this->validate($request, [     
+             'old_password'     => 'required',
+             'new_password'     => 'required|min:8',
+             'confirm_password' => 'required|same:new_password',     
+         ]);
+ 
+         $customer = User::find($id);
+         $data = $request->all();
+ 
+         if(!\Hash::check($data['old_password'], $customer->password)){
+             return back()->with('error','You have entered wrong password');              
+                 } else {       
+                     $customer->password = Hash::make($request->input('new_password'));        
+             }
+         $customer->save();
+         
+         return back()->with('success','Your password updated successfully');
+     
+    }   
+
     // method to view new order page for customer
     public function newOrder()
     {

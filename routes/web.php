@@ -118,6 +118,9 @@ Route::post('department/leave', 'Department\departmentController@leaveApplicatio
 
 //Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
 Route::get('customer/customer_profile', 'Customer\customerController@customerProfile')->middleware('customer');
+Route::patch('customer/customer_profile/update/{id}', 'Customer\customerController@updateProfile')->name('customer.update')->middleware('customer');
+Route::get('customer/change_password', 'Customer\customerController@customerChangePassword')->name('customer.changePassword')->middleware('customer');
+Route::patch('customer/change_password/update/{id}', 'Customer\customerController@updateChangePassword')->name('customer.updatePassword')->middleware('customer');
 Route::get('customer/customer_orderlist', 'Customer\customerController@customerOrderlist')->middleware('customer');
 // Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
 // Route::get('customer/receipt', 'Customer\customerController@receipt')->middleware('customer');
