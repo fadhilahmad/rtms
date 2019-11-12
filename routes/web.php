@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,15 +9,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
 });
-
 Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
-
 //////////////////////////////////////////////////////////////ADMIN PAGE///////////////////////////////////////////////////////////////////////
 //page manage_customer dropdown
 Route::get('admin/manage_customer', 'HomeController@adminHome')->name('admin.home')->middleware('admin');
@@ -85,14 +80,10 @@ Route::get('admin/change_password', 'Admin\AdminController@adminChangePassword')
 Route::patch('admin/change_password/update/{id}', 'Admin\AdminController@updateChangePassword')->name('admin.updatePassword')->middleware('admin');
 //order info
 Route::get('admin/order_info/{oid}', 'Admin\OrderController@orderInfo')->name('order_info')->middleware('admin');
-
-
 //////////////////////////////////////////////////////////////DEPARTMENT PAGE///////////////////////////////////////////////////////////////
-
 //page orderlist
 Route::get('department/department_orderlist', 'HomeController@departmentHome')->name('department.home')->middleware('department');
 Route::post('department/department_orderlist', 'Department\DepartmentController@updateOrder')->name('update_order')->middleware('department');
-
 Route::get('department/staff_profile', 'Department\departmentController@staffProfile') ->name('staff.profile')->middleware('department');
 Route::patch('department/staff_profile/update/{id}', 'Department\departmentController@updateProfile')->name('staff.update')->middleware('department');
 Route::get('department/change_password', 'Department\departmentController@staffChangePassword')->name('staff.changePassword')->middleware('department');
@@ -114,10 +105,7 @@ Route::get('department/performance', 'Department\departmentController@performanc
 //page leave
 Route::get('department/leave', 'Department\departmentController@leave')->name('leave')->middleware('department');
 Route::post('department/leave', 'Department\departmentController@leaveApplication')->name('department.leave')->middleware('department');
-
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////
-
-
 //Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
 Route::get('customer/customer_profile', 'Customer\customerController@customerProfile')->middleware('customer');
 Route::patch('customer/customer_profile/update/{id}', 'Customer\customerController@updateProfile')->name('customer.update')->middleware('customer');
@@ -126,42 +114,30 @@ Route::patch('customer/change_password/update/{id}', 'Customer\customerControlle
 Route::get('customer/customer_orderlist', 'Customer\customerController@customerOrderlist')->middleware('customer');
 // Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
 // Route::get('customer/receipt', 'Customer\customerController@receipt')->middleware('customer');
-
 // // write route to multiple route (store, index, create, update, show, destroy, edit)
 // Route::resource('order', 'Customer\CustomerController');
-
 // route to new order page for customer
 Route::get('customer/neworder', 'Customer\CustomerController@newOrder')->name('customer.home')->middleware('customer');
-
 // route to customer order list page for customer
 Route::get('customer/orderlist', 'Customer\CustomerController@customerOrderList')->middleware('customer');
 //Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->middleware('customer');
 Route::post('customer/orderlist','Customer\CustomerController@requestConfirm')->name('customer.orderlist');
-
 // route to customer view mockup image
 Route::get('customer/vieworder/{id}', 'Customer\CustomerController@customerViewOrder')->middleware('customer');
-
 // route to customer view design image
 Route::get('customer/viewdesign/{id}', 'Customer\CustomerController@customerViewDesign')->middleware('customer');
-
 // route to invoice page for customer
 Route::get('customer/invoice', 'Customer\CustomerController@invoice')->middleware('customer');
 Route::get('customer/view_invoice', 'Customer\CustomerController@viewInvoice')->middleware('customer');
-
 // route to receipt page for customer
 Route::get('customer/receipt', 'Customer\CustomerController@receipt')->middleware('customer');
-
 Route::post('customer/neworder', 'Customer\CustomerController@store')->name('customer.store');
-
 Route::post('customer/viewinvoice','Customer\CustomerController@viewInvoice')->name('customer.viewinvoice');
-
 //Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->name('customer.orderlist');
-
 /////////////////////////////////////////////////////////////////REGISTRATION PAGE///////////////////////////////////////////////////
 //register agent (by link)
 Route::get('register_agent','RegisterAgent@PageRegisterAgent');
 Route::post('register_agent','RegisterAgent@register');
-
 //register staff (by link)
 Route::get('register_staff','RegisterStaff@pageRegisterStaff');
 Route::post('register_staff','RegisterStaff@register');

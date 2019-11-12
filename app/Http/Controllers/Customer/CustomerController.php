@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\Customer;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
 use Illuminate\Support\Facades\Response;
 // use Illuminate\Support\Facades\File;
 // // use the storage library
@@ -38,7 +35,6 @@ use App\Invoice;
 use Gate;
 // use Illuminate\Support\Facades\Hash;
 use DB;
-
 class CustomerController extends Controller
 {
     //
@@ -100,7 +96,6 @@ class CustomerController extends Controller
          return back()->with('success','Your password updated successfully');
      
     }   
-
     // method to view new order page for customer
     public function newOrder()
     {
@@ -108,7 +103,6 @@ class CustomerController extends Controller
         if(!Gate::allows('isCustomer')){
             abort(404, "Sorry, you cannot do this action");
         }
-
         // get data from tables
         $materials = Material::where('m_status', 1)->get();
         $deliverysettings = DeliverySetting::all();
@@ -123,7 +117,6 @@ class CustomerController extends Controller
         ->with('sleeves', $sleeves)
         ->with('necks', $necks);
     }
-
     // method to view order list page for customer based on customer id
     public function customerOrderList()
     {
@@ -131,36 +124,29 @@ class CustomerController extends Controller
         // if(!Gate::allows('isCustomer')){
         //     abort(404, "Sorry, you cannot do this action");
         // }
-
         // get the user id
         $user_id = auth()->user()->u_id;
         $user = User::find($user_id);
-
         // get order id with status draft
         //$ordercustdraft = Order::where('u_id_customer', $user_id)->where('o_status', 0)->get();
         $ordercustdraft = Order::where('u_id_customer', $user_id)->where('o_status', '!=' , 1)->orWhereNull('o_status')->get();
         $orderiddraft = $ordercustdraft->pluck('o_id')->all();
         $ordersdraft = Order::find($orderiddraft);
-
         // get order id with status pending
         $ordercustpending = Order::where('u_id_customer', $user_id)->where('o_status', 1)->get();
         $orderidpending = $ordercustpending->pluck('o_id')->all();
         $orderspending = Order::find($orderidpending);
-
         // get all order
         $orders = Order::all();
-
         if($orders != null){
             // $orderid = Order::where('o_id', $orders->o_id)->get();
             //$orders = Order::where('u_id_customer', $user_id);  ->where('u_status', 1)
             
             // get 
             //$designdraft = Design::where('o_id', $orderiddraft)->get();
-
             // $material = Order::where('o_id', $orderid)->get();
             // $materialid = $material->pluck('m_id');
             // $materialname = Material::find($materialid);
-
             return view('customer/customer_orderlist')
             ->with('orders', $orders)
             ->with('ordersdraft', $ordersdraft)
@@ -169,10 +155,7 @@ class CustomerController extends Controller
             return view('customer/customer_orderlist')->with('orders', $orders);
         }
         
-
-
         //var_dump($orders);
-
         // // read from order table based on cust id
         // $order = Order::find($user_id);
         // $orderid = Order::where('o_id', $order->o_id);
@@ -187,20 +170,14 @@ class CustomerController extends Controller
         // ->with('specs', $specs)
         // ->with('units', $units)
     }
-
     public function requestConfirm(Request $request){
-
-
         
         $orderidrequest = $request->input('orderid');
-
         if($orderidrequest != null){
             //-------------------- confirm design ----------------------//
-
             // get the user id
             $user_id = auth()->user()->u_id;
             //$user = User::find($user_id);
-
             // make ref num to be inserted in table order
             // get array of ref num from order table based on user id
             $userrefnum = Order::where('ref_num', '!=' , null)->pluck('ref_num')->toArray();
@@ -212,7 +189,6 @@ class CustomerController extends Controller
                 ->where('o_id', '=', $orderidrequest)
                 ->update(array('ref_num' => $newrefnum,
                 'o_status'=>'2'));
-
             // calculate price
             // get n_id, b_id, sl_id, u_type,
             $orderid = $orderidrequest;
@@ -225,11 +201,9 @@ class CustomerController extends Controller
             $size;
             $price;
             $totprice = 0;
-
             $totorderrow = count($neckid);
             //var_dump(": ".$totorderrow);
             //var_dump(": ".$neckid[1]);
-
             for($i = 0; $i < $totorderrow; $i++){
                 // get neck id to check if collar or not
                 if($neckid[$i] == 1){
@@ -238,12 +212,10 @@ class CustomerController extends Controller
                     $checkneck = 2;
                 }
                 //var_dump(": ".$checkneck);
-
                 $price = Price::where('n_id', '=', $checkneck)
                     ->where('b_id', '=' , $bodyid[$i])
                     ->where('sl_id', '=' , $sleeveid[$i])
                     ->where('u_type', '=' , $usertype)->pluck('price');
-
                 $category = Order::where('o_id', '=', $orderidrequest)->pluck('category');
                 //var_dump(": ".$category);
                 //var_dump(": ".$price[$i]);
@@ -258,10 +230,7 @@ class CustomerController extends Controller
                 //var_dump(": ".$specid[$i]);
                 //var_dump(": ".$totunits);
                 //var_dump(": ".$size[4]);
-
-
                 for($j = 0; $j < $totunits; $j++){
-
                     $size = Unit::where('o_id', '=', $orderidrequest)
                     ->where('s_id', '=', $specs[$i])
                     ->pluck('size');
@@ -273,52 +242,36 @@ class CustomerController extends Controller
                     //var_dump(": ".$totsize);
                     //var_dump(": ".$size[$j]);
                     //var_dump(": ".$quantity[$j]);
-
-
                     $pricecalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]); 
                     //$priceint = intval($pricecalc[0]);
                     $totprice += $pricecalc;
                     //var_dump(": ".$pricecalc);
                     //var_dump(": ".$pricecalc);
                     //var_dump(": ".$this->calcPrice($price, $category, $size[$j]));
-
                     //var_dump(": ".$totprice);
-
                 }
                 // var_dump(": ".$totprice);
-
                 //$this->totalPrice($idunit, $mockupdesign, $orderid, $designerid); 
-
                 // var_dump(": ".$totsize);
             }
             var_dump(": ".$totprice);
-
             // insert into invoice table
             $invoice = new Invoice;
-
             // insert into table order
             $invoice->o_id = $orderid;
             $invoice->i_status = 1;
             $invoice->total_price = $totprice;
-
             // save it
             $invoice->save();
-
             
-
-
                 
             return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
-
         }else{
-
             //-------------------- request redesign ----------------------//
             $data = $request->all();
             
             if ($request->has('design')) {
-
                 //var_dump($data['uid']);
-
                 $image = $request->file('design');                    
                 $destinationPath = 'orders/draft/'; // upload path
                 $profileImage = 'draft'.date('YmdHis') . "." . $image->getClientOriginalExtension();
@@ -348,16 +301,13 @@ class CustomerController extends Controller
                 
                 return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
             }else{
-
                 if($data['note'] != null){
-
                     DB::table('orders')
                         ->where('o_id', '=', $data['o_id'])
                         ->update(array('note' => $data['note'],
                         'o_status'=>'10'));
                 
                     return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-
                 }else{
                     DB::table('orders')
                         ->where('o_id', '=', $data['o_id'])
@@ -367,43 +317,32 @@ class CustomerController extends Controller
                 
                 
             }
-
         }
-
-
         
         
         // // get the user id
         // $user_id = auth()->user()->u_id;
         // $user = User::find($user_id);
-
         // // get order id with status draft
         // $ordercustdraft = Order::where('u_id_customer', $user_id)->where('o_status', '!=' , 1)->orWhereNull('o_status')->get();
         // $orderiddraft = $ordercustdraft->pluck('o_id')->all();
         // $ordersdraft = Order::find($orderiddraft);
-
         // // get order id with status pending
         // $ordercustpending = Order::where('u_id_customer', $user_id)->where('o_status', 1)->get();
         // $orderidpending = $ordercustpending->pluck('o_id')->all();
         // $orderspending = Order::find($orderidpending);
-
         // // get all order
         // $orders = Order::all();
-
         // if($orders != null){
-
         //     return view('customer/customer_orderlist')
         //     ->with('orders', $orders)
         //     ->with('ordersdraft', $ordersdraft)
         //     ->with('orderspending', $orderspending);
         // }
     }
-
     // method to calculate total price
     public function calcPrice($price, $category, $size, $quantity){
-
         //var_dump(": ".$size);
-
         $pricecalc = 0;
         if($category == "Nameset"){
             $priceint = intval($price[0]);
@@ -441,9 +380,7 @@ class CustomerController extends Controller
         //$priceint = intval($price[0]);
         //$pricecalc = $priceint;
         return $pricecalc;
-
     }
-
     // method to view mockup image
     public function customerViewOrder($order_id)
     {
@@ -455,12 +392,9 @@ class CustomerController extends Controller
         $design = Design::where('o_id', $order_id)->where('d_type', 1)->get();
         $spec = Spec::where('o_id', $order_id)->get();
         $unit = Unit::where('o_id', $order_id)->get();
-
         // $design = Design::find($order_id);
         // $specs = Spec::find($order_id);
         // $units = Unit::find($order_id);
-
-
         $order = Order::find($order_id);
         return view('customer/customer_view_order')
         ->with('order', $order)
@@ -469,7 +403,6 @@ class CustomerController extends Controller
         ->with('unit', $unit);
         
     }
-
     // method to view design image
     public function customerViewDesign($order_id)
     {
@@ -481,12 +414,9 @@ class CustomerController extends Controller
         $design = Design::where('o_id', $order_id)->where('d_type', 2)->get();
         $spec = Spec::where('o_id', $order_id)->get();
         $unit = Unit::where('o_id', $order_id)->get();
-
         // $design = Design::find($order_id);
         // $specs = Spec::find($order_id);
         // $units = Unit::find($order_id);
-
-
         $order = Order::find($order_id);
         return view('customer/customer_view_design')
         ->with('order', $order)
@@ -495,52 +425,39 @@ class CustomerController extends Controller
         ->with('unit', $unit);
         
     }
-
     // method to view invoice page for customer
     public function invoice()
     {
-
         $user_id = auth()->user()->u_id;
         $orderconfirm = Order::where('u_id_customer', '=' , $user_id)
         ->where('o_status', '!=' , 0)
         ->where('o_status', '!=' , 1)
         ->get();
-
         $materials = Material::all();
         $invoices = Invoice::all();
-
         //var_dump($orderconfirm);
-
         return view('customer/invoice')
         ->with('orders', $orderconfirm)
         ->with('materials', $materials)
         ->with('invoices', $invoices);
     }
-
     // method to view receipt page for customer
     public function receipt()
     {
         return view('customer/receipt');
     }
-
     // method to view or print invoice details
     public function viewInvoice(Request $request){
-
         $action = $request->input('actionbutton');
         $orderid = $request->input('orderid');
-
         // var_dump($action);
-
         if($action == "View"){
-
             $userid = auth()->user()->u_id;
             $user = User::where('u_id', '=' , $userid)->get();
             $orderconfirm = Order::where('o_id', '=' , $orderid)->get();
-
             $units = Unit::where('o_id', '=', $orderid)->get();
             $specsget = Spec::where('o_id', '=', $orderid)->get();
             $invoices = Invoice::where('o_id', '=', $orderid)->get();
-
             //var_dump($bodytype);
             $materials = Material::all();
             $bodies = Body::all();
@@ -549,7 +466,6 @@ class CustomerController extends Controller
             //$prices = Price::all();
             $usertype = auth()->user()->u_type;
             $prices = array();
-
             $neckid = Spec::where('o_id', '=' , $orderid)->pluck('n_id')->toArray();
             $bodyid = Spec::where('o_id', '=' , $orderid)->pluck('b_id')->toArray();
             $sleeveid = Spec::where('o_id', '=' , $orderid)->pluck('sl_id')->toArray();
@@ -558,31 +474,24 @@ class CustomerController extends Controller
             $size;
             $price;
             $totprice = 0;
-
             $totorderrow = count($neckid);
-
             for($i = 0; $i < $totorderrow; $i++){
                 if($neckid[$i] == 1){
                     $checkneck = 1;
                 }else{
                     $checkneck = 2;
                 }
-
                 $price = Price::where('n_id', '=', $checkneck)
                     ->where('b_id', '=' , $bodyid[$i])
                     ->where('sl_id', '=' , $sleeveid[$i])
                     ->where('u_type', '=' , $usertype)->pluck('price');
-
                 $category = Order::where('o_id', '=', $orderid)->pluck('category');
                 
                 $size = Unit::where('o_id', '=', $orderid)->pluck('size');
                 $totsize = count($size);
                 $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
                 $totunits = count($specs);
-
-
                 for($j = 0; $j < $totunits; $j++){
-
                     $size = Unit::where('o_id', '=', $orderid)
                     ->where('s_id', '=', $specs[$i])
                     ->pluck('size');
@@ -591,17 +500,13 @@ class CustomerController extends Controller
                     ->where('s_id', '=', $specs[$i])
                     ->pluck('un_quantity');
                     $totsize = count($size);
-
-
                     $pricescalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]);
                     array_push($prices, $pricescalc); 
                 }
             }
-
             // for($j = 0; $j < 6; $j++){
             //     var_dump($prices[$j]);
             // }
-
             return view('customer/view_invoice')
             ->with('users', $user)
             ->with('orders', $orderconfirm)
@@ -615,11 +520,8 @@ class CustomerController extends Controller
             ->with('prices', $prices)
             ->with('usertype', $usertype);
         }
-
     }
-
 // -------------------------------------- Add order to db --------------------------------------------------
-
     /**
      * Display a listing of the resource. 
      *
@@ -629,7 +531,6 @@ class CustomerController extends Controller
     {
         // // use ant of the 'Post' model function(using eloquent(ORM))
         // //$posts = Post::all(); // fetch all the data in 'Post' model/table
-
         // // set limit to view on page to different tyep of users
         // if(Gate::allows('isManager')){
         //     $posts = Post::orderBy('updated_at', 'desc')->paginate(10);  // paginate page to 10 data per page
@@ -648,12 +549,10 @@ class CustomerController extends Controller
         //     // else customer
         //     abort(404, "Sorry, you cannot do this action");
         // }
-
         
         // // return view of index file with 'posts' table data
         // return view('posts.index')->with('posts', $posts);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -665,11 +564,9 @@ class CustomerController extends Controller
         // if(!Gate::allows('isCustomer')){
         //     abort(404, "Sorry, you cannot do this action");
         // }
-
         // // load create view
         // return view('posts.create');
     }
-
     /**
      * 
      * Store a newly created resource in storage.
@@ -687,7 +584,6 @@ class CustomerController extends Controller
             'cover_image' => 'image|required|max:1999'
         ]);
 // set cover image max to 1999 because a lot of apache server not allowed user to upload image more than 2mb
-
         // ------------------ insert data into table order ---------------------------------- //
         // get from form
         $clothname = $request->input('cloth_name');
@@ -706,51 +602,38 @@ class CustomerController extends Controller
         $printid = null; // currently auto assign
         $taylorid = null; // currently auto assign
         // // $datecreatedorder; // auto assign to the table
-
         //var_dump("--------------- customer id ------------ Customer ID: ".$customerid);
-
         // assign order design to designer
         // get all designer id
         $userdesigner = User::where('u_type', 3)->where('u_status', 1)->pluck('u_id')->toArray();
-
         // $totaldesigner = count($userdesigner);
         
         // for($i = 0; $i < $totaldesigner; $i++){
         //     var_dump("--------------- id designer ------------ ID: ".$userdesigner[$i]);
         // }
         // var_dump("--------------- total designer ------------Total Designer: ".$totaldesigner);
-
-
         // check if order existed
         $hasorder = Order::all()->toArray();
         //var_dump("--------------- total order ------------Total Order: ".count($hasorder));
-
         // if no order
         if($hasorder == 0){
-
             // assign first index of designer id to the first order
             $designerid = $userdesigner[0];
-
         }else{
-
             // get array of designer id from order table 
             $orderiddesigner = Order::all()->pluck('u_id_designer')->toArray();
-
             // total designer
             $totaldesigner = count($userdesigner);
             // total order
             $totalorder = count($orderiddesigner);
-
             // check if total order is more than designer
             if($totalorder >= $totaldesigner){
-
                 // get the remainder of the order
                 $remainderindex = $totalorder % $totaldesigner;
                 // get next designer id
                 $nextorderdesignerid = $userdesigner[$remainderindex];
                 // assign to variable
                 $designerid = $nextorderdesignerid;
-
             }else{
                 // last designer id index
                 $lastiddesignerindex = count($orderiddesigner)-1;
@@ -762,15 +645,10 @@ class CustomerController extends Controller
                 $designerid = $nextorderdesignerid;
             }
             
-
         }
-
         
-
-
         // Create order model
         $order = new Order;
-
         // insert into table order
         $order->file_name = $clothname;
         $order->category = $category;
@@ -784,10 +662,8 @@ class CustomerController extends Controller
         $order->u_id_designer = $designerid;
         $order->u_id_print = $printid;
         $order->u_id_taylor = $taylorid;
-
         // // save it
         $order->save();
-
         // ------------------ insert data into table spec ---------------------------------- //
         // get from other table
         $orderid = $order->o_id;
@@ -800,7 +676,6 @@ class CustomerController extends Controller
         // $originalname;
         // $originalextension;
         // $imagerequestfile;
-
         if(number_format($request->input('setamount')) == 0){
             $totalset = 1;
         }else{
@@ -809,37 +684,29 @@ class CustomerController extends Controller
         }
         
         for($i = 0; $i < $totalset; $i++){
-
             // Create spec model
             $spec = new Spec;
-
             $spec->n_id = $request->input('necktype'.$i);
             $bodyid = $request->input('type'.$i);
             $sleeveid = $request->input('sleeve'.$i);
             $collarcolor = $request->input('collar_color'.$i);
-
             $spec->o_id = $orderid;
             $spec->b_id = $bodyid;
             $spec->sl_id = $sleeveid;
             $spec->collar_color = $collarcolor;
-
             // save it
             $spec->save();
-
             // ------------------ insert data into table unit and design ---------------------------------- //
             // $idspec = $spec->s_id;
             $idspec = DB::getPdo()->lastInsertId();
-
             // var_dump($idspec);
             $name; // if user choose nameset, assign name. Else assign null
             $size;
             $unitquantity;
             $unitstatus = 0; // assign 0, (uncomplete)
             
-
             if($category == "Nameset"){
                 // case nameset
-
                 // get total row nameset
                 if(number_format($request->input('namesetnum'.$i)) == 0){
                     $namesetnum = 1;
@@ -848,11 +715,8 @@ class CustomerController extends Controller
                     $namesetnum = number_format($request->input('namesetnum'.$i));
                     var_dump("----------name set: ----------".$namesetnum);
                 }
-
                 
-
                 for($j = 0; $j < $namesetnum; $j++){
-
                     // Create unit model
                     $unit = new Unit;
         
@@ -872,9 +736,7 @@ class CustomerController extends Controller
         
                     // save it
                     $unit->save();
-
                     if($request->hasFile('cover_image')){
-
                         // get the file name with the extension
                         $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
                         $originalname = $request->file('cover_image')->getClientOriginalName();
@@ -903,17 +765,13 @@ class CustomerController extends Controller
                         $mockupdesign = 'noimage.jpg';
                         //var_dump("no file");
                     }
-
                     //$mockupdesign = $this->getDesignName();
-
                     $idunit = $unit->un_id;
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
                     
                 }
-
             }else{
                 // sace size
-
                 $xxs = $request->input('quantitysinglexxs'.$i);
                 $xs = $request->input('quantitysinglexs'.$i);
                 $s = $request->input('quantitysingles'.$i);
@@ -926,36 +784,27 @@ class CustomerController extends Controller
                 $xl5 = $request->input('quantitysingle5xl'.$i);
                 $xl6 = $request->input('quantitysingle6xl'.$i);
                 $xl7 = $request->input('quantitysingle7xl'.$i);
-
                 //$mockupdesign = $this->getDesignName();
-
                 // // handle file upload
                 // if($request->hasFile('cover_image')){
-
                 //     // get the file name with the extension
                 //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-
                 //     // get just file name
                 //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
                 //     // get just extension
                 //     $extension = $request->file('cover_image')->getClientOriginalExtension();
-
                 //     // create filename to store
                 //     $mockupdesign = $filename.'_'.time().'.'.$extension;
-
                 //     // upload the image
                 //     $destinationPath = 'orders/mockup';
                 //     $image = $request->file('cover_image');
                 //     //$image->move($destinationPath, $mockupdesign);
                 //     $image->storeAs($destinationPath, $mockupdesign);
                     
-
                 // }else{
                 //     $mockupdesign = 'noimage.jpg';
                 //     var_dump("no file");
                 // }
-
                 // if($request->hasFile('cover_image')){
                 //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
                 //     $originalname = $request->file('cover_image')->getClientOriginalName();
@@ -969,24 +818,18 @@ class CustomerController extends Controller
                 // }else{
                 //     $mockupdesign = 'noimage.jpg';
                 // }
-
                 if($request->hasFile('cover_image')){
-
                     // get the file name with the extension
                     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
                     $originalname = $request->file('cover_image')->getClientOriginalName();
                     
-
                     // get just file name
                     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
                     // get just extension
                     $extension = $request->file('cover_image')->getClientOriginalExtension();
                     $originalextension = $request->file('cover_image')->getClientOriginalExtension();
-
                     // create filename to store
                     $mockupdesign = $filename.'_'.time().'.'.$extension;
-
                     // upload the image
                     $destinationPath = 'orders/mockup';
                     $image = $request->file('cover_image');
@@ -997,15 +840,12 @@ class CustomerController extends Controller
                     
                     //$image->storeAs($destinationPath, $mockupdesign);
                     //$this->storeDesignName($mockupdesigns); 
-
                     //$GLOBALS['mockupdesign'] = $GLOBALS['mockupdesigns'];
                     
-
                 }else{
                     $mockupdesign = 'noimage.jpg';
                     //var_dump("no file");
                 }
-
                 if($xxs != 0){
                     $name = null;
                     $size = "XXS";
@@ -1210,72 +1050,51 @@ class CustomerController extends Controller
                     $idunit = $unit->un_id;
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
-
             }
             
         }
-
         // // store to design table
         // $idunit = null;
         //$this->storeImage($originalname, $originalextension, $imagerequestfile);
-
         // redirect and set success message
         return redirect('/customer/orderlist')->with('success', 'Order Created');
-
     }
-
     // public function storeDesignName($mockupdesign){
     //     $mockupdesigns = $mockupdesign;
     // }
-
     // public function getDesignName(){
     //     return $mockupdesigns;
     // }
-
     // public function storeImage($originalname, $originalextension, $imagerequestfile){
-
     //     // get the file name with the extension
     //     $filenameWithExt = $originalname;
-
     //     // get just file name
     //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
     //     // get just extension
     //     $extension = $originalextension;
-
     //     // create filename to store
     //     $mockupdesign = $filename.'_'.time().'.'.$extension;
-
     //     // upload the image
     //     $destinationPath = 'orders/mockup';
     //     $image = $imagerequestfile;
     //     $image->move($destinationPath, $mockupdesign);
     //     //$image->storeAs($destinationPath, $mockupdesign);
             
-
-
     // }
-
     // function to store data to table design
     public function storeDesign($unitid, $mockupdesign, $orderid, $designerid){
-
         $designtype = 1; // set to 1 (mockup) 
-
         // Create design model
         $design = new Design;
-
         // insert into table design
         $design->o_id = $orderid;
         $design->un_id = $unitid; 
         $design->u_id_designer = $designerid; 
         $design->d_url = $mockupdesign; 
         $design->d_type = $designtype;
-
         // save it
         $design->save();
-
     } 
-
     /**
      * Display the specified resource.
      *
@@ -1292,22 +1111,17 @@ class CustomerController extends Controller
         // $design = Design::where('o_id', $orderid);
         // $specs = Spec::where('o_id', $orderid);
         // $units = Unit::where('o_id', $orderid);
-
         // return view('customer/customer_orderlist')
         // ->with('order', $order)
         // ->with('design', $design)
         // ->with('specs', $specs)
         // ->with('units', $units);
-
         //-------------------------------------------------------------------------
-
         // // fetch data based on id from database
         // $post = Post::find($id);
-
         // // return show page
         // return view('posts.show')->with('post', $post);
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -1323,11 +1137,9 @@ class CustomerController extends Controller
         
         // // fetch data based on id from database
         // $post = Post::find($id);
-
         // // return edit page
         // return view('posts.edit')->with('post', $post);
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -1344,30 +1156,21 @@ class CustomerController extends Controller
         //     'amount' => 'required',
         //     'cover_image' => 'image|max:1999|nullable'
         // ]);
-
         // // handle file upload
         // if($request->hasFile('cover_image')){
-
         //     // get the file name with the extension
         //     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
-
         //     // get just file name
         //     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-
         //     // get just extension
         //     $extension = $request->file('cover_image')->getClientOriginalExtension();
-
         //     // create filename to store
         //     $fileNameToStore = $filename.'_'.time().'.'.$extension;
-
         //     // upload the image
         //     $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
-
         // }
-
         // // fetch data based on id from database
         // $post = Post::find($id);
-
         // // add out var value and get it from submitted form
         // $post->title = $request->input('title');
         // $post->description = $request->input('description');
@@ -1382,7 +1185,6 @@ class CustomerController extends Controller
         // }else{
         //     $post->features = 'no feature';
         // }
-
         // $post->material = $request->input('material');
         // $post->amount = $request->input('amount');
         // // get user id that update the order
@@ -1390,7 +1192,6 @@ class CustomerController extends Controller
         // // insert the cover image into database
         // //$post->cover_image = $fileNameToStore;
         
-
         // if($request->hasFile('cover_image')){
         //     if($post->cover_image != 'noimage.jpg'){
         //         // Delete image with storage object delete()
@@ -1398,17 +1199,13 @@ class CustomerController extends Controller
         //     }
         //     $post->cover_image = $fileNameToStore;
         // }
-
         // $post->status = $request->input('status');
         // $post->delivery = $request->input('delivery');
-
         // // save it
         // $post->save();
-
         // // redirect and set success message
         // return redirect('/posts')->with('success', 'Order Updated');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -1419,22 +1216,18 @@ class CustomerController extends Controller
     {
         // // find the post by it's @id that has been passed in
         // $post = Post::find($id);
-
         // // check for correct user
         // // if(auth()->user()->id !== $post->user_id){
         // //     return redirect('/posts')->with('error', 'Unauthorized Page');
         // // }
-
         // // we don't want the 'no_image' to disappear because we gonna need that in case someone upload new post without an image
         // if($post->cover_image != 'noimage.jpg'){
         //     // Delete image with storage object delete()
         //     Storage::delete('public/cover_images/'.$post->cover_image);
         // }
-
         // // simply delete it
         // $post->delete();
         // // redirect back to post
         // return redirect('/posts')->with('success', 'Order Removed');
     }
-
 }

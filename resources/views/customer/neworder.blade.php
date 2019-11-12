@@ -779,9 +779,9 @@
         namesetnumamount = parseInt(namesetnumamount)+1;
         document.getElementById('namesetnum'+numRow).value = namesetnumamount;
         document.getElementById('totalcasenameset').value = totnameset;
-        //console.log(document.getElementById('namesetnum'+numRow).value);
+        console.log("After add: "+document.getElementById('namesetnum'+numRow).value);
         numRow += 1;
-        console.log("After add: "+document.getElementById('namesetnum'+numRow).value)
+        //console.log("After add: "+document.getElementById('namesetnum'+numRow).value)
         //console.log(document.getElementById('totalcasenameset').value);
     }
 
@@ -795,12 +795,15 @@
             if(parseInt(arr[i].value))
                 tot += parseInt(arr[i].value);
         }
+        var namesetnumamount = document.getElementById('namesetnum'+numRow).value;
+
         totnameset -= 1;
         namesetnumamount = parseInt(namesetnumamount)-1;
         document.getElementById('namesetnum'+numRow).value = namesetnumamount;
-        console.log("After remove: "+document.getElementById('namesetnum'+numRow).value)
+        console.log("After remove: "+document.getElementById('namesetnum'+numRow).value);
         document.getElementById('total_quantity').value = tot;
         document.getElementById('totalcasenameset').value = totnameset;
+        //console.log("After remove: "+document.getElementById('totalcasenameset').value);
     }
 
 
