@@ -268,55 +268,54 @@ class CustomerController extends Controller
             return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
         }else{
             //-------------------- request redesign ----------------------//
-            $data = $request->all();
+            // $data = $request->all();
             
-            if ($request->has('design')) {
-                //var_dump($data['uid']);
-                $image = $request->file('design');                    
-                $destinationPath = 'orders/draft/'; // upload path
-                $profileImage = 'draft'.date('YmdHis') . "." . $image->getClientOriginalExtension();
-                $image->move($destinationPath, $profileImage);
-                $url = $destinationPath.$profileImage;
+            // if ($request->has('design')) {
+            //     $image = $request->file('design');                    
+            //     $destinationPath = 'orders/draft/'; 
+            //     $profileImage = 'draft'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+            //     $image->move($destinationPath, $profileImage);
+            //     $url = $destinationPath.$profileImage;
                     
-                DB::table('design')->insert([
-                        'o_id' => $data['o_id'],
-                        'u_id_designer'=>$data['u_id'],
-                        'd_url' =>$profileImage,
-                        'd_type'=>'2',
-                        'created_at' => DB::raw('now()'),
-                        'updated_at' => DB::raw('now()')
-                        ]);
+            //     DB::table('design')->insert([
+            //             'o_id' => $data['o_id'],
+            //             'u_id_designer'=>$data['u_id'],
+            //             'd_url' =>$profileImage,
+            //             'd_type'=>'2',
+            //             'created_at' => DB::raw('now()'),
+            //             'updated_at' => DB::raw('now()')
+            //             ]);
                 
-                if($data['note'] != null){
-                    DB::table('orders')
-                            ->where('o_id', '=', $data['o_id'])
-                            ->update(array('note' => $data['note'],
-                                            'o_status'=>'10'));
-                }else{
-                    DB::table('orders')
-                        ->where('o_id', '=', $data['o_id'])
-                        ->update(array('o_status'=>'10'));
-                    return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-                }
+            //     if($data['note'] != null){
+            //         DB::table('orders')
+            //                 ->where('o_id', '=', $data['o_id'])
+            //                 ->update(array('note' => $data['note'],
+            //                                 'o_status'=>'10'));
+            //     }else{
+            //         DB::table('orders')
+            //             ->where('o_id', '=', $data['o_id'])
+            //             ->update(array('o_status'=>'10'));
+            //         return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
+            //     }
                 
-                return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-            }else{
-                if($data['note'] != null){
-                    DB::table('orders')
-                        ->where('o_id', '=', $data['o_id'])
-                        ->update(array('note' => $data['note'],
-                        'o_status'=>'10'));
+            //     return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
+            // }else{
+            //     if($data['note'] != null){
+            //         DB::table('orders')
+            //             ->where('o_id', '=', $data['o_id'])
+            //             ->update(array('note' => $data['note'],
+            //             'o_status'=>'10'));
                 
-                    return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-                }else{
-                    DB::table('orders')
-                        ->where('o_id', '=', $data['o_id'])
-                        ->update(array('o_status'=>'10'));
-                    return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-                }
+            //         return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
+            //     }else{
+            //         DB::table('orders')
+            //             ->where('o_id', '=', $data['o_id'])
+            //             ->update(array('o_status'=>'10'));
+            //         return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
+            //     }
                 
                 
-            }
+            // }
         }
         
         
@@ -598,6 +597,7 @@ class CustomerController extends Controller
         // generated into table
         $orderstatus = 0; // set to drafted
         $customerid = auth()->user()->u_id;
+        $customername = auth()->user()->username;
         $designerid; 
         $printid = null; // currently auto assign
         $taylorid = null; // currently auto assign
@@ -682,7 +682,7 @@ class CustomerController extends Controller
             // total number of set
             $totalset = number_format($request->input('setamount'));
         }
-        
+        $num = 0;
         for($i = 0; $i < $totalset; $i++){
             // Create spec model
             $spec = new Spec;
@@ -745,21 +745,33 @@ class CustomerController extends Controller
                         // get just file name
                         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
     
-                        // get just extension
-                        $extension = $request->file('cover_image')->getClientOriginalExtension();
-                        $originalextension = $request->file('cover_image')->getClientOriginalExtension();
+                        // // get just extension
+                        // $extension = $request->file('cover_image')->getClientOriginalExtension();
+                        // $originalextension = $request->file('cover_image')->getClientOriginalExtension();
     
-                        // create filename to store
-                        $mockupdesign = $filename.'_'.time().'.'.$extension;
+                        // // create filename to store
+                        // $mockupdesign = $filename.'_'.time().'.'.$extension;
     
-                        // upload the image
-                        $destinationPath = 'orders/mockup';
-                        $image = $request->file('cover_image');
-                        $imagerequestfile = $request->file('cover_image');
-                        if($j == 0){
-                            // $path = $request->file('cover_image')->storeAs($destinationPath, $mockupdesign);
-                            //$image->move($destinationPath, $mockupdesign);
+                        // // upload the image
+                        // $destinationPath = 'orders/mockup';
+                        // $image = $request->file('cover_image');
+                        // $imagerequestfile = $request->file('cover_image');
+
+                        $image = $request->file('cover_image');                    
+                        $destinationPath = 'orders/mockup/'; 
+                        $profileImage = $customername.'-mockup-'.$filename.'-'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+                        if($num == 0){
+                            $image->move($destinationPath, $profileImage);
+                            $num++;
                         }
+                        $url = $destinationPath.$profileImage;
+
+                        $mockupdesign = $profileImage;
+
+                        // if($j == 0){
+                        //     // $path = $request->file('cover_image')->storeAs($destinationPath, $mockupdesign);
+                        //     //$image->move($destinationPath, $mockupdesign);
+                        // }
     
                     }else{
                         $mockupdesign = 'noimage.jpg';

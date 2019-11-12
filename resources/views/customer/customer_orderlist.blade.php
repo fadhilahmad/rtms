@@ -139,10 +139,10 @@
                                                         <input type="submit" style="display: inline-block;" name="confirmbutton" value="Confirm" class="btn btn-primary">
                                             
                                                     {!!Form::close()!!}
-                                                    <button 
+                                                    {{-- <button 
                                                         class="btn btn-primary edit" data-toggle="modal" style="display: inline-block;" data-target="#Modal" data-tittle="Request" 
                                                         data-oid="{{$singleorderpendingrow->o_id}}" data-uid="{{$singleorderpendingrow->u_id_designer}}">Request
-                                                    </button> 
+                                                    </button>  --}}
 
                                                 </td>
                                             </tr>
@@ -161,7 +161,7 @@
         </div>
     </div>
 </div>
-
+{{-- 
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -199,34 +199,35 @@
                 </form>
             </div>
         </div>
-      </div>
+      </div> --}}
 
 <script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript">
-$(document).on("click", ".edit", function () {
-     var name = $(this).data('tittle');
-     var oid = $(this).data('oid');
-     var uid = $(this).data('uid');
-     $(".modal-title").text( name );
-     $(".modal-body #oid").val( oid );
-     $(".modal-body #uid").val( uid );
-     $(".modal-body #note").val( "" );
 
-});
+// $(document).on("click", ".edit", function () {
+//      var name = $(this).data('tittle');
+//      var oid = $(this).data('oid');
+//      var uid = $(this).data('uid');
+//      $(".modal-title").text( name );
+//      $(".modal-body #oid").val( oid );
+//      $(".modal-body #uid").val( uid );
+//      $(".modal-body #note").val( "" );
 
-  function validateForm() {
-    var x = document.forms["designform"]["design"].value;
-        // if (x == "") 
-        // {
-        // //alert("Please insert image");
-        // //return false;
-        // }
-        // else
-        // {
-        //   document.getElementById("designform").submit();  
-        // }
-        document.getElementById("designform").submit();         
-    }
+// });
+
+//   function validateForm() {
+//     var x = document.forms["designform"]["design"].value;
+//         // if (x == "") 
+//         // {
+//         // //alert("Please insert image");
+//         // //return false;
+//         // }
+//         // else
+//         // {
+//         //   document.getElementById("designform").submit();  
+//         // }
+//         document.getElementById("designform").submit();         
+//     }
 </script>
 
 @endsection

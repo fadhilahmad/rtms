@@ -563,27 +563,27 @@
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">XXS</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">XS</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">S</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">M</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">L</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">XL</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl0"></td>
                                                     </tr>
                                                 </table>
                                                 <table id="namesettablesize" style="width:48%; margin: 0px auto;">
@@ -593,27 +593,27 @@
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">2XL</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">3XL</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">4XL</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">5XL</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">6XL</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl0"></td>
                                                     </tr>
                                                     <tr>
                                                         <td id="namesetdata">7XL</td>
-                                                        <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl0"></td>
+                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl0"></td>
                                                     </tr>
                                                 </table>
                                                 </div>
@@ -660,7 +660,7 @@
                                                                     <option value="7xl">7XL</option>
                                                                 </select>
                                                             </td>
-                                                            <td id="namesetdata"><input onblur="findTotalNameset()" class="form-control totalnameset" 
+                                                            <td id="namesetdata"><input oninput="findTotalNameset()" class="form-control totalnameset" 
                                                                 type="number" id="quantitynameset" name="quantitysinglenamesetname0-0"></td>
                                                             
                                                         </tr>
@@ -771,7 +771,7 @@
                 '<option value="7xl">7XL</option>'+
             '</select></td>'+
             '<td id="namesetdata">'+
-                '<input onblur="findTotalNameset()" type="number" class="form-control totalnameset"  '+
+                '<input oninput="findTotalNameset()" type="number" class="form-control totalnameset"  '+
                 'id="quantitynameset" name="quantitysinglenamesetname'+ numRow.toString() +'-'+ namesetnumamount.toString() +'">'+
             '</td></tr>');
         $('#namesettable'+ numRow.toString() +' tr:last').after(newRow);
@@ -825,36 +825,36 @@
                                     '<th id="namesethead">Quantity</th> '+
                                 '</tr>'+
                                 '<tr><td id="namesetdata">XXS</td>'+
-                                '   <td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs'+ num.toString() +'"></td>'+
+                                '   <td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs'+ num.toString() +'"></td>'+
                                 '</tr>'+
                                 '<tr><td id="namesetdata">XS</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs'+ num.toString() +'"></td>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs'+ num.toString() +'"></td>'+
                                 '</tr>'+
                                 '<tr><td id="namesetdata">S</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">M</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">L</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">XL</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl'+ num.toString() +'"></td></tr>'+
                             '</table>'+
                             '<table id="namesettablesize" style="width:48%; margin: 0px auto;">'+
                                 '<tr><th id="namesethead">Size</th>'+
                                     '<th id="namesethead">Quantity</th> '+
                                 '</tr>'+
                                 '<tr><td id="namesetdata">2XL</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">3XL</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">4XL</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">5XL</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">6XL</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">7XL</td>'+
-                                    '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl'+ num.toString() +'"></td></tr>'+
                             '</table></div></div></div><br>'+
                         '<div id="adddivnameset'+ num.toString() +'" name="adddivnameset" style="display:none">'+
                             '<div class="form-group col-sm-10"><input type="hidden" id="namesetnum'+ num.toString() +'" name="namesetnum'+ num.toString() +'" value="1">'+
@@ -875,7 +875,7 @@
                                             '<option value="6xl">6XL</option><option value="7xl">7XL</option>'+
                                             '</select>'+
                                         '</td>'+
-                                        '<td id="namesetdata"><input onblur="findTotalNameset()" type="number" class="form-control totalnameset"'+
+                                        '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset"'+
                                             ' id="quantity" name="quantitysinglenamesetname'+ numnameset.toString() +'-0">'+
                                         '</td>'+
                                     '</tr>'+
