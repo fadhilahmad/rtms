@@ -80,6 +80,13 @@ Route::get('admin/change_password', 'Admin\AdminController@adminChangePassword')
 Route::patch('admin/change_password/update/{id}', 'Admin\AdminController@updateChangePassword')->name('admin.updatePassword')->middleware('admin');
 //order info
 Route::get('admin/order_info/{oid}', 'Admin\OrderController@orderInfo')->name('order_info')->middleware('admin');
+
+//test route 
+Route::get('/jobOrder', function () {
+    return view('admin.job_order');
+});
+
+
 //////////////////////////////////////////////////////////////DEPARTMENT PAGE///////////////////////////////////////////////////////////////
 //page orderlist
 Route::get('department/department_orderlist', 'HomeController@departmentHome')->name('department.home')->middleware('department');

@@ -98,7 +98,7 @@ table {
   width: calc(100% - 200px);
   background-color: #F4F7FA;
   min-height: 100vh;
-  padding-bottom: 50px;
+  /* padding-bottom: 50px; */
 }
 
 .page.active {

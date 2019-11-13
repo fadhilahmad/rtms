@@ -10,7 +10,44 @@
     border-radius: 0;
   }
 
-  .form-label {
+.form-label {
     background-color: #33b35a;
     color: black;
+}
+/*job order form */
+.card-header.order-form {
+  background-color: black;
+  color: #eee;
+}
+.container-scroll {
+  width: 100%;
+  padding-right: 20px;
+  padding-left: 20px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.scroll_page {
+overflow-x: auto;
+overflow-y: auto ;
+white-space: nowrap;
+
+}
+
+.scroll_page .scroll_page--box {
+display: inline-block;
+width:100vw;
+float: none;
+/* border: 1px solid red; */
+}
+
+.table-bordered {
+  border: 1px solid #000000;
+}
+.text-big-red{
+  position: absolute;
+  margin-top: 100px;
+  margin-left:30px;
+  text-align: center;
+  color:red;
+
 }
