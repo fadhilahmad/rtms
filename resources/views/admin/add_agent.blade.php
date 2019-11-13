@@ -68,6 +68,18 @@
                         </div>
                         
                         <div class="form-group row">
+                            <label for="tier" class="col-md-4 col-form-label text-md-right">{{ __('Tier') }}</label>
+
+                            <div class="col-md-6">
+                                <select id="tier" name="tier" class="form-control" value="{{ old('tier') }}" >
+                                    <option value="6">Tier 1</option>
+                                    <option value="8">Tier 2</option>
+                                    <option value="9">Tier 3</option>
+                                </select>
+                            </div>
+                        </div>                        
+                        
+                        <div class="form-group row">
                             <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">

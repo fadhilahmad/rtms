@@ -42,7 +42,7 @@ class RegisterAgentController extends Controller
             'address' => $data['address'],
             'username' => $data['username'],
             'email' => $data['email'],
-            'u_type' => '6',
+            'u_type' => $data['tier'],
             'u_status' => '1',
             'password' => Hash::make($data['password']),
         ]);

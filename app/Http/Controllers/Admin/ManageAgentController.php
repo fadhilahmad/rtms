@@ -13,7 +13,7 @@ class ManageAgentController extends Controller
     public function AgentList()
     {
         $agent = User::selectRaw('*')
-                    ->where('u_type', '=', 6)
+                    ->whereIn('u_type', [6,8,9])
                     ->where('u_status','=',1)
                     ->paginate(30);
                     //->get();
@@ -25,10 +25,21 @@ class ManageAgentController extends Controller
     public function edit(Request $request)
     {
         $data = $request->all();
+        
+        if($data['function']=='delete'){
         $customer = DB::table('user')
                 ->where('u_id', '=', $data['id'])
                 ->update(array('u_status' => 0));
 
         return redirect()->back()->with('message', 'Deleted');
+        }
+        
+        if($data['function']=='update'){
+        $customer = DB::table('user')
+                ->where('u_id', '=', $data['id'])
+                ->update(array('u_type' => $data['tier']));
+
+        return redirect()->back()->with('message', 'Updated');
+        }
     }
 }
