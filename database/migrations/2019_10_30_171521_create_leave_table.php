@@ -16,9 +16,11 @@ class CreateLeaveTable extends Migration
         Schema::create('leave', function (Blueprint $table) {
             $table->bigIncrements('l_id');
             $table->unsignedBigInteger('u_id')->unsigned();
-            $table->text('raeson')->nullable();
+            $table->text('reason')->nullable();
             $table->integer('l_type');
             $table->integer('l_status');
+            $table->integer('total_day');
+            $table->text('file_url')->nullable();
             $table->date('apply_date');
             $table->date('start_date');
             $table->date('end_date');
