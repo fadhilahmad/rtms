@@ -45,7 +45,7 @@ Route::post('admin/add_newstaff','Admin\RegisterStaffController@register');
 Route::get('admin/leave_list', 'Admin\AdminController@leaveList')->name('admin.leavelist')->middleware('admin');
 //page leave_application
 Route::get('admin/leave_application', 'Admin\AdminController@leaveApplication')->name('admin.leaveapplication')->middleware('admin');
-Route::post('admin/leave_application/{id}/type/{type}','Admin\LeaveController@application')->name('leave_application');
+Route::post('admin/leave_application','Admin\LeaveController@application')->name('leave_application')->middleware('admin');
 //page leave_day
 Route::get('admin/leave_day', 'Admin\AdminController@leaveDay')->name('admin.leavesetting')->middleware('admin');
 Route::post('admin/leave_day','Admin\LeaveController@setting')->name('leave_setting');

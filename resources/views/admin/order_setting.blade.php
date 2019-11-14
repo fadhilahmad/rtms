@@ -110,6 +110,7 @@ text-align: center;
                     <hr>
                     <br><br>
                     
+                    @if($delivery)
                     <div class="row">
                         <div class="col-md-6">
                             <center><h2>DELIVERY DAY</h2></center><br>
@@ -134,6 +135,7 @@ text-align: center;
                                 </tbody>
                             </table>                                                                         
                         </div>
+                        @endif
                                            
                         <div class="col-md-6">
                             <center><h2>SLEEVE</h2></center><br>

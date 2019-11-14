@@ -142,17 +142,32 @@ class DepartmentController extends Controller
         
         $data = $request->all();
         
+     //   dd($data);
+
+                if ($request->has('support')) {
+
+                    $image = $request->file('support');                    
+                    $destinationPath = 'leave/'; // upload path
+                    $profileImage = $data['u_id']."_".date('YmdHis') . "." . $image->getClientOriginalExtension();
+                    $image->move($destinationPath, $profileImage);
+                    $url = $destinationPath.$profileImage;
+                }else{
+                    $url = '';
+                }
+                
         DB::table('leave')->insert([
                      'u_id' => $data['u_id'],
-                     'raeson'=> $data['reason'],
+                     'reason'=> $data['reason'],
                      'l_type'=> $data['leave_type'],
                      'l_status'=> '2',
+                     'total_day'=> $data['total_day'],
+                     'file_url'=> $url,
                      'apply_date'=> DB::raw('now()'),
                      'start_date'=> $data['start_date'],
                      'end_date'=> $data['end_date'],
                      'updated_date' => DB::raw('now()')
                     ]);
-        return redirect('department/leave')->with('message', 'Success');        
+        return redirect('department/leave')->with('message', 'Your application has been submited');        
     }
     
     public function updateOrder(Request $request){

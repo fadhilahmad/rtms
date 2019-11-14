@@ -90,7 +90,12 @@ class AdminController extends Controller
     
     public function leaveList() 
     {
-        return \View::make('admin/leave_list');
+        $leave = DB::table('leave')
+                    ->join('user', 'leave.u_id', '=', 'user.u_id')
+                    ->where('leave.l_status','=',1)
+                    ->paginate(30);        
+        
+        return view('admin/leave_list', compact('leave'));
     }
     
     public function leaveApplication() 
@@ -156,8 +161,7 @@ class AdminController extends Controller
                 ->get();
         
         $delivery = DeliverySetting::selectRaw('*')
-                ->first()
-                ->get();
+                ->first();
         
         return view('admin/order_setting', compact('body','material','neck','sleeve','delivery'));
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use App\LeaveDay;
+use App\Leave;
 use DB;
 use Carbon\Carbon;
 
@@ -41,24 +42,86 @@ class LeaveController extends Controller
         return redirect('admin/leave_day')->with('message', 'updated');
     }
     
-    public function application($id,$type){
+    public function application(Request $request){
         
-        if($type==='app')
+        $data = $request->all();
+        
+       // dd($data);
+        if($data['function']==='approve')
             {
-                DB::table('leave')
-                    ->where('l_id', '=', $id)
+        $leave = LeaveDay::selectRaw('*')
+                ->where('u_id','=',$data['uid'])
+                ->first();
+        
+            if($data['leave_type']=='1')
+            {
+                $al = $leave->al_day;
+                $day = $data['total_day'];
+                $bal = $al-$day;
+            
+                DB::table('leave_day')
+                    ->where('u_id', '=', $data['uid'])
+                    ->update(['al_day'=> $bal,
+                    'updated_at'=>DB::raw('now()')
+                    ]);
+                
+                 DB::table('leave')
+                    ->where('l_id', '=', $data['id'])
                     ->update(array('l_status' => 1));
 
-                return redirect('admin/leave_application')->with('message', 'Approved');
+                return redirect('admin/leave_application')->with('message', 'Approved');               
+                
             }
-        elseif($type==='rej')
+            elseif($data['leave_type']=='2')
+            {
+                $el = $leave->el_day;
+                $day = $data['total_day'];
+                $bal = $el-$day;
+            
+                DB::table('leave_day')
+                    ->where('u_id', '=', $data['uid'])
+                    ->update(['el_day'=> $bal,
+                    'updated_at'=>DB::raw('now()')
+                    ]);
+                
+                 DB::table('leave')
+                    ->where('l_id', '=', $data['id'])
+                    ->update(array('l_status' => 1));
+
+                return redirect('admin/leave_application')->with('message', 'Approved');                   
+            }
+            elseif($data['leave_type']=='3')
+            {
+                $mc = $leave->mc_day;
+                $day = $data['total_day'];
+                $bal = $mc-$day;
+            
+                DB::table('leave_day')
+                    ->where('u_id', '=', $data['uid'])
+                    ->update(['mc_day'=> $bal,
+                    'updated_at'=>DB::raw('now()')
+                    ]);
+                
+                 DB::table('leave')
+                    ->where('l_id', '=', $data['id'])
+                    ->update(array('l_status' => 1));
+
+                return redirect('admin/leave_application')->with('message', 'Approved');                   
+            }        
+
+            }
+        elseif($data['function']==='reject')
             {
                 DB::table('leave')
-                    ->where('l_id', '=', $id)
+                    ->where('l_id', '=', $data['id'])
                     ->update(array('l_status' => 0));
 
                 return redirect('admin/leave_application')->with('message', 'Rejected');
-            }       
+            }
+        elseif($data['function']==='download')
+            {               
+                return response()->download($data['file_url']);               
+            }            
         
         return redirect('admin/leave_application');
     }
