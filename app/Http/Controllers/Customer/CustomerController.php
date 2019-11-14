@@ -341,6 +341,54 @@ class CustomerController extends Controller
         ->with('unit', $unit);
         
     }
+    
+    // method to view mockup image
+    public function customerViewJobOrder($order_id)
+    {
+        $userid = auth()->user()->u_id;
+        $user = User::find($userid);
+        // $user = User::where('u_id', '=' , $userid)->get();
+        $design = Design::where('o_id', $order_id)->where('d_type', 1)->get();
+        $specs = Spec::where('o_id', $order_id)->get();
+        $unit = Unit::where('o_id', $order_id)->get();
+        $order = Order::find($order_id);
+        $materials = Material::all();
+        $sleeves = Sleeve::all();
+        $necks = Neck::all();
+        $designer = User::find($order->u_id_designer);
+
+        //$specs = Spec::find($order_id);
+
+        //var_dump($spec);
+        
+        //->with('specs', $specs)
+
+        return view('customer.cust_job_order')
+        ->with('user', $user)
+        ->with('order', $order)
+        ->with('designs', $design)
+        ->with('specs', $specs)
+        ->with('unit', $unit)
+        ->with('materials', $materials)
+        ->with('sleeves', $sleeves)
+        ->with('necks', $necks)
+        ->with('designer', $designer);
+        
+    }
+    // // method to view customer job order
+    // public function customerViewJobOrder($order_id)
+    // {
+    //     $design = Design::where('o_id', $order_id)->where('d_type', 1)->get();
+    //     $spec = Spec::where('o_id', $order_id)->get();
+    //     $unit = Unit::where('o_id', $order_id)->get();
+    //     $order = Order::find($order_id);
+    //     return view('customer/customer_view_order')
+    //     ->with('order', $order)
+    //     ->with('designs', $design)
+    //     ->with('spec', $spec)
+    //     ->with('unit', $unit);
+        
+    // }
     // method to view invoice page for customer
     public function invoice()
     {
@@ -667,204 +715,84 @@ class CustomerController extends Controller
                     $name = null;
                     $size = "XXS";
                     $unitquantity = $xxs; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
                 }
                 if($xs != 0){
                     $name = null;
                     $size = "XS";
                     $unitquantity = $xs; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($s != 0){
                     $name = null;
                     $size = "S";
                     $unitquantity = $s; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($m != 0){
                     $name = null;
                     $size = "M";
                     $unitquantity = $m; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($l != 0){
                     $name = null;
                     $size = "L";
                     $unitquantity = $l; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl != 0){
                     $name = null;
                     $size = "XL";
                     $unitquantity = $xl; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl2 != 0){
                     $name = null;
                     $size = "2XL";
                     $unitquantity = $xl2; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl3 != 0){
                     $name = null;
                     $size = "3XL";
                     $unitquantity = $xl3; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl4 != 0){
                     $name = null;
                     $size = "4XL";
                     $unitquantity = $xl4; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save(); 
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl5 != 0){
                     $name = null;
                     $size = "5XL";
                     $unitquantity = $xl5; 
-                    $unit = new Unit; 
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus; 
-                    $unit->save();
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl6 != 0){
                     $name = null;
                     $size = "6XL";
                     $unitquantity = $xl6;
-                    $unit = new Unit;
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus;
-                    $unit->save();
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl7 != 0){
                     $name = null;
                     $size = "7XL";
                     $unitquantity = $xl7;
-                    $unit = new Unit;
-                    $unit->o_id = $orderid;
-                    $unit->s_id = $idspec;
-                    $unit->name = $name; 
-                    $unit->size = $size; 
-                    $unit->un_quantity = $unitquantity;
-                    $unit->u_id_print = $printid;
-                    $unit->u_id_taylor = $taylorid;
-                    $unit->un_status = $unitstatus;
-                    $unit->save();
-                    $idunit = $unit->un_id;
+                    $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
             }
@@ -876,6 +804,22 @@ class CustomerController extends Controller
 
         return redirect('/customer/orderlist')->with('success', 'Order Created');
     }
+
+    // function to store data to table unit
+    public function storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus){
+        $unit = new Unit; 
+        $unit->o_id = $orderid;
+        $unit->s_id = $idspec;
+        $unit->name = $name; 
+        $unit->size = $size; 
+        $unit->un_quantity = $unitquantity;
+        $unit->u_id_print = $printid;
+        $unit->u_id_taylor = $taylorid;
+        $unit->un_status = $unitstatus; 
+        $unit->save(); 
+        $idunit = $unit->un_id;
+        return $idunit;
+    } 
 
     // function to store data to table design
     public function storeDesign($unitid, $mockupdesign, $orderid, $designerid){

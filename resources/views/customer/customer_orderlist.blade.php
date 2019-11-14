@@ -29,6 +29,7 @@
                                     <th scope="col">Delivery Date</th>
                                     <th scope="col">Design</th>
                                     <th scope="col">Status</th>
+                                    <th scope="col">Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -86,7 +87,16 @@
                                                  @if($singleorderrow->o_status==0)
                                                     Draft
                                                  @endif    
+                                                 {{-- 'route'=>'admin.job_order', 'method' => 'POST' --}}
+                                                {{-- {!!Form::open( array( ) )!!}
+                                                    <input type="submit" style="display: inline-block;" name="confirmbutton" value="View job order" class="btn btn-primary">
+                                        
+                                                {!!Form::close()!!} --}}
+                                                {{-- <a href="/jobOrder/{{$singleorderrow->o_id}}">View Design</a> --}}
+                                                
+
                                             </td>
+                                            <td><a href="/customer/jobOrder/{{$singleorderrow->o_id}}">View Job Order</a></td>
                                         </tr>
                                         <?php $no++; ?>
                                   @endforeach

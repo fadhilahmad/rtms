@@ -133,6 +133,7 @@ Route::post('customer/orderlist','Customer\CustomerController@requestConfirm')->
 Route::get('customer/vieworder/{id}', 'Customer\CustomerController@customerViewOrder')->middleware('customer');
 // route to customer view design image
 Route::get('customer/viewdesign/{id}', 'Customer\CustomerController@customerViewDesign')->middleware('customer');
+Route::get('customer/jobOrder/{id}', 'Customer\CustomerController@customerViewJobOrder')->middleware('customer');
 // route to invoice page for customer
 Route::get('customer/invoice', 'Customer\CustomerController@invoice')->middleware('customer');
 Route::get('customer/view_invoice', 'Customer\CustomerController@viewInvoice')->middleware('customer');
