@@ -44,22 +44,23 @@
                                             <td>{{$singleorderrow->note}}</td>
                                             <td>{{$singleorderrow->delivery_date}}</td>
                                             <td>
-                                                @if($singleorderrow->o_status==0)
+                                                {{-- @if($singleorderrow->o_status==0)
                                                     <a href="/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a>
                                                  @endif
                                                  @if($singleorderrow->o_status!=0)
                                                     <a href="/customer/viewdesign/{{$singleorderrow->o_id}}">View Design</a>
-                                                 @endif 
+                                                 @endif  --}}
+                                                 <a href="/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a>
                                             </td>
                                             <td>
                                                 @if($singleorderrow->o_status==1)
                                                     Waiting for design
                                                  @endif
                                                  @if($singleorderrow->o_status==2)
-                                                    Order Confirm
+                                                    Order Submitted
                                                  @endif
                                                  @if($singleorderrow->o_status==3)
-                                                    Design Confirm
+                                                    Designed
                                                  @endif
                                                  @if($singleorderrow->o_status==4)
                                                     Printing
@@ -99,7 +100,7 @@
                     </div>
                 </div>
             </div>
-            <br>
+            {{-- <br>
             <div class="card">
                     <div class="card-header">Pending List</div>
     
@@ -122,11 +123,10 @@
                                       </tr>
                                     </thead>
                                     <tbody>
-                                        <?php $no=1; ?>
                                         @foreach($orderspending as $singleorderpendingrow)
                                             <tr>
                                                 
-                                                <th scope="row"><?php echo $no; ?></th>
+                                                <th scope="row"></th>
                                                 <td>{{$singleorderpendingrow->file_name}}</td>
                                                 <td>{{$singleorderpendingrow->quantity_total}}</td>
                                                 <td>{{$singleorderpendingrow->category}}</td>
@@ -139,14 +139,9 @@
                                                         <input type="submit" style="display: inline-block;" name="confirmbutton" value="Confirm" class="btn btn-primary">
                                             
                                                     {!!Form::close()!!}
-                                                    {{-- <button 
-                                                        class="btn btn-primary edit" data-toggle="modal" style="display: inline-block;" data-target="#Modal" data-tittle="Request" 
-                                                        data-oid="{{$singleorderpendingrow->o_id}}" data-uid="{{$singleorderpendingrow->u_id_designer}}">Request
-                                                    </button>  --}}
 
                                                 </td>
                                             </tr>
-                                            <?php $no++; ?>
                                       @endforeach
                                       
                                     </tbody>
@@ -157,7 +152,7 @@
                             @endif
                         </div>
                     </div>
-                </div>
+                </div> --}}
         </div>
     </div>
 </div>
@@ -201,7 +196,7 @@
         </div>
       </div> --}}
 
-<script src="{{ asset('js/app.js') }}"></script>
+{{-- <script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript">
 
 // $(document).on("click", ".edit", function () {
@@ -228,7 +223,7 @@
 //         // }
 //         document.getElementById("designform").submit();         
 //     }
-</script>
+</script> --}}
 
 @endsection
 
