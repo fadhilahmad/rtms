@@ -21,7 +21,7 @@ text-align: center;
                         </div>
                     @endif
                 <div class="card-body">
-                    <center><h2>AGENT PRICING</h2></center><br>
+                    <center><h2>TIER 1 AGENT PRICING</h2></center><br>
                         <table class="table table-hover">
                             <thead class="thead-dark">
                               <tr>
@@ -31,8 +31,8 @@ text-align: center;
                                 <th scope="col">{{$sle->sl_desc}}/RN</th>
                                 <th scope="col">{{$sle->sl_desc}}/COLLAR</th>
                                 <?php $no=$no+2;  
-                                $sle_id[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/RN");
-                                $sle_id[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/COLLAR");
+                                $sle_id1[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/RN");
+                                $sle_id1[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/COLLAR");
                                 ?>
                                 @endforeach
                               </tr>
@@ -42,7 +42,7 @@ text-align: center;
                                 @foreach($body as $bod)
                                 <tr>                                
                                 <td class="table-dark">{{$bod->b_desc}}</td>
-                                @foreach ($sle_id as $ad) 
+                                @foreach ($sle_id1 as $ad) 
                                 <td class="table-success">
                                     @php
                                         $name = $bod->b_desc." ".$ad['name'];
@@ -55,6 +55,74 @@ text-align: center;
                             </tbody>
                         </table><br><br>
                         <hr>
+                    <center><h2>TIER 2 AGENT PRICING</h2></center><br>
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">BODY</th>
+                                <?php $no=-1; ?>
+                                @foreach($sleeve as $sle) 
+                                <th scope="col">{{$sle->sl_desc}}/RN</th>
+                                <th scope="col">{{$sle->sl_desc}}/COLLAR</th>
+                                <?php $no=$no+2;  
+                                $sle_id2[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/RN");
+                                $sle_id2[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/COLLAR");
+                                ?>
+                                @endforeach
+                              </tr>
+                            </thead>
+                            <tbody>
+                                                                           
+                                @foreach($body as $bod)
+                                <tr>                                
+                                <td class="table-dark">{{$bod->b_desc}}</td>
+                                @foreach ($sle_id2 as $ad) 
+                                <td class="table-success">
+                                    @php
+                                        $name = $bod->b_desc." ".$ad['name'];
+                                        echo App\Http\Controllers\Admin\OrderController::getPrice($ad['s_id'],$bod['b_id'],$ad['n_id'],8,$name);
+                                    @endphp 
+                                </td>
+                                @endforeach
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table><br><br>
+                        <hr>
+                    <center><h2>TIER 3 AGENT PRICING</h2></center><br>
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">BODY</th>
+                                <?php $no=-1; ?>
+                                @foreach($sleeve as $sle) 
+                                <th scope="col">{{$sle->sl_desc}}/RN</th>
+                                <th scope="col">{{$sle->sl_desc}}/COLLAR</th>
+                                <?php $no=$no+2;  
+                                $sle_id3[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/RN");
+                                $sle_id3[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/COLLAR");
+                                ?>
+                                @endforeach
+                              </tr>
+                            </thead>
+                            <tbody>
+                                                                           
+                                @foreach($body as $bod)
+                                <tr>                                
+                                <td class="table-dark">{{$bod->b_desc}}</td>
+                                @foreach ($sle_id3 as $ad) 
+                                <td class="table-success">
+                                    @php
+                                        $name = $bod->b_desc." ".$ad['name'];
+                                        echo App\Http\Controllers\Admin\OrderController::getPrice($ad['s_id'],$bod['b_id'],$ad['n_id'],9,$name);
+                                    @endphp 
+                                </td>
+                                @endforeach
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table><br><br>
+                        <hr>                        
                         <center><h2>END USER PRICING</h2></center><br> 
                         <table class="table table-hover">
                             <thead class="thead-dark">

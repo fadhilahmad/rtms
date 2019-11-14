@@ -76,7 +76,7 @@
 <div class="modal fade" id="addnew" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-        <form method="POST" id="addform" name="addform" action="{{ route('leave_setting') }}" ">
+        <form method="POST" id="addform" name="addform" action="{{ route('leave_setting') }}">
             @csrf
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">Add Leave Day</h5>

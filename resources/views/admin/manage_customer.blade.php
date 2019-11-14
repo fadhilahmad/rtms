@@ -19,6 +19,7 @@
                                 <th scope="col">No</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Username</th>
+                                <th scope="col">Address</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Phone</th>
                                 <th scope="col">Action</th>
@@ -31,6 +32,7 @@
                                 <th scope="row"><?php echo $no; ?></th>
                                 <td>{{$cust->u_fullname}}</td>
                                 <td>{{$cust->username}}</td>
+                                <td>{{$cust->address}}</td>
                                 <td>{{$cust->email}}</td>
                                 <td>{{$cust->phone}}</td>
                                 <td>
