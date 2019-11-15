@@ -7,687 +7,388 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">New Order</div>
-                <!-- <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-
-                    {{-- ---------------------------- form ----------------------------------- --}}
-
-                    {{-- form from laravel collective   ['action' => 'CustomerController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']   --}}
-                    {!! Form::open(array( 'route'=>'customer.store', 'method' => 'POST', 'enctype' => 'multipart/form-data')) !!}
-                        {{-- current date --}}
-                        <div class="form-group">
-                            {{-- label for title --}}
-                            {{Form::label('date', 'Date')}}<br>
-                            {{-- input text field for title --}}
-                            {{Form::date('current_date', \Carbon\Carbon::now(new DateTimeZone('Asia/Kuala_Lumpur')), array('disabled'))}}
-                        </div>
-                        {{-- cloth name --}}
-                        <div class="form-group">
-                            {{-- label for cloth name --}}
-                            {{Form::label('cloth_name', 'Cloth Name')}}
-                            {{-- input text field for cloth name --}}
-                            {{Form::text('cloth_name', '', ['class' => 'form-control', 'placeholder' => 'Cloth Name'])}}
-                        </div>
-                        <div class="form-group">
-                            {{-- label for material --}}
-                            {{Form::label('material', 'Material')}}
-                            <br>
-                            <select name="material" id="material" class="form-control">
-                                @if(count($materials) > 0)
-                                    @foreach ($materials as $material)
-                                        <option value="{{ $material->m_id }}">{{ $material->m_desc }}</option>
-                                    @endforeach
-                                @else
-                                    <option value="">No material recorded</option>
-                                @endif
-
-                            </select>
-                        </div>
-                        {{-- quantity --}}
-                        <div class="form-group">
-                            {{-- label for quantity --}}
-                            {{Form::label('quantity', 'Quantity')}}
-                            {{-- input text field for amount --}}
-                            <input type="number" class="form-control" id="total_quantity" name="total_quantity" readonly="true">
-                            {{-- {{Form::number('total_quantity', '', ['class' => 'form-control', 'placeholder' => 'Total quantity ordered', 'disabled' => 'disabled'])}} --}}
-                        </div>
-                        {{-- delivery date --}}
-                        <div class="form-group">
-                            {{-- label for title --}}
-                            {{Form::label('delivery_date', 'Delivery Date')}}<br>
-                            
-                            @if(count($deliverysettings) > 0)
-                                @foreach ($deliverysettings as $deliverysetting)
-                                    {{-- <input name="somedate" type="date" min={{\Carbon\Carbon::now()}} max={{\Carbon\Carbon::now()->addDays($deliverysetting->min_day)}}> --}}
-                                    <input name="somedate" type="date" min={{\Carbon\Carbon::now(new DateTimeZone('Asia/Kuala_Lumpur'))->addDays($deliverysetting->min_day)}}>
-                                @endforeach
-                            @else
-                                <p>No delivery setting recorded</p>
-                            @endif
-                            {{-- {{Form::date('delivery_date', \Carbon\Carbon::now()->addDays(7), array('disabled'))}} --}}
-                        </div>
-                        {{-- category --}}
-                        <div class="form-group">
-                                                    
-                            {{Form::label('category', 'Category')}}
-                            <br>
-
-                            <input type='radio' onclick='javascript:categoryType();' value="Size" name="category" id="size"/> Size<br>
-                            <input type="radio" onclick="javascript:categoryType();" value="Nameset" name="category" id="nameset"/> Nameset
-                        </div>
-
-                        
-
-                        {{-- mockup design --}}
-                        <div class="form-group">
-                            {{-- label for mockup design --}}
-                            {{Form::label('mockup_design', 'Mockup Design')}}<br>
-                            {{-- use laravel collective package --}} 
-                            {{-- {{Form::file('cover_image')}} --}}
-                            <input type="file" name="cover_image">
-                            {{-- <input type="file" name="cover_image[]" multiple> --}}
-                        </div>
-                        {{-- note --}}
-                        <div class="form-group">
-                            {{-- label for note --}}
-                            {{Form::label('note', 'Note')}}
-                            {{-- input text area field for note and add editor in the array --}}
-                            {{Form::textarea('note', '', ['class' => 'form-control', 'placeholder' => 'Note'])}}
-                        </div>
-                        {{-- Set --}}
-                        <div class="form-group">
-                            <div class="card">
-                                <div class="card-header">
-                                    Set
-                                    <button type="button" style="float: right"; id="btnAddRow" onclick="addSet()">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                    <button type="button" style="float: right"; id="btnRemoveRow" onclick="deleterow()">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                                <div class="card-body">
-
-                                    {{-- case size --}}
-                                    <div id="divsize" style="display:none">
-                                        <div class="form-group">
-                                            <input type="hidden" id="totset" name="totset" value="">
-                                            {{Form::label("size", "Case Size")}}
-                                            <table id="namesettablesize" style="width:80%; margin: 0px auto;">
-                                                <tr>
-                                                    <th id="namesethead">Size</th>
-                                                    <th id="namesethead">Quantity</th> 
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">XXS</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">XS</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">S</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">M</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">L</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">2XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">3XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">4XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">5XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">6XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl0"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata">7XL</td>
-                                                    <td id="namesetdata"><input onblur="findTotal()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl0"></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-            
-                                    {{-- case nameset --}}
-                                    <div id="divnameset" style="display:none">
-                                        <div class="form-group">
-                                            <input type="hidden" id="namesetnum0" name="namesetnum0" value="1">
-                                            {{Form::label("nameset", "Case Nameset")}}
-                                            <table id="namesettable0" style="width:80%; margin: 0px auto;">
-                                                <tr>
-                                                    <th id="namesethead">
-                                                        <button type="button" style="float: right"; id="btnAddRow" onclick="addRow(0)">
-                                                            <i class="fa fa-plus"></i>
-                                                        </button>
-                                                        <button type="button" style="float: right"; id="btnRemoveRow" onclick="removeRow(0)">
-                                                            <i class="fa fa-minus"></i>
-                                                        </button>
-                                                        Name
-                                                    </th> 
-                                                    <th id="namesethead">Size</th>
-                                                    <th id="namesethead">Quantity</th> 
-                                                </tr>
-                                                <tr>
-                                                    <td id="namesetdata"><input type="text" class="form-control" id="name0" name="name0"></td>
-                                                    <td id="namesetdata"><select name="size0" id="size0" class="form-control">
-                                                            <option value="xxs">XXS</option>
-                                                            <option value="xs">XS</option>
-                                                            <option value="s">S</option>
-                                                            <option value="m">M</option>
-                                                            <option value="l">L</option>
-                                                            <option value="xl">XL</option>
-                                                            <option value="2xl">2XL</option>
-                                                            <option value="3xl">3XL</option>
-                                                            <option value="4xl">4XL</option>
-                                                            <option value="5xl">5XL</option>
-                                                            <option value="6xl">6XL</option>
-                                                            <option value="7xl">7XL</option>
-                                                        </select>
-                                                    </td>
-                                                    <td id="namesetdata"><input onblur="findTotalNameset()" class="form-control totalnameset" type="number" id="quantitynameset" name="quantitysinglenamesetname0"></td>
-                                                    
-                                                </tr>
-                                            </table>  
-                                        </div>
-                                    </div>
-
-                                    <table id="settable" style="width:100%; margin: 0px auto;">
-                                        <th></th>
-                                        <tr>
-                                            <td>
-                                                {{-- type --}}
-                                                <div class="form-group">
-                                                    {{-- label for type --}}
-                                                    {{Form::label('type', 'Body Type')}}
-                                                    <br>
-                                                    {{-- radio field for type --}}
-                                                    @if(count($bodies) > 0)
-                                                        @foreach ($bodies as $body)
-                                                            {{Form::radio('type0', $body->b_id)}} {{ $body->b_desc }}<br>
-                                                            {{-- <p>{{$body->b_desc}}</p> --}}
-                                                        @endforeach
-                                                    @else
-                                                        {{Form::radio('type0', '')}} No body type recorded
-                                                        {{-- <p>No body recorded</p> --}}
-                                                    @endif
-                                                    
-                                                </div>
-                                                {{-- sleeve --}}
-                                                <div class="form-group">
-                                                    {{-- label for sleeve --}}
-                                                    {{Form::label('sleeve', 'Sleeve')}}
-                                                    <br>
-                                                    {{-- radio field for sleeve --}}
-                                                    @if(count($sleeves) > 0)
-                                                        @foreach ($sleeves as $sleeve)
-                                                            {{Form::radio('sleeve0', $sleeve->sl_id)}} {{ $sleeve->sl_desc }}<br>
-                                                            {{-- <p>{{$sleeve->sl_desc}}</p> --}}
-                                                        @endforeach
-                                                    @else
-                                                        {{Form::radio('sleeve0', '')}} No sleeve recorded
-                                                        {{-- <p>No sleeve recorded</p> --}}
-                                                    @endif
-                                                </div>
-                                                {{-- neck --}}
-                                                <div class="form-group">
-                                                    {{-- label for neck --}}
-                                                    {{Form::label('type', 'Neck Type')}}
-                                                    <br>
-                        
-                                                    {{-- <input type='radio' onclick='javascript:collarType();' name="collartype0" id="roundneck" value="0"/> Round Neck<br>
-                                                    <input type="radio" onclick="javascript:collarType();" name="collartype0" id="collar" value="Collar"/> Collar
-                                                    
-                                                    <div id="typecollar" style="display:none">
-                                                        <br> --}}
-                                                    {{-- {{Form::label('collartype', 'Collar Type')}}<br> --}}
-
-                                                    {{-- <select name="necktype0" id="necktype0" class="form-control"> --}}
-                                                    {{-- radio field for collar neck --}}
-                                                    @if(count($necks) > 0)
-                                                        @foreach ($necks as $neck)
-                                                            <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }} <br>
-                                                            {{-- <option value="{{ $neck->n_id }}">{{ $neck->n_desc }}</option> --}}
-                                                        @endforeach
-                                                    @endif
-                                                    {{-- </select> --}}
-                                                        
-                                                    {{-- </div> --}}
-                                                </div>
-
-
-
-                                                {{-- collar color --}}
-                                                <div class="form-group">
-                                                    {{-- label for collar color --}}
-                                                    {{Form::label('collar_color', 'Collar Color')}}
-                                                    {{-- input text field for collar color --}}
-                                                    {{Form::text('collar_color0', '', ['class' => 'form-control', 'placeholder' => 'Collar Color'])}}
-                                                </div>
-
-                                                
-                                                
-                                            </td>
-                                        </tr>
-                                        <tr>
-
-                                        </tr>
-                                    </table>
-
-                                </div>
-                                
-                            </div>
-                                
-                        </div>
-                        <input type="hidden" id="setamount" name="setamount">
-                        <input type="hidden" id="totalcasenameset" name="totalcasenameset">
-                        <input type="hidden" id="totalcasesize" name="totalcasesize">
-                        <br>
-                        {{-- Submit button --}}
-                        {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
-
-                    {!! Form::close() !!}
-
-                </div> -->
                 <div class="card-body">                 
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
-                    {{-- ---------------------------- form ----------------------------------- --}}
-                    {{-- form from laravel collective   ['action' => 'CustomerController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']   --}}
-                    {!! Form::open(array( 'route'=>'customer.store', 'method' => 'POST', 'enctype' => 'multipart/form-data')) !!}
-                    {{-- current date --}}                   
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label"> 
-                            {{-- label for title --}}  
-                            {{Form::label('date', 'Date')}}
-                        </label>
-                        <div class="col-sm-8">
-                            {{-- input text field for title --}}
-                            {{Form::date('current_date', \Carbon\Carbon::now(new DateTimeZone('Asia/Kuala_Lumpur')), array('disabled'))}}
+                    @if ($prices != null)
+
+                        {{-- ---------------------------- form ----------------------------------- --}}
+                        {{-- form from laravel collective   ['action' => 'CustomerController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']   --}}
+                        {!! Form::open(array( 'route'=>'customer.store', 'method' => 'POST', 'enctype' => 'multipart/form-data')) !!}
+                        {{-- current date --}}                   
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label"> 
+                                {{-- label for title --}}  
+                                {{Form::label('date', 'Date')}}
+                            </label>
+                            <div class="col-sm-8">
+                                {{-- input text field for title --}}
+                                {{Form::date('current_date', \Carbon\Carbon::now(new DateTimeZone('Asia/Kuala_Lumpur')), array('disabled'))}}
+                            </div>
                         </div>
-                    </div>
-                    {{-- cloth name --}}
-                    <div class="line"></div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">
-                            {{-- label for cloth name --}}
-                            {{Form::label('cloth_name', 'Cloth Name')}}                          
-                        </label>
-                        <div class="col-sm-8">
-                            {{-- input text field for cloth name --}}
-                            {{Form::text('cloth_name', '', ['class' => 'form-control', 'placeholder' => 'Cloth Name'])}}
+                        {{-- cloth name --}}
+                        <div class="line"></div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">
+                                {{-- label for cloth name --}}
+                                {{Form::label('cloth_name', 'Cloth Name')}}                          
+                            </label>
+                            <div class="col-sm-8">
+                                {{-- input text field for cloth name --}}
+                                {{Form::text('cloth_name', '', ['class' => 'form-control', 'placeholder' => 'Cloth Name'])}}
+                            </div>
                         </div>
-                    </div>
-                    {{-- material --}}
-                    <div class="line"></div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">
-                            {{-- label for material --}}
-                            {{Form::label('material', 'Material')}}
-                        </label>
-                        <div class="col-sm-8 mb-3">
-                            <select name="material" id="material" class="form-control">
-                                @if(count($materials) > 0)
-                                    @foreach ($materials as $material)
-                                        <option value="{{ $material->m_id }}">{{ $material->m_desc }}</option>
+                        {{-- material --}}
+                        <div class="line"></div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">
+                                {{-- label for material --}}
+                                {{Form::label('material', 'Material')}}
+                            </label>
+                            <div class="col-sm-8 mb-3">
+                                <select name="material" id="material" class="form-control">
+                                    @if(count($materials) > 0)
+                                        @foreach ($materials as $material)
+                                            <option value="{{ $material->m_id }}">{{ $material->m_desc }}</option>
+                                        @endforeach
+                                    @else
+                                        <option value="">No material recorded</option>
+                                    @endif
+                                </select>
+                            </div>                    
+                        </div>
+                        <div class="line"></div>
+                        {{-- quantity --}}
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">
+                                {{-- label for quantity --}}
+                                {{Form::label('quantity', 'Quantity')}}
+                            </label>
+                            <div class="col-sm-8">
+                                {{-- input text field for amount --}}
+                                <input type="number" class="form-control" id="total_quantity" name="total_quantity" readonly="true">
+                                {{-- {{Form::number('total_quantity', '', ['class' => 'form-control', 'placeholder' => 'Total quantity ordered', 'disabled' => 'disabled'])}} --}}                       
+                        </div>
+                        </div>
+                        <div class="line"></div>
+                        {{-- delivery date --}}
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">
+                                    {{-- label for title --}}
+                                    {{Form::label('delivery_date', 'Delivery Date')}}
+                            </label>
+                            <div class="col-sm-8">  
+                                @if(count($deliverysettings) > 0)
+                                    @foreach ($deliverysettings as $deliverysetting)
+                                        {{-- <input name="somedate" type="date" min={{\Carbon\Carbon::now()}} max={{\Carbon\Carbon::now()->addDays($deliverysetting->min_day)}}> --}}
+                                        <input name="somedate" type="date" min={{\Carbon\Carbon::now(new DateTimeZone('Asia/Kuala_Lumpur'))->addDays($deliverysetting->min_day)}}>                              
                                     @endforeach
                                 @else
-                                    <option value="">No material recorded</option>
+                                    <p>No delivery setting recorded</p>
                                 @endif
-                            </select>
-                        </div>                    
-                    </div>
-                    <div class="line"></div>
-                    {{-- quantity --}}
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">
-                            {{-- label for quantity --}}
-                            {{Form::label('quantity', 'Quantity')}}
-                        </label>
-                        <div class="col-sm-8">
-                            {{-- input text field for amount --}}
-                            <input type="number" class="form-control" id="total_quantity" name="total_quantity" readonly="true">
-                            {{-- {{Form::number('total_quantity', '', ['class' => 'form-control', 'placeholder' => 'Total quantity ordered', 'disabled' => 'disabled'])}} --}}                       
-                    </div>
-                    </div>
-                    <div class="line"></div>
-                    {{-- delivery date --}}
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">
-                                {{-- label for title --}}
-                                {{Form::label('delivery_date', 'Delivery Date')}}
-                        </label>
-                        <div class="col-sm-8">  
-                            @if(count($deliverysettings) > 0)
-                                @foreach ($deliverysettings as $deliverysetting)
-                                    {{-- <input name="somedate" type="date" min={{\Carbon\Carbon::now()}} max={{\Carbon\Carbon::now()->addDays($deliverysetting->min_day)}}> --}}
-                                    <input name="somedate" type="date" min={{\Carbon\Carbon::now(new DateTimeZone('Asia/Kuala_Lumpur'))->addDays($deliverysetting->min_day)}}>                              
-                                @endforeach
-                            @else
-                                <p>No delivery setting recorded</p>
-                            @endif
-                            {{-- {{Form::date('delivery_date', \Carbon\Carbon::now()->addDays(7), array('disabled'))}} --}}
-                    </div>
-                    </div>
-                    <div class="line"></div>
-                    {{-- category --}}
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">
-                            {{Form::label('category', 'Category')}}                          
-                        </label>
-                        <div class="col-sm-10">
-                            <div>
-                                <input type='radio' onclick='javascript:categoryType();' value="Size" name="category" id="size"/> 
-                                <label for="radio">Size</label>
-                            </div>
-                            <div>
-                                <input type="radio" onclick="javascript:categoryType();" value="Nameset" name="category" id="nameset"/> 
-                                <label for="radio">Nameset</label>
+                                {{-- {{Form::date('delivery_date', \Carbon\Carbon::now()->addDays(7), array('disabled'))}} --}}
+                        </div>
+                        </div>
+                        <div class="line"></div>
+                        {{-- category --}}
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">
+                                {{Form::label('category', 'Category')}}                          
+                            </label>
+                            <div class="col-sm-10">
+                                <div>
+                                    <input type='radio' onclick='javascript:categoryType();' value="Size" name="category" id="size"/> 
+                                    <label for="radio">Size</label>
+                                </div>
+                                <div>
+                                    <input type="radio" onclick="javascript:categoryType();" value="Nameset" name="category" id="nameset"/> 
+                                    <label for="radio">Nameset</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="line"></div>
-                    {{-- mockup design --}}
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">
-                            {{-- label for mockup design --}}
-                            {{Form::label('mockup_design', 'Mockup Design')}}
-                        </label>
-                        <div class="col-sm-8">
-                            {{-- use laravel collective package --}} 
-                            {{-- {{Form::file('cover_image')}} --}}
-                            <input type="file" name="cover_image">
-                            {{-- <input type="file" name="cover_image[]" multiple> --}}
-                    </div>
-                        
-                    </div>
-                    <div class="line"></div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 form-control-label">
-                            {{-- label for note --}}
-                            {{Form::label('note', 'Note')}}
-                        </label>
-                        <div class="col-sm-8">
-                            {{-- input text area field for note and add editor in the array --}}
-                            {{Form::textarea('note', '', ['class' => 'form-control', 'placeholder' => 'Note'])}}
-                        </div>              
-                    </div>
-                    <div class="line"></div>
-                    {{-- Set --}}
-                    <div class="form-group">
-                    
-                        <div class="card-header col-sm-10 ">
-                            Set
-                            <button type="button" class="btn btn-primary" style="float: right"; id="btnAddRow" onclick="addSet()">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            <button type="button" class="btn btn-primary" style="float: right"; id="btnRemoveRow" onclick="deleterow()">
-                                <i class="fa fa-minus"></i>
-                            </button>
-                        </div>                          
-                        <div class="card-body col-sm-10">
+                        <div class="line"></div>
+                        {{-- mockup design --}}
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">
+                                {{-- label for mockup design --}}
+                                {{Form::label('mockup_design', 'Mockup Design')}}
+                            </label>
+                            <div class="col-sm-8">
+                                {{-- use laravel collective package --}} 
+                                {{-- {{Form::file('cover_image')}} --}}
+                                <input type="file" name="cover_image">
+                                {{-- <input type="file" name="cover_image[]" multiple> --}}
+                        </div>
                             
-                            <table id="settable" style="width:100%; margin: 0px auto; margin-top:20px;">
-                                <th></th>
-                                <tr>
-                                    <td>
-                                        <div class="row">
-                                            {{-- type --}}
-                                            <div class="col-sm">
-                                                <div>
-                                                    <label class="form-control-label">
-                                                        {{-- label for type --}}
-                                                        <Strong>{{Form::label('type', 'Body Type')}}</strong>
-                                                    </label>
+                        </div>
+                        <div class="line"></div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">
+                                {{-- label for note --}}
+                                {{Form::label('note', 'Note')}}
+                            </label>
+                            <div class="col-sm-8">
+                                {{-- input text area field for note and add editor in the array --}}
+                                {{Form::textarea('note', '', ['class' => 'form-control', 'placeholder' => 'Note'])}}
+                            </div>              
+                        </div>
+                        <div class="line"></div>
+                        {{-- Set --}}
+                        <div class="form-group">
+                        
+                            <div class="card-header col-sm-10 ">
+                                Set
+                                <button type="button" class="btn btn-primary" style="float: right"; id="btnAddRow" onclick="addSet()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary" style="float: right"; id="btnRemoveRow" onclick="deleterow()">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>                          
+                            <div class="card-body col-sm-10">
+                                
+                                <table id="settable" style="width:100%; margin: 0px auto; margin-top:20px;">
+                                    <th></th>
+                                    <tr>
+                                        <td>
+                                            <div class="row">
+                                                {{-- type --}}
+                                                <div class="col-sm">
                                                     <div>
-                                                        {{-- radio field for type --}}
-                                                        @if(count($bodies) > 0)
-                                                            @foreach ($bodies as $body)
-                                                                {{Form::radio('type0', $body->b_id)}} {{ $body->b_desc }}<br>
-                                                                {{-- <p>{{$body->b_desc}}</p> --}}
+                                                        <label class="form-control-label">
+                                                            {{-- label for type --}}
+                                                            <Strong>{{Form::label('type', 'Body Type')}}</strong>
+                                                        </label>
+                                                        <div>
+                                                            {{-- radio field for type --}}
+                                                            @if(count($bodies) > 0)
+                                                                @foreach ($bodies as $body)
+                                                                    {{Form::radio('type0', $body->b_id)}} {{ $body->b_desc }}<br>
+                                                                    {{-- <p>{{$body->b_desc}}</p> --}}
+                                                                @endforeach
+                                                            @else
+                                                                {{Form::radio('type0', '')}} No body type recorded
+                                                                {{-- <p>No body recorded</p> --}}
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {{-- sleeve --}}
+                                                <div class="col-sm">
+                                                    <div>
+                                                        <label  class="form-control-label">
+                                                            {{-- label for sleeve --}}
+                                                            <Strong>{{Form::label('sleeve', 'Sleeve')}}</strong>                                                        
+                                                        </label>
+                                                        <div>
+                                                        {{-- radio field for sleeve --}}
+                                                        @if(count($sleeves) > 0)
+                                                            @foreach ($sleeves as $sleeve)
+                                                                {{Form::radio('sleeve0', $sleeve->sl_id)}} {{ $sleeve->sl_desc }}<br>
+                                                                {{-- <p>{{$sleeve->sl_desc}}</p> --}}
                                                             @endforeach
                                                         @else
-                                                            {{Form::radio('type0', '')}} No body type recorded
-                                                            {{-- <p>No body recorded</p> --}}
+                                                            {{Form::radio('sleeve0', '')}} No sleeve recorded
+                                                            {{-- <p>No sleeve recorded</p> --}}
                                                         @endif
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            {{-- sleeve --}}
-                                            <div class="col-sm">
-                                                <div>
-                                                    <label  class="form-control-label">
-                                                        {{-- label for sleeve --}}
-                                                        <Strong>{{Form::label('sleeve', 'Sleeve')}}</strong>                                                        
-                                                    </label>
-                                                    <div>
-                                                    {{-- radio field for sleeve --}}
-                                                    @if(count($sleeves) > 0)
-                                                        @foreach ($sleeves as $sleeve)
-                                                            {{Form::radio('sleeve0', $sleeve->sl_id)}} {{ $sleeve->sl_desc }}<br>
-                                                            {{-- <p>{{$sleeve->sl_desc}}</p> --}}
-                                                        @endforeach
-                                                    @else
-                                                        {{Form::radio('sleeve0', '')}} No sleeve recorded
-                                                        {{-- <p>No sleeve recorded</p> --}}
-                                                    @endif
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {{-- collar color --}}
-                                            <div class="col-sm">
-                                                <label class="form-control-label">
-                                                {{-- label for collar color --}}
-                                                <strong>{{Form::label('collar_color', 'Collar Color')}}</strong>
-                                                </label>
-
-                                                <div>
-                                                {{-- input text field for collar color --}}
-                                                {{Form::text('collar_color0', '', ['class' => 'form-control', 'placeholder' => 'Collar Color'])}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
-                                        <div class="row">
-                                            {{-- neck --}}
+                                                {{-- collar color --}}
                                                 <div class="col-sm">
-                                                    <label  class="form-control-label">
-                                                        {{-- label for neck --}}
-                                                        <Strong>{{Form::label('type', 'Neck Type')}}</strong>                                                        
+                                                    <label class="form-control-label">
+                                                    {{-- label for collar color --}}
+                                                    <strong>{{Form::label('collar_color', 'Collar Color')}}</strong>
                                                     </label>
-                                                    <div>
-                                                        {{-- <input type='radio' onclick='javascript:collarType();' name="collartype0" id="roundneck" value="0"/> Round Neck<br>
-                                                        <input type="radio" onclick="javascript:collarType();" name="collartype0" id="collar" value="Collar"/> Collar
-                                                    </div>
-                                                    <div id="typecollar" style="display:none">
-                                                        <br> --}}
-                                                    {{-- {{Form::label('collartype', 'Collar Type')}}<br> --}}
 
-                                                    {{-- <select name="necktype0" id="necktype0" class="form-control"> --}}
-                                                    {{-- radio field for collar neck --}}
-                                                    @if(count($necks) > 0)
-                                                        @foreach ($necks as $neck)
-                                                            <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}
-                                                            <img src="http://i1.wp.com/clipartportal.com/wp-content/uploads/2018/12/collared-shirt-clipart-3.jpg" style="width:10%">
-                                                            {{-- <option value="{{ $neck->n_id }}">{{ $neck->n_desc }}</option> --}}
-                                                        @endforeach
-                                                    @endif
-                                                    {{-- </select> --}}
-                                                        
-                                                    {{-- </div> --}}
+                                                    <div>
+                                                    {{-- input text field for collar color --}}
+                                                    {{Form::text('collar_color0', '', ['class' => 'form-control', 'placeholder' => 'Collar Color'])}}
+                                                    </div>
                                                 </div>
                                             </div>
-                                       
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                         {{-- case size --}}
-                                        <div id="divsize" style="display:none">
-                                            <div class="form-group">
-                                                <input type="hidden" id="totset" name="totset" value="">
-                                                <strong>{{Form::label("size", "Case Size")}}</strong>
-                                                <div class="row">
-                                                <table id="namesettablesize" style="width:48%; margin: 0px auto;">
-                                                    <tr>
-                                                        <th id="namesethead">Size</th>
-                                                        <th id="namesethead">Quantity</th> 
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">XXS</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">XS</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">S</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">M</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">L</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">XL</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl0"></td>
-                                                    </tr>
-                                                </table>
-                                                <table id="namesettablesize" style="width:48%; margin: 0px auto;">
-                                                    <tr>
-                                                        <th id="namesethead">Size</th>
-                                                        <th id="namesethead">Quantity</th> 
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">2XL</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">3XL</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">4XL</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">5XL</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">6XL</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl0"></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td id="namesetdata">7XL</td>
-                                                        <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl0"></td>
-                                                    </tr>
-                                                </table>
+                                            <br>
+                                            <div class="row">
+                                                {{-- neck --}}
+                                                    <div class="col-sm">
+                                                        <label  class="form-control-label">
+                                                            {{-- label for neck --}}
+                                                            <Strong>{{Form::label('type', 'Neck Type')}}</strong>                                                        
+                                                        </label>
+                                                        <div>
+                                                            {{-- <input type='radio' onclick='javascript:collarType();' name="collartype0" id="roundneck" value="0"/> Round Neck<br>
+                                                            <input type="radio" onclick="javascript:collarType();" name="collartype0" id="collar" value="Collar"/> Collar
+                                                        </div>
+                                                        <div id="typecollar" style="display:none">
+                                                            <br> --}}
+                                                        {{-- {{Form::label('collartype', 'Collar Type')}}<br> --}}
+
+                                                        {{-- <select name="necktype0" id="necktype0" class="form-control"> --}}
+                                                        {{-- radio field for collar neck --}}
+                                                        @if(count($necks) > 0)
+                                                            @foreach ($necks as $neck)
+                                                                <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}
+                                                                <img src="http://i1.wp.com/clipartportal.com/wp-content/uploads/2018/12/collared-shirt-clipart-3.jpg" style="width:10%">
+                                                                {{-- <option value="{{ $neck->n_id }}">{{ $neck->n_desc }}</option> --}}
+                                                            @endforeach
+                                                        @endif
+                                                        {{-- </select> --}}
+                                                            
+                                                        {{-- </div> --}}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        {{-- case nameset --}}
-                                        <div id="divnameset" style="display:none">
-                                            <div class="form-group col-sm-10">
-                                                <input type="hidden" id="namesetnum0" name="namesetnum0" value="1">
-                                                <strong>{{Form::label("nameset", "Case Nameset")}}</strong>
-                                                <div>
-                                                    <table id="namesettable0"  style="width:100%; margin: 0px auto;">
+                                        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{-- case size --}}
+                                            <div id="divsize" style="display:none">
+                                                <div class="form-group">
+                                                    <input type="hidden" id="totset" name="totset" value="">
+                                                    <strong>{{Form::label("size", "Case Size")}}</strong>
+                                                    <div class="row">
+                                                    <table id="namesettablesize" style="width:48%; margin: 0px auto;">
                                                         <tr>
-                                                            <th id="namesethead">
-                                                                <button type="button" style="float: right"; id="btnAddRow" onclick="addRow(0)">
-                                                                    <i class="fa fa-plus"></i>
-                                                                </button>
-                                                                <button type="button" style="float: right"; id="btnRemoveRow" onclick="removeRow(0)">
-                                                                    <i class="fa fa-minus"></i>
-                                                                </button>
-                                                                Name
-                                                            </th> 
                                                             <th id="namesethead">Size</th>
                                                             <th id="namesethead">Quantity</th> 
                                                         </tr>
                                                         <tr>
-                                                            <td id="namesetdata"><input type="text" class="form-control" id="name0" name="name0-0"></td>
-                                                            <td id="namesetdata"><select name="size0-0" id="size0" class="form-control">
-                                                                    <option value="xxs">XXS</option>
-                                                                    <option value="xs">XS</option>
-                                                                    <option value="s">S</option>
-                                                                    <option value="m">M</option>
-                                                                    <option value="l">L</option>
-                                                                    <option value="xl">XL</option>
-                                                                    <option value="2xl">2XL</option>
-                                                                    <option value="3xl">3XL</option>
-                                                                    <option value="4xl">4XL</option>
-                                                                    <option value="5xl">5XL</option>
-                                                                    <option value="6xl">6XL</option>
-                                                                    <option value="7xl">7XL</option>
-                                                                </select>
-                                                            </td>
-                                                            <td id="namesetdata"><input oninput="findTotalNameset()" class="form-control totalnameset" 
-                                                                type="number" id="quantitynameset" name="quantitysinglenamesetname0-0"></td>
-                                                            
+                                                            <td id="namesetdata">XXS</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs0"></td>
                                                         </tr>
-                                                    </table>  
-                                                <div>
+                                                        <tr>
+                                                            <td id="namesetdata">XS</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">S</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">M</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">L</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">XL</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl0"></td>
+                                                        </tr>
+                                                    </table>
+                                                    <table id="namesettablesize" style="width:48%; margin: 0px auto;">
+                                                        <tr>
+                                                            <th id="namesethead">Size</th>
+                                                            <th id="namesethead">Quantity</th> 
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">2XL</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">3XL</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">4XL</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">5XL</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">6XL</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl0"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td id="namesetdata">7XL</td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl0"></td>
+                                                        </tr>
+                                                    </table>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                </tr>
-                            </table>      
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {{-- case nameset --}}
+                                            <div id="divnameset" style="display:none">
+                                                <div class="form-group col-sm-10">
+                                                    <input type="hidden" id="namesetnum0" name="namesetnum0" value="1">
+                                                    <strong>{{Form::label("nameset", "Case Nameset")}}</strong>
+                                                    <div>
+                                                        <table id="namesettable0"  style="width:100%; margin: 0px auto;">
+                                                            <tr>
+                                                                <th id="namesethead">
+                                                                    <button type="button" style="float: right"; id="btnAddRow" onclick="addRow(0)">
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </button>
+                                                                    <button type="button" style="float: right"; id="btnRemoveRow" onclick="removeRow(0)">
+                                                                        <i class="fa fa-minus"></i>
+                                                                    </button>
+                                                                    Name
+                                                                </th> 
+                                                                <th id="namesethead">Size</th>
+                                                                <th id="namesethead">Quantity</th> 
+                                                            </tr>
+                                                            <tr>
+                                                                <td id="namesetdata"><input type="text" class="form-control" id="name0" name="name0-0"></td>
+                                                                <td id="namesetdata"><select name="size0-0" id="size0" class="form-control">
+                                                                        <option value="xxs">XXS</option>
+                                                                        <option value="xs">XS</option>
+                                                                        <option value="s">S</option>
+                                                                        <option value="m">M</option>
+                                                                        <option value="l">L</option>
+                                                                        <option value="xl">XL</option>
+                                                                        <option value="2xl">2XL</option>
+                                                                        <option value="3xl">3XL</option>
+                                                                        <option value="4xl">4XL</option>
+                                                                        <option value="5xl">5XL</option>
+                                                                        <option value="6xl">6XL</option>
+                                                                        <option value="7xl">7XL</option>
+                                                                    </select>
+                                                                </td>
+                                                                <td id="namesetdata"><input oninput="findTotalNameset()" class="form-control totalnameset" 
+                                                                    type="number" id="quantitynameset" name="quantitysinglenamesetname0-0"></td>
+                                                                
+                                                            </tr>
+                                                        </table>  
+                                                    <div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                </table>      
 
-                          
+                            
+                            </div>
+                                                            
                         </div>
-                                                        
-                    </div>
-                    <input type="hidden" id="setamount" name="setamount">
-                    <input type="hidden" id="totalcasenameset" name="totalcasenameset">
-                    <input type="hidden" id="totalcasesize" name="totalcasesize">
-                    <br><br>
-                
-                
-                    {{-- Submit button --}}
-                    {{Form::submit('Submit', ['class'=>'btn btn-primary float-right'])}}
+                        <input type="hidden" id="setamount" name="setamount">
+                        <input type="hidden" id="totalcasenameset" name="totalcasenameset">
+                        <input type="hidden" id="totalcasesize" name="totalcasesize">
+                        <br><br>
                     
-                    {!! Form::close() !!}    
+                    
+                        {{-- Submit button --}}
+                        {{Form::submit('Submit', ['class'=>'btn btn-primary float-right'])}}
+                        
+                        {!! Form::close() !!} 
+
+                    @else
+
+                        <p>Price is not set yet. Please contact admin</p>
+                    
+                    @endif
                   
                 </div>
             </div>

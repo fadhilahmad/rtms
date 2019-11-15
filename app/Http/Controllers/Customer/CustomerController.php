@@ -19,6 +19,7 @@ use App\Unit;
 use App\User;
 use App\Price;
 use App\Invoice;
+use App\InvoicePermanent;
 use Gate;
 // use Illuminate\Support\Facades\Hash;
 use DB;
@@ -95,13 +96,15 @@ class CustomerController extends Controller
         $bodies = Body::where('b_status', 1)->get();
         $sleeves = Sleeve::where('sl_status', 1)->get();
         $necks = Neck::where('n_status', 1)->get();
+        $prices = Price::all();
         // return view with all the data from the tables
         return view('customer/neworder')
         ->with('materials', $materials)
         ->with('deliverysettings', $deliverysettings)
         ->with('bodies', $bodies)
         ->with('sleeves', $sleeves)
-        ->with('necks', $necks);
+        ->with('necks', $necks)
+        ->with('prices', $prices);
     }
     // method to view order list page for customer based on customer id
     public function customerOrderList()
@@ -166,6 +169,11 @@ class CustomerController extends Controller
             $price;
             $totprice = 0;
             $totorderrow = count($neckid);
+
+            $idinvoice;
+            $idspec = array();
+            $priceunit = array();
+            $quantityunit = array();
             //var_dump(": ".$totorderrow);
             //var_dump(": ".$neckid[1]);
             for($i = 0; $i < $totorderrow; $i++){
@@ -184,13 +192,15 @@ class CustomerController extends Controller
                 //var_dump(": ".$category);
                 //var_dump(": ".$price[$i]);
                 //var_dump(": ".$neckid[$i]);
-                
-                
+                 
                 //$units = Unit::where('o_id', $orderidrequest)->get();
                 $size = Unit::where('o_id', '=', $orderidrequest)->pluck('size');
                 $totsize = count($size);
                 $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
                 $totunits = count($specs);
+
+                array_push($idspec, $specid[$i]); 
+
                 //var_dump(": ".$specid[$i]);
                 //var_dump(": ".$totunits);
                 //var_dump(": ".$size[4]);
@@ -206,7 +216,11 @@ class CustomerController extends Controller
                     //var_dump(": ".$totsize);
                     //var_dump(": ".$size[$j]);
                     //var_dump(": ".$quantity[$j]);
-                    $pricecalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]); 
+                    $pricecalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]);
+                    $priceperunit = $this->calcPricePerUnit($price, $category, $size[$j]); 
+
+                    array_push($priceunit, $priceperunit);
+                    array_push($quantityunit, $quantity[$j]);
                     //$priceint = intval($pricecalc[0]);
                     $totprice += $pricecalc;
                     //var_dump(": ".$pricecalc);
@@ -222,6 +236,21 @@ class CustomerController extends Controller
             $invoice->i_status = 1;
             $invoice->total_price = $totprice;
             $invoice->save();
+
+            $idinvoice = $invoice->i_id;
+
+            for($i = 0; $i < $totorderrow; $i++){
+                for($j = 0; $j < $totunits; $j++){
+
+                    $nvoicePermanent = new InvoicePermanent;
+                    $nvoicePermanent->i_id = $idinvoice;
+                    $nvoicePermanent->s_id = $idspec[$i];
+                    $nvoicePermanent->price_unit = $priceunit[$j];
+                    $nvoicePermanent->quantity = $quantityunit[$j];
+                    $nvoicePermanent->save();
+
+                }
+            }
             
                 
             //return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
@@ -277,7 +306,7 @@ class CustomerController extends Controller
             // }
         }
     }
-    // method to calculate total price
+    // method to calculate total price with quantity
     public function calcPrice($price, $category, $size, $quantity){
         //var_dump(": ".$size);
         $pricecalc = 0;
@@ -296,12 +325,7 @@ class CustomerController extends Controller
             $quantityint = intval($quantity);
             $pricecalc = $priceint + 4;
             $pricecalc *= $quantityint;
-        }else{
-            $pricecalc = intval($price[0]);
-            $quantityint = intval($quantity);
-            $pricecalc *= $quantityint;
-        }
-        if($size == "6XL" || $size == "7XL"){
+        }else if($size == "6XL" || $size == "7XL"){
             $priceint = intval($price[0]);
             $quantityint = intval($quantity);
             $pricecalc = $priceint + 8;
@@ -311,6 +335,35 @@ class CustomerController extends Controller
             $quantityint = intval($quantity);
             $pricecalc *= $quantityint;
         }
+        return $pricecalc;
+    }
+    // method to calculate total price without quantity
+    public function calcPricePerUnit($price, $category, $size){
+        // var_dump(": ".$size);
+        $pricecalc = 0;
+        if($category == "Nameset"){
+            $priceint = intval($price[0]);
+            $pricecalc = $priceint + 4;
+            //return $pricecalc;
+        }else{
+            $pricecalc = intval($price[0]);
+            //return $pricecalc;
+        }
+        if($size == "4XL" || $size == "5XL"){
+            $priceint = intval($price[0]);
+            $pricecalc = $priceint + 4;
+            //var_dump(": ".$pricecalc);
+            //return $pricecalc;
+        }else if($size == "6XL" || $size == "7XL"){
+            $priceint = intval($price[0]);
+            $pricecalc = $priceint + 8;
+            // var_dump(": ".$pricecalc);
+            //return $pricecalc;
+        }else{
+            $pricecalc = intval($price[0]);
+            //return $pricecalc;
+        }
+        //var_dump(": ".$pricecalc);
         return $pricecalc;
     }
     // method to view mockup image
