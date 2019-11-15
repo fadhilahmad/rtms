@@ -11,6 +11,7 @@ use App\Price;
 use App\Design;
 use App\Unit;
 use App\User;
+use App\Invoice;
 
 class OrderController extends Controller
 {
@@ -258,5 +259,37 @@ class OrderController extends Controller
              $design = Design::all();
             //dd($orders);
             return view('admin/order_info',compact('orders','specs','units','design','user')); 
+    }
+    
+    public function invoiceInfo($o_id){
+        
+             $orders =  DB::table('orders')
+                       ->where('o_id','=',$o_id)
+                       ->first();
+             
+             $specs = DB::table('spec')
+                     ->leftJoin('body', 'spec.b_id','=','body.b_id')
+                     ->leftJoin('sleeve', 'spec.sl_id', '=', 'sleeve.sl_id')
+                     ->leftJoin('neck', 'spec.n_id','=','neck.n_id')
+                     ->where('spec.o_id','=',$o_id)
+                     ->get();
+             
+             $user = DB::table('user')
+                       ->leftJoin('orders', 'user.u_id', '=', 'orders.u_id_customer')
+                       ->where('orders.o_id','=',$o_id)
+                       ->first();
+             
+             $units = Unit::all();
+             
+             $invoice = Invoice::selectRaw('*')
+                ->where('o_id','=',$o_id)
+                ->first();
+             
+             $price = Price::all();
+            // dd($specs);
+//             $design = Design::all();       
+        
+        
+        return view('admin/invoice_info',compact('orders','specs','user','units','invoice','price'));
     }
 }                

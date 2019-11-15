@@ -124,11 +124,11 @@ text-align: center;
                                 <tbody>
 
                                   <tr>
-                                    <td>{{$delivery[0]->min_day}}</td>
+                                    <td>{{$delivery->min_day}}</td>
                                     <td>
                                         <button 
                                             class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Delivery Day" data-table="delivery" 
-                                            data-id="{{$delivery[0]->ds_id}}" data-desc="{{$delivery[0]->min_day}}">Edit
+                                            data-id="{{$delivery->ds_id}}" data-desc="{{$delivery->min_day}}">Edit
                                         </button>                                   
                                     </td>
                                   </tr>
@@ -247,7 +247,6 @@ text-align: center;
   </div>
 </div>
 
-<script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript">
 $(document).on("click", ".popup", function () {
      var name = $(this).data('tittle');

@@ -188,7 +188,13 @@ class AdminController extends Controller
     //invoice and receipt dropdown
     public function invoiceList() 
     {
-        return \View::make('admin/invoice_list');
+        $invoice = DB::table('invoice')
+                    ->leftJoin('orders', 'invoice.o_id', '=', 'orders.o_id')
+                    ->leftJoin('user', 'orders.u_id_customer', '=', 'user.u_id')
+                    ->paginate(30);        
+        
+        
+        return view('admin/invoice_list',compact('invoice'));
     }
     
     public function invoicePending() 
