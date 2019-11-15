@@ -20,7 +20,6 @@ class CreateInvoicePermenantTable extends Migration
             $table->integer('price_unit');
             $table->integer('quantity');
             $table->timestamps();
-            $table->timestamps();
         });
     }
 
