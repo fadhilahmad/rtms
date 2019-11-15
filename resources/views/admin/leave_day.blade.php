@@ -170,7 +170,7 @@
     </div>
   </div>
 </div>
-<script src="{{ asset('js/app.js') }}"></script>
+
 <script type="text/javascript">
 $(document).on("click", ".add", function () {
      var name = $(this).data('fullname');

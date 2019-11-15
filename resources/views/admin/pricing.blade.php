@@ -205,7 +205,6 @@ text-align: center;
   </div>
 </div>
 
-<script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript">
 $(document).on("click", ".addPrice", function () {
      var name = $(this).data('tittle');
