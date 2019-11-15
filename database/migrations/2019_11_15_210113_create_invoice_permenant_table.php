@@ -17,7 +17,8 @@ class CreateInvoicePermenantTable extends Migration
             $table->bigIncrements('ip_id');
             $table->unsignedBigInteger('i_id')->unsigned();
             $table->unsignedBigInteger('s_id')->unsigned();
-            $table->integer('price_unit');
+            $table->integer('perspec_price');
+            $table->integer('perunit_price');
             $table->integer('quantity');
             $table->timestamps();
         });
