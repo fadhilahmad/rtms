@@ -177,14 +177,16 @@ class CustomerController extends Controller
             //var_dump(": ".$totorderrow);
             //var_dump(": ".$neckid[1]);
             for($i = 0; $i < $totorderrow; $i++){
-                // get neck id to check if collar or not
-                if($neckid[$i] == 1){
-                    $checkneck = 1;
-                }else{
-                    $checkneck = 2;
-                }
+
+                $necktype = Neck::find($neckid[$i]);
+                // // get neck id to check if collar or not
+                // if($neckid[$i] == 1){
+                //     $checkneck = 1;
+                // }else{
+                //     $checkneck = 2;
+                // }
                 //var_dump(": ".$checkneck);
-                $price = Price::where('n_id', '=', $checkneck)
+                $price = Price::where('n_type', '=', $necktype->n_type)
                     ->where('b_id', '=' , $bodyid[$i])
                     ->where('sl_id', '=' , $sleeveid[$i])
                     ->where('u_type', '=' , $usertype)->pluck('price');
@@ -493,12 +495,15 @@ class CustomerController extends Controller
             $totprice = 0;
             $totorderrow = count($neckid);
             for($i = 0; $i < $totorderrow; $i++){
-                if($neckid[$i] == 1){
-                    $checkneck = 1;
-                }else{
-                    $checkneck = 2;
-                }
-                $price = Price::where('n_id', '=', $checkneck)
+
+                $necktype = Neck::find($neckid[$i]);
+
+                // if($neckid[$i] == 1){
+                //     $checkneck = 1;
+                // }else{
+                //     $checkneck = 2;
+                // }
+                $price = Price::where('n_type', '=', $necktype->n_type)
                     ->where('b_id', '=' , $bodyid[$i])
                     ->where('sl_id', '=' , $sleeveid[$i])
                     ->where('u_type', '=' , $usertype)->pluck('price');
