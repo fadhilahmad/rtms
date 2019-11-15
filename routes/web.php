@@ -81,6 +81,11 @@ Route::get('admin/change_password', 'Admin\AdminController@adminChangePassword')
 Route::patch('admin/change_password/update/{id}', 'Admin\AdminController@updateChangePassword')->name('admin.updatePassword')->middleware('admin');
 //order info
 Route::get('admin/order_info/{oid}', 'Admin\OrderController@orderInfo')->name('order_info')->middleware('admin');
+//page delivery
+Route::get('admin/delivery_schedule', 'Admin\DeliveryScheduleController@viewSchedule')->name('admin.delivery')->middleware('admin');
+
+//page payment
+Route::get('admin/payment', 'Admin\PaymentController@viewPendingPayment')->name('admin.payment')->middleware('admin');
 
 //test route 
 Route::get('/jobOrder', function () {

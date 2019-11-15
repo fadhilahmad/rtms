@@ -31,8 +31,8 @@ text-align: center;
                                 <th scope="col">{{$sle->sl_desc}}/RN</th>
                                 <th scope="col">{{$sle->sl_desc}}/COLLAR</th>
                                 <?php $no=$no+2;  
-                                $sle_id1[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/RN");
-                                $sle_id1[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/COLLAR");
+                                $sle_id1[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/RN");
+                                $sle_id1[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/COLLAR");
                                 ?>
                                 @endforeach
                               </tr>
@@ -65,8 +65,8 @@ text-align: center;
                                 <th scope="col">{{$sle->sl_desc}}/RN</th>
                                 <th scope="col">{{$sle->sl_desc}}/COLLAR</th>
                                 <?php $no=$no+2;  
-                                $sle_id2[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/RN");
-                                $sle_id2[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/COLLAR");
+                                $sle_id2[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/RN");
+                                $sle_id2[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/COLLAR");
                                 ?>
                                 @endforeach
                               </tr>
@@ -99,8 +99,8 @@ text-align: center;
                                 <th scope="col">{{$sle->sl_desc}}/RN</th>
                                 <th scope="col">{{$sle->sl_desc}}/COLLAR</th>
                                 <?php $no=$no+2;  
-                                $sle_id3[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/RN");
-                                $sle_id3[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/COLLAR");
+                                $sle_id3[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/RN");
+                                $sle_id3[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/COLLAR");
                                 ?>
                                 @endforeach
                               </tr>
@@ -133,8 +133,8 @@ text-align: center;
                                 <th scope="col">{{$sle->sl_desc}}/RN</th>
                                 <th scope="col">{{$sle->sl_desc}}/COLLAR</th>
                                 <?php $no=$no+2;  
-                                $info[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/RN");
-                                $info[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/COLLAR");
+                                $info[] = array('s_id'=>$sle->sl_id,'n_id'=>'2','name'=>$sle->sl_desc."/RN");
+                                $info[] = array('s_id'=>$sle->sl_id,'n_id'=>'1','name'=>$sle->sl_desc."/COLLAR");
                                 ?>
                                 @endforeach
                               </tr>

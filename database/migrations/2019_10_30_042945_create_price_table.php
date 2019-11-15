@@ -15,27 +15,12 @@ class CreatePriceTable extends Migration
     {
         Schema::create('price', function (Blueprint $table) {
             $table->bigIncrements('p_id');
-            $table->unsignedBigInteger('n_id')->unsigned();   //neck id
+            $table->unsignedBigInteger('n_type')->unsigned();   //neck id
             $table->unsignedBigInteger('b_id')->unsigned();   //body id
             $table->unsignedBigInteger('sl_id')->unsigned();  //sleeve id
             $table->unsignedBigInteger('u_type')->unsigned()->nullable;
             $table->integer('price');
             $table->timestamps();
-            
-            $table->foreign('n_id')
-                  ->references('n_id')
-                  ->on('neck')
-                  ->onDelete('cascade');
-            
-            $table->foreign('b_id')
-                  ->references('b_id')
-                  ->on('body')
-                  ->onDelete('cascade');
-            
-            $table->foreign('sl_id')
-                  ->references('sl_id')
-                  ->on('sleeve')
-                  ->onDelete('cascade'); 
         });
     }
 

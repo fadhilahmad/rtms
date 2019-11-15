@@ -60,6 +60,7 @@ class OrderController extends Controller
                
                     DB::table('neck')->insert([
                         'n_desc' => $data['description'],
+                        'n_type' => $data['necktype'],
                         'n_status'=>'1',
                         'n_url' =>$profileImage,
                         'created_at' => DB::raw('now()'),
@@ -99,7 +100,7 @@ class OrderController extends Controller
             {
                 DB::table('neck')
                     ->where('n_id', '=', $data['id'])
-                    ->update(array('n_desc' => $data['description']));
+                    ->update(array('n_desc' => $data['description'],'n_type' => $data['necktype']));
                 
                 return redirect('admin/order_setting')->with('message', 'Neck type updated');
             }
@@ -165,7 +166,7 @@ class OrderController extends Controller
         $price = Price::selectRaw('*')
                 ->where('b_id','=',$b_id)
                 ->where('sl_id','=',$sl_id)
-                ->where('n_id','=',$n_id)
+                ->where('n_type','=',$n_id)
                 ->where('u_type','=',$c_type)
                 ->first();
 
@@ -191,7 +192,7 @@ class OrderController extends Controller
                 DB::table('price')->insert([
                      'b_id' => $data['b_id'],
                      'sl_id'=> $data['sl_id'],
-                     'n_id'=> $data['n_id'],
+                     'n_type'=> $data['n_id'],
                      'u_type'=> $data['u_type'],
                      'price'=> $data['price'],
                      'created_at' => DB::raw('now()'),

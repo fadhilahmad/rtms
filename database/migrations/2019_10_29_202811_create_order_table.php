@@ -31,7 +31,7 @@ class CreateOrderTable extends Migration
             $table->timestamps();
             
 //            $table->foreign('material_id')->references('m_id')->on('material')->onDelete('cascade');
-            $table->foreign('u_id_customer')->references('u_id')->on('user')->onDelete('cascade');
+//            $table->foreign('u_id_customer')->references('u_id')->on('user')->onDelete('cascade');
 //            $table->foreign('u_id_designer')->references('u_id')->on('user')->onDelete('cascade');
 //            $table->foreign('u_id_print')->references('u_id')->on('user')->onDelete('cascade');
 //            $table->foreign('u_id_taylor')->references('u_id')->on('user')->onDelete('cascade');
@@ -47,6 +47,6 @@ class CreateOrderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('order');
+        Schema::dropIfExists('orders');
     }
 }

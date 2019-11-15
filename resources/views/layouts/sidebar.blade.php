@@ -35,6 +35,23 @@
     @can('isAdmin')
         <div class="admin-menu">
           <ul id="side-admin-menu" class="side-menu list-unstyled"> 
+            <li><a href="#orderDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-plus-square"></i> Order </a>
+              <ul id="orderDropdown" class="collapse list-unstyled ">
+                <li><a href="{{ route('admin.delivery') }}">Delivery Schedule</a></li>
+                <li><a href="{{ route('admin.orderlist') }}">Job Order</a></li>
+                <li><a href="{{ route('admin.ordersetting') }}">Order Setting</a></li>
+                <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>
+              </ul>
+            </li> 
+            <li><a href="#paymentDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file"></i>Manage Payment </a>
+              <ul id="paymentDropdown" class="collapse list-unstyled ">
+                <li><a href="{{ route('admin.payment') }}">Payment</a></li>
+                <li><a href="{{ route('admin.invoicelist') }}">Invoice </a></li>
+                <li><a href="{{ route('admin.receiptlist') }}">Receipt</a></li>
+              </ul>
+            </li>
+            <li> <a href="{{ route('admin.sale') }}"> <i class="fa fa-money"> </i>Sale</a></li>
+            <li> <a href="{{ route('admin.stocklist') }}"> <i class="icon-screen"> </i>Manage Stock </a></li>
             <li><a href="#manageCustomerDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-user"></i> Manage Customer </a>
               <ul id="manageCustomerDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.home') }}">End User List</a></li>
@@ -54,29 +71,7 @@
                 <li><a href="{{ route('admin.leavesetting') }}">Leave Setting</a></li>
                 <li><a href="{{ route('admin.staffperformance') }}">Performance</a></li>
               </ul>
-            </li>
-            <li><a href="#orderDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-plus-square"></i> Order </a>
-              <ul id="orderDropdown" class="collapse list-unstyled ">
-                <li><a href="{{ route('admin.ordersetting') }}">Order Setting</a></li>
-                <li><a href="{{ route('admin.orderlist') }}">Order List</a></li>
-                <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>
-              </ul>
-            </li>
-            <li> <a href="{{ route('admin.stocklist') }}"> <i class="icon-screen"> </i>Manage Stock </a></li>
-            <li><a href="{{ route('admin.invoicelist') }}"><i class="fa fa-file"></i> Invoice </a></li>
-<!--            <li><a href="#invoiceDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file"></i> Invoice </a>
-              <ul id="invoiceDropdown" class="collapse list-unstyled ">
-                <li><a href="{{ route('admin.invoicelist') }}">List</a></li>
-                <li><a href="{{ route('admin.invoicepending') }}">Pending</a></li>
-              </ul>
-            </li>-->
-            <li><a href="#receiptDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file-text-o"></i> Receipt </a>
-              <ul id="receiptDropdown" class="collapse list-unstyled ">
-                <li><a href="{{ route('admin.receiptlist') }}">List</a></li>
-                <li><a href="{{ route('admin.receiptpending') }}">Pending</a></li>
-              </ul>
-            </li>
-            <li> <a href="{{ route('admin.sale') }}"> <i class="fa fa-money"> </i>Sale</a></li>
+            </li>            
           </ul>
         </div>
     @endcan

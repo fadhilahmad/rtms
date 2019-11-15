@@ -16,6 +16,7 @@ class CreateNeckTable extends Migration
         Schema::create('neck', function (Blueprint $table) {
             $table->bigIncrements('n_id');
             $table->string('n_desc')->nullable();
+            $table->integer('n_type')->nullable();
             $table->integer('n_status')->nullable();
             $table->string('n_url')->nullable();    //image url
             $table->timestamps();

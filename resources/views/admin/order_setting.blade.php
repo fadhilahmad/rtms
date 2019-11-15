@@ -171,6 +171,7 @@ text-align: center;
                                 <thead class="thead-dark">
                                   <tr>
                                     <th scope="col">Description</th>
+                                    <th scope="col">Type</th>
                                     <th scope="col">Image</th>
                                     <th scope="col">Edit</th>
                                     <th scope="col">Delete</th>
@@ -180,11 +181,13 @@ text-align: center;
                                     @foreach($neck as $nec)
                                   <tr>
                                     <td>{{$nec->n_desc}}</td>
-                                    <td><img class="" src="{{url('uploads/'.$nec->n_url)}}" width="200" height="200"></td>
+                                    @php if($nec->n_type==2){$dis = "Roundneck";}elseif($nec->n_type==1){$dis = "Collar";}else{$dis="error";}@endphp
+                                    <td>{{$dis}}</td>
+                                    <td><img class="" src="{{url('uploads/'.$nec->n_url)}}" width="100" height="100"></td>
                                     <td>
                                         <button 
                                             class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Neck" data-table="neck" 
-                                            data-id="{{$nec->n_id}}" data-desc="{{$nec->n_desc}}">/
+                                            data-id="{{$nec->n_id}}" data-necktype="{{$nec->n_type}}" data-desc="{{$nec->n_desc}}">/
                                         </button>                                   
                                     </td>
                                     <td>
@@ -230,6 +233,14 @@ text-align: center;
                 </div>
               </div> 
 
+              <div class="form-group row" id="necktype">
+                <label for="necktype" class="col-sm-4 col-form-label">Neck Type</label>
+                <div class="col-sm-8" id="neck">
+                    <input type="radio" id="n1" name="necktype" value="1"> Collar<br>
+                    <input type="radio" id="n2" name="necktype" value="2"> Roundneck<br>
+                </div>
+              </div> 
+          
               <div class="form-group row" id="neckdiv">
                 <label for="neck_image" class="col-sm-4 col-form-label">Neck Image</label>
                 <div class="col-sm-8">
@@ -256,11 +267,14 @@ $(document).on("click", ".popup", function () {
      $(".modal-body #type").val( "add" );
      $(".modal-body #table").val( table );
      $(".modal-body #neckdiv").hide();
+     $(".modal-body #necktype").hide();
      document.getElementById('description').type = 'text';
      
      if(table=="neck"){
          $(".modal-body #neckdiv").show();
-         console.log('sampai');
+         $(".modal-body #necktype").show();
+        radiobtn = document.getElementById("n1");
+        radiobtn.checked = true;
      }
 //     console.log(table);
 });
@@ -277,10 +291,24 @@ $(document).on("click", ".edit", function () {
      $(".modal-body #itemId").val( id );
      $(".modal-body #table").val( table );
      $(".modal-body #neckdiv").hide();
+     $(".modal-body #necktype").hide();
+     
+     if(table=="neck"){
+         var neck = $(this).data('necktype');
+         $(".modal-body #necktype").show();
+         
+         if(neck==1){
+             radiobtn = document.getElementById("n1");
+             radiobtn.checked = true;
+         }
+         if(neck==2){
+             radiobtn = document.getElementById("n2");
+             radiobtn.checked = true;
+         }
+     }
     
      if(table=="delivery"){
          document.getElementById('description').type = 'number';
-         console.log('sampai');
      }
 //     console.log(table);
 });
