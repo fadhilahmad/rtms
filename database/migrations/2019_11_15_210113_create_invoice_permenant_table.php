@@ -15,11 +15,11 @@ class CreateInvoicePermenantTable extends Migration
     {
         Schema::create('invoice_permenant', function (Blueprint $table) {
             $table->bigIncrements('ip_id');
-            $table->unsignedBigInteger('i_id')->unsigned();
             $table->unsignedBigInteger('s_id')->unsigned();
-            $table->integer('perspec_price');
-            $table->integer('perunit_price');
-            $table->integer('quantity');
+            $table->unsignedBigInteger('o_id')->unsigned();          
+            $table->integer('spec_total_price');
+            $table->integer('one_unit_price');
+            $table->integer('spec_total_quantity');
             $table->timestamps();
         });
     }
