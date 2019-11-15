@@ -17,28 +17,59 @@ class CreateNeckSeeder extends Seeder
         $neck = 
                 [
                   [
-                    'n_desc'=>'1',
+                    'n_desc'=>'Round Neck',
                     'n_status'=>'1',
+                    'n_url'=>'necktype20191116012550.jpeg',
                   ],
                   [
-                    'n_desc'=>'2',
+                    'n_desc'=>'2 Piece Round Neck',
                     'n_status'=>'1',
+                    'n_url'=>'necktype20191116012628.jpeg',
                   ],
                   [
-                    'n_desc'=>'3',
+                    'n_desc'=>'V Neck',
                     'n_status'=>'1',
+                    'n_url'=>'necktype20191116012701.jpeg',
                   ],
                   [
-                    'n_desc'=>'4',
+                    'n_desc'=>'2 Piece V-Neck',
                     'n_status'=>'1',
+                    'n_url'=>'necktype20191116012739.jpeg',
                   ],
                   [
-                    'n_desc'=>'5',
+                    'n_desc'=>'Polo',
                     'n_status'=>'1',
+                    'n_url'=>'necktype20191116012927.jpeg',
                   ],
                   [
-                    'n_desc'=>'6',
+                    'n_desc'=>'Polo Collor Hidden Button',
                     'n_status'=>'1',
+                    'n_url'=>'necktype20191116013009.jpeg',
+                  ],
+                  [
+                    'n_desc'=>'Mandarin Collar Button',
+                    'n_status'=>'1',
+                    'n_url'=>'necktype20191116013045.jpeg',
+                  ],
+                  [
+                    'n_desc'=>'Mandarin Collar Hidden Button',
+                    'n_status'=>'1',
+                    'n_url'=>'necktype20191116013155.jpeg',
+                  ],
+                  [
+                    'n_desc'=>'Mandarin Collar Zip 5 Inch',
+                    'n_status'=>'1',
+                    'n_url'=>'necktype20191116013247.jpeg',
+                  ],
+                  [
+                    'n_desc'=>'Polo V-Neck',
+                    'n_status'=>'1',
+                    'n_url'=>'necktype20191116013411.jpeg',
+                  ],
+                  [
+                    'n_desc'=>'Polo RoundNeck',
+                    'n_status'=>'1',
+                    'n_url'=>'necktype20191116013442.jpeg',
                   ],
                 ];
         
