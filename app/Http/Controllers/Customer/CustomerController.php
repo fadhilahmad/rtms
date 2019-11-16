@@ -168,22 +168,11 @@ class CustomerController extends Controller
             $totprice = 0;
             $totorderrow = count($neckid);
 
-            $idinvoice;
-            $idspec = array();
-            $priceunit = array();
-            $quantityunit = array();
             //var_dump(": ".$totorderrow);
             //var_dump(": ".$neckid[1]);
             for($i = 0; $i < $totorderrow; $i++){
 
                 $necktype = Neck::find($neckid[$i]);
-                // // get neck id to check if collar or not
-                // if($neckid[$i] == 1){
-                //     $checkneck = 1;
-                // }else{
-                //     $checkneck = 2;
-                // }
-                //var_dump(": ".$checkneck);
                 $price = Price::where('n_type', '=', $necktype->n_type)
                     ->where('b_id', '=' , $bodyid[$i])
                     ->where('sl_id', '=' , $sleeveid[$i])
@@ -202,35 +191,60 @@ class CustomerController extends Controller
                 
 
                 //var_dump(": ".$specid[$i]);
-                //var_dump(": ".$totunits);
+                //var_dump(": ".$specs[$i]);
                 //var_dump(": ".$size[4]);
+                $specprice = 0;
+                $specquantity = 0;
+                $oneunitprice = 0;
                 for($j = 0; $j < $totunits; $j++){
                     $size = Unit::where('o_id', '=', $orderidrequest)
-                    ->where('s_id', '=', $specs[$i])
+                    ->where('s_id', '=', $specid[$i])
                     ->pluck('size');
                     // get the quantity
                     $quantity = Unit::where('o_id', '=', $orderidrequest)
-                    ->where('s_id', '=', $specs[$i])
+                    ->where('s_id', '=', $specid[$i])
                     ->pluck('un_quantity');
                     $totsize = count($size);
                     //var_dump(": ".$totsize);
                     //var_dump(": ".$size[$j]);
                     //var_dump(": ".$quantity[$j]);
+
+                    // $specprice += $price;
+                    $specquantity += $quantity[$j];
+                    //$oneunitprice = $price;
+
                     $pricecalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]);
                     $priceperunit = $this->calcPricePerUnit($price, $category, $size[$j]); 
-                    //var_dump($quantity[$j]);
+                    //var_dump('quantity: '.$quantity[$j]);
 
-                    array_push($idspec, $specid[$i]); 
-                    array_push($priceunit, $priceperunit);
-                    array_push($quantityunit, $quantity[$j]);
+                    // array_push($idspec, $specid[$i]); 
+                    // array_push($priceunit, $priceperunit);
+                    // array_push($quantityunit, $quantity[$j]);
                     //$priceint = intval($pricecalc[0]);
+                    $specprice += $pricecalc;
                     $totprice += $pricecalc;
                     //var_dump(": ".$pricecalc);
                     //var_dump(": ".$pricecalc);
                     //var_dump(": ".$this->calcPrice($price, $category, $size[$j]));
                     //var_dump(": ".$totprice);
                 }
+                // $priceoneunit = Price::where('n_type', '=', $necktype->n_type)
+                //     ->where('b_id', '=' , $bodyid[$i])
+                //     ->where('sl_id', '=' , $sleeveid[$i])
+                //     ->where('u_type', '=' , $usertype)->pluck('price');
                 // var_dump(": ".$totsize);
+                //var_dump("price: ".$price);
+                $oneunitprice += intval($price[0]);
+
+                $invoicePermanent = new InvoicePermanent;
+                $invoicePermanent->s_id = $specid[$i];
+                $invoicePermanent->o_id = $orderidrequest;
+                $invoicePermanent->spec_total_price = $specprice;
+                $invoicePermanent->one_unit_price = $oneunitprice;
+                $invoicePermanent->spec_total_quantity = $specquantity;
+                $invoicePermanent->save();
+
+
             }
             //var_dump(": ".$totprice);
             $invoice = new Invoice;
@@ -239,41 +253,26 @@ class CustomerController extends Controller
             $invoice->total_price = $totprice;
             $invoice->save();
 
-            $idinvoice = $invoice->i_id;
+            // $idinvoice = $invoice->i_id;
 
-            // var_dump("price: ".count($priceunit));
-            // var_dump("quantity: ".count($quantityunit));
-            $totloop = count($priceunit);
-
-            for($i = 0; $i < $totloop; $i++){
-
-                // var_dump($priceunit[$j]);
-
-                $nvoicePermanent = new InvoicePermanent;
-                $nvoicePermanent->i_id = $idinvoice;
-                $nvoicePermanent->s_id = $idspec[$i];
-                $nvoicePermanent->price_unit = $priceunit[$i];
-                $nvoicePermanent->quantity = $quantityunit[$i];
-                $nvoicePermanent->save();
-
-            }
-
+            // // var_dump("price: ".count($priceunit));
+            // // var_dump("quantity: ".count($quantityunit));
+            // $totloop = count($priceunit);
 
             // for($i = 0; $i < $totloop; $i++){
-            //     for($j = 0; $j < $totunits; $j++){
 
-            //         // var_dump($priceunit[$j]);
+            //     // var_dump($priceunit[$j]);
 
-            //         $nvoicePermanent = new InvoicePermanent;
-            //         $nvoicePermanent->i_id = $idinvoice;
-            //         $nvoicePermanent->s_id = $idspec[$i];
-            //         $nvoicePermanent->price_unit = $priceunit[$j];
-            //         $nvoicePermanent->quantity = $quantityunit[$j];
-            //         $nvoicePermanent->save();
+            //     $nvoicePermanent = new InvoicePermanent;
+            //     $nvoicePermanent->o_id = $idinvoice;
+            //     $nvoicePermanent->s_id = $idspec[$i];
+            //     $nvoicePermanent->perspec_price = $priceunit[$i];
+            //     $nvoicePermanent->perunit_price = $priceunit[$i];
+            //     $nvoicePermanent->quantity = $quantityunit[$i];
+            //     $nvoicePermanent->save();
 
-            //     }
             // }
-            
+
                 
             //return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
         }else{
