@@ -17,19 +17,19 @@ class CreateBodySeeder extends Seeder
         $body =
                 [
                   [
-                      'b_desc'=>'ADULT',
+                      'b_desc'=>'Adult',
                       'b_status'=>'1',
                   ],
                   [
-                      'b_desc'=>'KIDS',
+                      'b_desc'=>'Kids',
                       'b_status'=>'1',
                   ],
                   [
-                      'b_desc'=>'MUSLIMAH',
+                      'b_desc'=>'Muslimah',
                       'b_status'=>'1',
                   ],
                   [
-                      'b_desc'=>'RUGBY',
+                      'b_desc'=>'Rugby',
                       'b_status'=>'1',
                   ],
                 ];

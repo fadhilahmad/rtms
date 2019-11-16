@@ -12,6 +12,7 @@ use App\Design;
 use App\Unit;
 use App\User;
 use App\Invoice;
+use App\InvoicePermanent;
 
 class OrderController extends Controller
 {
@@ -19,7 +20,7 @@ class OrderController extends Controller
     public function updateOrderSetting(Request $request){
         
         $data = $request->all();
-        
+       // dd($data);
         if($data['type']=="add")
         {
             if($data['table']=="material")
@@ -198,7 +199,9 @@ class OrderController extends Controller
                      'created_at' => DB::raw('now()'),
                      'updated_at' => DB::raw('now()')
                     ]);
-                return redirect('admin/pricing')->with('message', 'New price added');
+                //return redirect()->back()->with('message', 'New price added');
+                //return redirect('admin/pricing')->with('message', 'New price added');
+                return response()->json(['success'=>'New price added']);
         }
         if($data['process']=="update"){
             
@@ -206,10 +209,14 @@ class OrderController extends Controller
                     ->where('p_id', '=', $data['p_id'])
                     ->update(array('price' => $data['price'],'updated_at'=>DB::raw('now()')));
                 
-                return redirect('admin/pricing')->with('message', 'Price updated');
+                //return redirect('admin/pricing')->with('message', 'Price updated');
+                //return redirect()->back()->with('message', 'Price updated');
+                return response()->json(['success'=>'Price updated']);
         }
         
-        return redirect('admin/pricing')->with('message', 'error');
+        //return redirect('admin/pricing')->with('message', 'error');
+        //return redirect()->back()->with('message', 'Error');
+        return response()->json(['success'=>'Error']);
     }
     
     public function updateStock(Request $request){
@@ -286,11 +293,11 @@ class OrderController extends Controller
                 ->where('o_id','=',$o_id)
                 ->first();
              
-             $price = Price::all();
-            // dd($specs);
-//             $design = Design::all();       
+             $invoice_p = InvoicePermanent::all();
+             
+            // dd($specs);      
         
         
-        return view('admin/invoice_info',compact('orders','specs','user','units','invoice','price'));
+        return view('admin/invoice_info',compact('orders','specs','user','units','invoice','invoice_p'));
     }
 }                

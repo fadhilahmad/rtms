@@ -17,15 +17,15 @@ class CreateSleeveSeeder extends Seeder
         $sleeve=
                 [
                     [
-                        'sl_desc'=>'LONG',
+                        'sl_desc'=>'Long Sleeve',
                         'sl_status'=>'1',
                     ],
                     [
-                        'sl_desc'=>'SHORT',
+                        'sl_desc'=>'Short Sleeve',
                         'sl_status'=>'1',
                     ],
                     [
-                        'sl_desc'=>'SINGLET',
+                        'sl_desc'=>'Singlet',
                         'sl_status'=>'1',
                     ],
                 ];

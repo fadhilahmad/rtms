@@ -8,7 +8,10 @@
 }
 td,th {
 text-align: center;
-} 
+}
+.modal-open {
+    overflow: scroll;
+}
 </style>
 <div class="container">
     <div class="row justify-content-center">
@@ -325,5 +328,42 @@ $(document).on("click", ".edit", function () {
           document.getElementById("orderform").submit();  
         }       
     }
+    
+// $.ajaxSetup({
+//        headers: {
+//            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//        }
+//    });
+//
+//    $(".btn-submit").click(function(e){
+//        e.preventDefault();
+//
+//        var x = document.forms["orderform"]["description"].value;
+//        if (x == "") 
+//        {
+//            alert("Description must be filled out");
+//            return false;
+//        }
+//
+//        var formData = {
+//            'description'   : $('.modal-body input[name=description]').val(),
+//            'id'   : $('.modal-body input[name=id]').val(),
+//            'type'    : $('.modal-body input[name=type]').val(),
+//            'table'   : $('.modal-body input[name=table]').val(),
+//            'necktype'   : $('.modal-body input[name=necktype]').val(),
+//            'neck_image'    : $('.modal-body input[name=necktype_image]').val()
+//        };
+//
+//        $.ajax({
+//           type:'POST',
+//           url:"{{url('admin/order_setting')}}",
+//           data:formData,
+//           success:function(data){
+//              $('#orderModal').modal('hide');
+//                    location.reload();
+//           }
+//        });
+//
+//    });
 </script>
 @endsection

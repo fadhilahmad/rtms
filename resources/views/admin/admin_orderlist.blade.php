@@ -8,6 +8,7 @@
                 <div class="card-header">Order List</div>
 
                 <div class="card-body">
+                    @if(!$order->isempty())
                         <table class="table table-hover">
                             <thead class="thead-dark">
                               <tr>
@@ -71,6 +72,9 @@
                               {{ $order->links() }}
                             </tbody>
                           </table>
+                    @else
+                    No Order
+                    @endif
                 </div>
             </div>
         </div>

@@ -8,7 +8,10 @@
 }
 td,th {
 text-align: center;
-} 
+}
+.modal-open {
+    overflow: scroll;
+}
 </style>
 <div class="container">
     <div class="row justify-content-center">
@@ -198,7 +201,7 @@ text-align: center;
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" onclick="validateForm()" type="submit" class="btn btn-primary">Save</button>
+        <button type="button" type="submit" class="btn btn-primary btn-submit">Save</button>
       </div>
      </form>
     </div>
@@ -243,18 +246,56 @@ $(document).on("click", ".editPrice", function () {
      console.log(pid)
 });
   
-  function validateForm() {
-    var x = document.forms["priceform"]["price"].value;
+//  function validateForm() {
+//    var x = document.forms["priceform"]["price"].value;
+//        if (x == "") 
+//        {
+//        alert("Price must be filled out");
+//        return false;
+//        }
+//        else
+//        {
+//          document.getElementById("priceform").submit();  
+//        }       
+//    }
+//    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $(".btn-submit").click(function(e){
+        e.preventDefault();
+
+        var x = document.forms["priceform"]["price"].value;
         if (x == "") 
         {
-        alert("Price must be filled out");
-        return false;
+            alert("Price must be filled out");
+            return false;
         }
-        else
-        {
-          document.getElementById("priceform").submit();  
-        }       
-    }
+        else{
+        var formData = {
+            'price'   : $('input[name=price]').val(),
+            'sl_id'   : $('input[name=sl_id]').val(),
+            'b_id'    : $('input[name=b_id]').val(),
+            'n_id'   : $('input[name=n_id]').val(),
+            'u_type'   : $('input[name=u_type]').val(),
+            'process'    : $('input[name=process]').val(),
+            'p_id'    : $('input[name=p_id]').val()
+        };
+
+        $.ajax({
+           type:'POST',
+           url:"{{url('admin/pricing')}}",
+           data:formData,
+           success:function(data){
+              $('#priceModal').modal('hide');
+                    location.reload();
+           }
+        });
+      }
+    });    
 </script>
 @endsection
 

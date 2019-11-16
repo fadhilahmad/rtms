@@ -51,11 +51,13 @@ text-align: center;
                             @foreach($specs as $spec)
                             <tr>
                                 <td>{{$no}}</td>
-                                <td>{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}</td>
-                                <td>{{$total_unit[$index] = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->sum('un_quantity')}}</td>
-                                @php $show = $price->where('n_id',$spec->n_id)->where('b_id',$spec->b_id)->where('sl_id',$spec->sl_id)->where('u_type',$user->u_type)->first() @endphp
-                                <td>{{$total=$show->price}}</td>
-                                <td>{{$total_price[$index] = $total*$total_unit[$index]}}</td>
+                                <td>{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}<br>
+                                                                  
+                                </td>
+                                @php $display = $invoice_p->where('s_id',$spec->s_id)->first();  @endphp
+                                <td>{{$total_unit[] = $display->spec_total_quantity}}</td>
+                                <td>{{$display->one_unit_price}}</td>                                                               
+                                <td>{{$total_price[] = $display->spec_total_price}}</td>
                             </tr>
                             @php $no++; $index++ @endphp
                             @endforeach
