@@ -28,6 +28,7 @@ class CreateOrderTable extends Migration
             $table->unsignedBigInteger('u_id_designer')->unsigned()->nullable();
             $table->unsignedBigInteger('u_id_print')->unsigned()->nullable();
             $table->unsignedBigInteger('u_id_taylor')->unsigned()->nullable();
+            $table->integer('balance')->nullable();
             $table->timestamps();
             
 //            $table->foreign('material_id')->references('m_id')->on('material')->onDelete('cascade');
