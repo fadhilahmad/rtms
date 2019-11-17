@@ -142,13 +142,8 @@ class CustomerController extends Controller
         $orderidrequest = $orderid;
         if($orderidrequest != null){
             //-------------------- confirm design ----------------------//
-            // get the user id
             $user_id = auth()->user()->u_id;
-            //$user = User::find($user_id);
-            // make ref num to be inserted in table order
-            // get array of ref num from order table based on user id
             $userrefnum = Order::where('ref_num', '!=' , null)->pluck('ref_num')->toArray();
-            // total ref num
             $totalrefnum = count($userrefnum);
             $newrefnum = $totalrefnum + 1;
             // update ref num in table order
@@ -167,9 +162,6 @@ class CustomerController extends Controller
             $price;
             $totprice = 0;
             $totorderrow = count($neckid);
-
-            //var_dump(": ".$totorderrow);
-            //var_dump(": ".$neckid[1]);
             for($i = 0; $i < $totorderrow; $i++){
 
                 $necktype = Neck::find($neckid[$i]);
@@ -178,21 +170,10 @@ class CustomerController extends Controller
                     ->where('sl_id', '=' , $sleeveid[$i])
                     ->where('u_type', '=' , $usertype)->pluck('price');
                 $category = Order::where('o_id', '=', $orderidrequest)->pluck('category');
-                //var_dump(": ".$category);
-                //var_dump(": ".$price[$i]);
-                //var_dump(": ".$neckid[$i]);
-                 
-                //$units = Unit::where('o_id', $orderidrequest)->get();
                 $size = Unit::where('o_id', '=', $orderidrequest)->pluck('size');
                 $totsize = count($size);
                 $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
                 $totunits = count($specs);
-
-                
-
-                //var_dump(": ".$specid[$i]);
-                //var_dump(": ".$specs[$i]);
-                //var_dump(": ".$size[4]);
                 $specprice = 0;
                 $specquantity = 0;
                 $oneunitprice = 0;
@@ -200,42 +181,17 @@ class CustomerController extends Controller
                     $size = Unit::where('o_id', '=', $orderidrequest)
                     ->where('s_id', '=', $specid[$i])
                     ->pluck('size');
-                    // get the quantity
                     $quantity = Unit::where('o_id', '=', $orderidrequest)
                     ->where('s_id', '=', $specid[$i])
                     ->pluck('un_quantity');
                     $totsize = count($size);
-                    //var_dump(": ".$totsize);
-                    //var_dump(": ".$size[$j]);
-                    //var_dump(": ".$quantity[$j]);
-
-                    // $specprice += $price;
                     $specquantity += $quantity[$j];
-                    //$oneunitprice = $price;
-
                     $pricecalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]);
                     $priceperunit = $this->calcPricePerUnit($price, $category, $size[$j]); 
-                    //var_dump('quantity: '.$quantity[$j]);
-
-                    // array_push($idspec, $specid[$i]); 
-                    // array_push($priceunit, $priceperunit);
-                    // array_push($quantityunit, $quantity[$j]);
-                    //$priceint = intval($pricecalc[0]);
                     $specprice += $pricecalc;
                     $totprice += $pricecalc;
-                    //var_dump(": ".$pricecalc);
-                    //var_dump(": ".$pricecalc);
-                    //var_dump(": ".$this->calcPrice($price, $category, $size[$j]));
-                    //var_dump(": ".$totprice);
                 }
-                // $priceoneunit = Price::where('n_type', '=', $necktype->n_type)
-                //     ->where('b_id', '=' , $bodyid[$i])
-                //     ->where('sl_id', '=' , $sleeveid[$i])
-                //     ->where('u_type', '=' , $usertype)->pluck('price');
-                // var_dump(": ".$totsize);
-                //var_dump("price: ".$price);
                 $oneunitprice += intval($price[0]);
-
                 $invoicePermanent = new InvoicePermanent;
                 $invoicePermanent->s_id = $specid[$i];
                 $invoicePermanent->o_id = $orderidrequest;
@@ -243,93 +199,20 @@ class CustomerController extends Controller
                 $invoicePermanent->one_unit_price = $oneunitprice;
                 $invoicePermanent->spec_total_quantity = $specquantity;
                 $invoicePermanent->save();
-
-
             }
-            //var_dump(": ".$totprice);
             $invoice = new Invoice;
             $invoice->o_id = $orderid;
             $invoice->i_status = 1;
-            $invoice->total_price = $totprice;
+            $invoice->total_price = $totprice; 
             $invoice->save();
 
-            // $idinvoice = $invoice->i_id;
-
-            // // var_dump("price: ".count($priceunit));
-            // // var_dump("quantity: ".count($quantityunit));
-            // $totloop = count($priceunit);
-
-            // for($i = 0; $i < $totloop; $i++){
-
-            //     // var_dump($priceunit[$j]);
-
-            //     $nvoicePermanent = new InvoicePermanent;
-            //     $nvoicePermanent->o_id = $idinvoice;
-            //     $nvoicePermanent->s_id = $idspec[$i];
-            //     $nvoicePermanent->perspec_price = $priceunit[$i];
-            //     $nvoicePermanent->perunit_price = $priceunit[$i];
-            //     $nvoicePermanent->quantity = $quantityunit[$i];
-            //     $nvoicePermanent->save();
-
-            // }
-
-                
-            //return redirect('customer/customer_orderlist')->with('message', 'Order confirmed');
-        }else{
-            //-------------------- request redesign ----------------------//
-            // $data = $request->all();
-            
-            // if ($request->has('design')) {
-            //     $image = $request->file('design');                    
-            //     $destinationPath = 'orders/draft/'; 
-            //     $profileImage = 'draft'.date('YmdHis') . "." . $image->getClientOriginalExtension();
-            //     $image->move($destinationPath, $profileImage);
-            //     $url = $destinationPath.$profileImage;
-                    
-            //     DB::table('design')->insert([
-            //             'o_id' => $data['o_id'],
-            //             'u_id_designer'=>$data['u_id'],
-            //             'd_url' =>$profileImage,
-            //             'd_type'=>'2',
-            //             'created_at' => DB::raw('now()'),
-            //             'updated_at' => DB::raw('now()')
-            //             ]);
-                
-            //     if($data['note'] != null){
-            //         DB::table('orders')
-            //                 ->where('o_id', '=', $data['o_id'])
-            //                 ->update(array('note' => $data['note'],
-            //                                 'o_status'=>'10'));
-            //     }else{
-            //         DB::table('orders')
-            //             ->where('o_id', '=', $data['o_id'])
-            //             ->update(array('o_status'=>'10'));
-            //         return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-            //     }
-                
-            //     return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-            // }else{
-            //     if($data['note'] != null){
-            //         DB::table('orders')
-            //             ->where('o_id', '=', $data['o_id'])
-            //             ->update(array('note' => $data['note'],
-            //             'o_status'=>'10'));
-                
-            //         return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-            //     }else{
-            //         DB::table('orders')
-            //             ->where('o_id', '=', $data['o_id'])
-            //             ->update(array('o_status'=>'10'));
-            //         return redirect('customer/customer_orderlist')->with('message', 'Request redesign submitted'); 
-            //     }
-                
-                
-            // }
+            DB::table('orders')
+                ->where('o_id', '=', $orderid)
+                ->update(array('balance' => $totprice));
         }
     }
     // method to calculate total price with quantity
     public function calcPrice($price, $category, $size, $quantity){
-        //var_dump(": ".$size);
         $pricecalc = 0;
         if($category == "Nameset"){
             $priceint = intval($price[0]);
@@ -360,31 +243,22 @@ class CustomerController extends Controller
     }
     // method to calculate total price without quantity
     public function calcPricePerUnit($price, $category, $size){
-        // var_dump(": ".$size);
         $pricecalc = 0;
         if($category == "Nameset"){
             $priceint = intval($price[0]);
             $pricecalc = $priceint + 4;
-            //return $pricecalc;
         }else{
             $pricecalc = intval($price[0]);
-            //return $pricecalc;
         }
         if($size == "4XL" || $size == "5XL"){
             $priceint = intval($price[0]);
             $pricecalc = $priceint + 4;
-            //var_dump(": ".$pricecalc);
-            //return $pricecalc;
         }else if($size == "6XL" || $size == "7XL"){
             $priceint = intval($price[0]);
             $pricecalc = $priceint + 8;
-            // var_dump(": ".$pricecalc);
-            //return $pricecalc;
         }else{
             $pricecalc = intval($price[0]);
-            //return $pricecalc;
         }
-        //var_dump(": ".$pricecalc);
         return $pricecalc;
     }
     // method to view mockup image
@@ -401,35 +275,30 @@ class CustomerController extends Controller
         ->with('unit', $unit);
         
     }
-    // method to view design image
-    public function customerViewDesign($order_id)
-    {
-        $design = Design::where('o_id', $order_id)->where('d_type', 2)->get();
-        $spec = Spec::where('o_id', $order_id)->get();
-        $unit = Unit::where('o_id', $order_id)->get();
-        $order = Order::find($order_id);
-        return view('customer/customer_view_design')
-        ->with('order', $order)
-        ->with('designs', $design)
-        ->with('spec', $spec)
-        ->with('unit', $unit);
-        
-    }
     
-    // method to view mockup image
+    // method to display job order page
     public function customerViewJobOrder($order_id)
     {
         $userid = auth()->user()->u_id;
         $user = User::find($userid);
-        // $user = User::where('u_id', '=' , $userid)->get();
         $design = Design::where('o_id', $order_id)->where('d_type', 1)->get();
-        $specs = Spec::where('o_id', $order_id)->get();
-        $unit = Unit::where('o_id', $order_id)->get();
+        //$specs = Spec::where('o_id', $order_id)->get();
+        $units = Unit::where('o_id', $order_id)->get();
         $order = Order::find($order_id);
         $materials = Material::all();
         $sleeves = Sleeve::all();
         $necks = Neck::all();
         $designer = User::find($order->u_id_designer);
+        $specs = DB::table('spec')
+            ->leftJoin('body', 'spec.b_id','=','body.b_id')
+            ->leftJoin('sleeve', 'spec.sl_id', '=', 'sleeve.sl_id')
+            ->leftJoin('neck', 'spec.n_id','=','neck.n_id')
+            ->where('spec.o_id','=',$order_id)
+            ->get();
+        $invoicepermanents = InvoicePermanent::where('o_id', $order_id)->get();
+        // $units = DB::table('unit')
+        //     ->leftJoin('spec', 'spec.b_id','=','body.b_id')
+        //     ->where('o_id', $order_id)->get();
 
         //$specs = Spec::find($order_id);
 
@@ -442,27 +311,14 @@ class CustomerController extends Controller
         ->with('order', $order)
         ->with('designs', $design)
         ->with('specs', $specs)
-        ->with('unit', $unit)
+        ->with('units', $units)
         ->with('materials', $materials)
         ->with('sleeves', $sleeves)
         ->with('necks', $necks)
-        ->with('designer', $designer);
+        ->with('designer', $designer)
+        ->with('invoicepermanents', $invoicepermanents);
         
     }
-    // // method to view customer job order
-    // public function customerViewJobOrder($order_id)
-    // {
-    //     $design = Design::where('o_id', $order_id)->where('d_type', 1)->get();
-    //     $spec = Spec::where('o_id', $order_id)->get();
-    //     $unit = Unit::where('o_id', $order_id)->get();
-    //     $order = Order::find($order_id);
-    //     return view('customer/customer_view_order')
-    //     ->with('order', $order)
-    //     ->with('designs', $design)
-    //     ->with('spec', $spec)
-    //     ->with('unit', $unit);
-        
-    // }
     // method to view invoice page for customer
     public function invoice()
     {
@@ -514,14 +370,7 @@ class CustomerController extends Controller
             $totprice = 0;
             $totorderrow = count($neckid);
             for($i = 0; $i < $totorderrow; $i++){
-
                 $necktype = Neck::find($neckid[$i]);
-
-                // if($neckid[$i] == 1){
-                //     $checkneck = 1;
-                // }else{
-                //     $checkneck = 2;
-                // }
                 $price = Price::where('n_type', '=', $necktype->n_type)
                     ->where('b_id', '=' , $bodyid[$i])
                     ->where('sl_id', '=' , $sleeveid[$i])
@@ -536,7 +385,6 @@ class CustomerController extends Controller
                     $size = Unit::where('o_id', '=', $orderid)
                     ->where('s_id', '=', $specs[$i])
                     ->pluck('size');
-                    
                     $quantity = Unit::where('o_id', '=', $orderid)
                     ->where('s_id', '=', $specs[$i])
                     ->pluck('un_quantity');
@@ -559,7 +407,6 @@ class CustomerController extends Controller
             ->with('usertype', $usertype);
         }
     }
-// -------------------------------------- Add order to db --------------------------------------------------
     /**
      * Display a listing of the resource. 
      *
@@ -591,12 +438,8 @@ class CustomerController extends Controller
             'cloth_name' => 'required',
             'category' => 'required',
             'cover_image' => 'image|required|max:1999'
-        ]);
-// set cover image max to 1999 because a lot of apache server not allowed user to upload image more than 2mb
+        ]); // set cover image max to 1999 because a lot of apache server not allowed user to upload image more than 2mb
         // ------------------ insert data into table order ---------------------------------- //
-
-        // $request->input('orderid');
-
         $clothname = $request->input('cloth_name');
         $category = $request->input('category');
         $material = $request->input('material');
@@ -611,47 +454,25 @@ class CustomerController extends Controller
         $printid = null;
         $taylorid = null; 
         // assign order design to designer
-        // get all designer id
-        $userdesigner = User::where('u_type', 3)->where('u_status', 1)->pluck('u_id')->toArray();
-        // var_dump("--------------- total designer ------------Total Designer: ".$totaldesigner);
-        // check if order existed
-        $hasorder = Order::all()->toArray();
-        //var_dump("--------------- total order ------------Total Order: ".count($hasorder));
-        // if no order
-        if($hasorder == 0){
-            // assign first index of designer id to the first order
-            $designerid = $userdesigner[0];
+        $userdesigner = User::where('u_type', 3)->where('u_status', 1)->pluck('u_id')->toArray();   // get all designer id
+        $hasorder = Order::all()->toArray();    // check if order existed
+        if($hasorder == 0){ // if no order
+            $designerid = $userdesigner[0]; // assign first index of designer id to the first order
         }else{
-            // get array of designer id from order table 
-            $orderiddesigner = Order::all()->pluck('u_id_designer')->toArray();
-            // total designer
-            $totaldesigner = count($userdesigner);
-            // total order
-            $totalorder = count($orderiddesigner);
-            // check if total order is more than designer
-            if($totalorder >= $totaldesigner){
-                // get the remainder of the order
-                $remainderindex = $totalorder % $totaldesigner;
-                // get next designer id
-                $nextorderdesignerid = $userdesigner[$remainderindex];
-                // assign to variable
-                $designerid = $nextorderdesignerid;
+            $orderiddesigner = Order::all()->pluck('u_id_designer')->toArray(); // get array of designer id from order table 
+            $totaldesigner = count($userdesigner);  // total designer
+            $totalorder = count($orderiddesigner);  // total order
+            if($totalorder >= $totaldesigner){  // check if total order is more than designer
+                $remainderindex = $totalorder % $totaldesigner; // get the remainder of the order
+                $nextorderdesignerid = $userdesigner[$remainderindex];  // get next designer id
+                $designerid = $nextorderdesignerid; // assign to variable
             }else{
-                // last designer id index
-                $lastiddesignerindex = count($orderiddesigner)-1;
-                //var_dump("--------------- last designer id index ------------Latest index ID: ".$lastiddesignerindex);
-                // get next designer id
-                $nextorderdesignerid = $userdesigner[$lastiddesignerindex + 1];
-                //var_dump("--------------- next designer id order ------------Next Order Designer ID: ".$nextorderdesignerid);
-                // assign to variable
-                $designerid = $nextorderdesignerid;
+                $lastiddesignerindex = count($orderiddesigner)-1;   // last designer id index
+                $nextorderdesignerid = $userdesigner[$lastiddesignerindex + 1]; // get next designer id
+                $designerid = $nextorderdesignerid; // assign to variable
             }
-            
         }
-        
-        // Create order model
         $order = new Order;
-        // insert into table order
         $order->file_name = $clothname;
         $order->category = $category;
         $order->material_id = $material;
@@ -664,7 +485,6 @@ class CustomerController extends Controller
         $order->u_id_designer = $designerid;
         $order->u_id_print = $printid;
         $order->u_id_taylor = $taylorid;
-        // // save it
         $order->save();
         // ------------------ insert data into table spec ---------------------------------- //
         $orderid = $order->o_id;
@@ -680,7 +500,6 @@ class CustomerController extends Controller
         }
         $num = 0;
         for($i = 0; $i < $totalset; $i++){
-            // Create spec model
             $spec = new Spec;
             $spec->n_id = $request->input('necktype'.$i);
             $bodyid = $request->input('type'.$i);
@@ -690,7 +509,6 @@ class CustomerController extends Controller
             $spec->b_id = $bodyid;
             $spec->sl_id = $sleeveid;
             $spec->collar_color = $collarcolor;
-            // save it
             $spec->save();
             // ------------------ insert data into table unit and design ---------------------------------- //
             $idspec = DB::getPdo()->lastInsertId();
@@ -698,7 +516,6 @@ class CustomerController extends Controller
             $size;
             $unitquantity;
             $unitstatus = 0; // assign 0, (uncomplete)
-            
             if($category == "Nameset"){
                 // case nameset
                 // get total row nameset
@@ -707,18 +524,12 @@ class CustomerController extends Controller
                 }else{
                     // total number of row nameset
                     $namesetnum = number_format($request->input('namesetnum'.$i));
-                    var_dump("----------name set: ----------".$namesetnum);
                 }
-                
                 for($j = 0; $j < $namesetnum; $j++){
-                    // Create unit model
                     $unit = new Unit;
-        
                     $name = $request->input('name'.$i.'-'.$j);
                     $size = $request->input('size'.$i.'-'.$j);
                     $unitquantity = $request->input('quantitysinglenamesetname'.$i.'-'.$j); 
-        
-                    // insert into table unit
                     $unit->o_id = $orderid;
                     $unit->s_id = $idspec; 
                     $unit->name = $name; 
@@ -727,8 +538,6 @@ class CustomerController extends Controller
                     $unit->u_id_print = $printid;
                     $unit->u_id_taylor = $taylorid;
                     $unit->un_status = $unitstatus;
-        
-                    // save it
                     $unit->save();
                     if($request->hasFile('cover_image')){
                         // get the file name with the extension
@@ -752,7 +561,6 @@ class CustomerController extends Controller
                     }
                     $idunit = $unit->un_id;
                     $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
-                    
                 }
             }else{
                 // case size
@@ -768,7 +576,6 @@ class CustomerController extends Controller
                 $xl5 = $request->input('quantitysingle5xl'.$i);
                 $xl6 = $request->input('quantitysingle6xl'.$i);
                 $xl7 = $request->input('quantitysingle7xl'.$i);
-                
                 if($request->hasFile('cover_image')){
                     // get the file name with the extension
                     $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
@@ -786,7 +593,6 @@ class CustomerController extends Controller
                     
                 }else{
                     $mockupdesign = 'noimage.jpg';
-                    //var_dump("no file");
                 }
                 if($xxs != 0){
                     $name = null;
@@ -875,10 +681,7 @@ class CustomerController extends Controller
             }
             
         }
-
-        // set the status to 2
         $this->requestConfirm($orderid);
-
         return redirect('/customer/orderlist')->with('success', 'Order Created');
     }
 
@@ -901,15 +704,12 @@ class CustomerController extends Controller
     // function to store data to table design
     public function storeDesign($unitid, $mockupdesign, $orderid, $designerid){
         $designtype = 1; // set to 1 (mockup) 
-        // Create design model
         $design = new Design;
-        // insert into table design
         $design->o_id = $orderid;
         $design->un_id = $unitid; 
         $design->u_id_designer = $designerid; 
         $design->d_url = $mockupdesign; 
         $design->d_type = $designtype;
-        // save it
         $design->save();
     } 
     /**
