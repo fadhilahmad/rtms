@@ -281,9 +281,9 @@ class CustomerController extends Controller
     {
         $userid = auth()->user()->u_id;
         $user = User::find($userid);
-        $design = Design::where('o_id', $order_id)->where('d_type', 1)->get();
+        $design = Design::where('o_id', $order_id)->get();
         //$specs = Spec::where('o_id', $order_id)->get();
-        $units = Unit::where('o_id', $order_id)->get();
+        //$units = Unit::where('o_id', $order_id)->get();
         $order = Order::find($order_id);
         $materials = Material::all();
         $sleeves = Sleeve::all();
@@ -294,6 +294,10 @@ class CustomerController extends Controller
             ->leftJoin('sleeve', 'spec.sl_id', '=', 'sleeve.sl_id')
             ->leftJoin('neck', 'spec.n_id','=','neck.n_id')
             ->where('spec.o_id','=',$order_id)
+            ->get();
+        $units = DB::table('unit')
+            ->join('design', 'unit.un_id','=','design.un_id')
+            ->where('unit.o_id','=',$order_id)
             ->get();
         $invoicepermanents = InvoicePermanent::where('o_id', $order_id)->get();
         // $units = DB::table('unit')

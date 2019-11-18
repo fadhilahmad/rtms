@@ -211,7 +211,7 @@
                                                             @endif
                                                             <td>{{$unit->size}}</td>
                                                             <td>{{$unit->un_quantity}}</td>
-                                                            @if($unit->un_status == 4)
+                                                            @if($unit->d_type == 3)
                                                                 <td><i class="fa fa-check" aria-hidden="true"></i></td>
                                                             @else
                                                                 <td></td>

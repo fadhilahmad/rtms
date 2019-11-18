@@ -125,7 +125,7 @@ Route::get('customer/customer_profile', 'Customer\customerController@customerPro
 Route::patch('customer/customer_profile/update/{id}', 'Customer\customerController@updateProfile')->name('customer.update')->middleware('customer');
 Route::get('customer/change_password', 'Customer\customerController@customerChangePassword')->name('customer.changePassword')->middleware('customer');
 Route::patch('customer/change_password/update/{id}', 'Customer\customerController@updateChangePassword')->name('customer.updatePassword')->middleware('customer');
-Route::get('customer/customer_orderlist', 'Customer\customerController@customerOrderlist')->middleware('customer');
+Route::get('customer/customer_orderlist', 'Customer\customerController@customerOrderlist')->name('customer_orderlist')->middleware('customer');
 // Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
 // Route::get('customer/receipt', 'Customer\customerController@receipt')->middleware('customer');
 // // write route to multiple route (store, index, create, update, show, destroy, edit)
@@ -142,10 +142,10 @@ Route::get('customer/vieworder/{id}', 'Customer\CustomerController@customerViewO
 Route::get('customer/viewdesign/{id}', 'Customer\CustomerController@customerViewDesign')->middleware('customer');
 Route::get('customer/jobOrder/{id}', 'Customer\CustomerController@customerViewJobOrder')->middleware('customer');
 // route to invoice page for customer
-Route::get('customer/invoice', 'Customer\CustomerController@invoice')->middleware('customer');
+Route::get('customer/invoice', 'Customer\CustomerController@invoice')->name('invoice')->middleware('customer');
 Route::get('customer/view_invoice', 'Customer\CustomerController@viewInvoice')->middleware('customer');
 // route to receipt page for customer
-Route::get('customer/receipt', 'Customer\CustomerController@receipt')->middleware('customer');
+Route::get('customer/receipt', 'Customer\CustomerController@receipt')->name('receipt')->middleware('customer');
 Route::post('customer/neworder', 'Customer\CustomerController@store')->name('customer.store');
 Route::post('customer/viewinvoice','Customer\CustomerController@viewInvoice')->name('customer.viewinvoice');
 //Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->name('customer.orderlist');
