@@ -69,7 +69,8 @@ Route::get('admin/invoice_info/{id}', 'Admin\OrderController@invoiceInfo')->name
 //page invoice_pending
 Route::get('admin/invoice_pending', 'Admin\AdminController@invoicePending')->name('admin.invoicepending')->middleware('admin');
 //page receipt_list
-Route::get('admin/receipt_list', 'Admin\AdminController@receiptList')->name('admin.receiptlist')->middleware('admin');
+Route::get('admin/receipt_list', 'Admin\PaymentController@ReceiptList')->name('admin.receiptlist')->middleware('admin');
+Route::get('admin/receipt_info/{id}', 'Admin\PaymentController@receiptInfo')->name('admin.receiptinfo')->middleware('admin');
 //page receipt_pending
 Route::get('admin/receipt_pending', 'Admin\AdminController@receiptPending')->name('admin.receiptpending')->middleware('admin');
 //page sale
@@ -86,7 +87,7 @@ Route::get('admin/delivery_schedule', 'Admin\DeliveryScheduleController@viewSche
 
 //page payment
 Route::get('admin/payment', 'Admin\PaymentController@viewPendingPayment')->name('admin.payment')->middleware('admin');
-
+Route::post('admin/payment', 'Admin\PaymentController@UpdatePayment')->name('admin.updatepayment')->middleware('admin');
 //test route 
 Route::get('/jobOrder', function () {
     return view('admin.job_order');

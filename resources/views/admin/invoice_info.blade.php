@@ -56,7 +56,7 @@ text-align: center;
             <div class="card">
                 <div class="card-header invoice">
                     <strong>INVOICE</strong>
-                    <img src="/img/logo.jpeg" style="width:18%; float:right">
+                    <img src="{{URL::to('/')}}/img/logo.jpeg" style="width:18%; float:right">
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -107,7 +107,7 @@ text-align: center;
                                 <td></td>
                                 <td>{{array_sum ( $total_price )}}</td>
                             </tr>  
-                            <tr>
+<!--                            <tr>
                                 <td class="no-border"></td>
                                 <td class="no-border"></td>
                                 <td class="no-borderbottom"></td>
@@ -122,7 +122,7 @@ text-align: center;
                                 <td class="blue"></td>
                                 <td class="no-padding green">PAID  &nbsp; </td>
                                 <td class="no-padding no-border"> 12/9 </td>
-                            </tr>                            
+                            </tr>                            -->
                         </tbody>
                     </table><br><br>
                     
