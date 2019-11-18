@@ -89,9 +89,7 @@ Route::get('admin/delivery_schedule', 'Admin\DeliveryScheduleController@viewSche
 Route::get('admin/payment', 'Admin\PaymentController@viewPendingPayment')->name('admin.payment')->middleware('admin');
 Route::post('admin/payment', 'Admin\PaymentController@UpdatePayment')->name('admin.updatepayment')->middleware('admin');
 //test route 
-Route::get('/jobOrder', function () {
-    return view('admin.job_order');
-});
+Route::get('admin/job_order/{oid}','Admin\OrderController@orderInfo')->name('order_info')->middleware('admin');
 
 
 //////////////////////////////////////////////////////////////DEPARTMENT PAGE///////////////////////////////////////////////////////////////

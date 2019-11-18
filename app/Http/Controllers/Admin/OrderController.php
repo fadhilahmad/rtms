@@ -250,8 +250,9 @@ class OrderController extends Controller
         
              $orders =  DB::table('orders')
                        ->join('material', 'orders.material_id', '=', 'material.m_id')
+                       ->leftJoin('user', 'orders.u_id_customer', '=', 'user.u_id')
                        ->where('orders.o_id','=',$o_id)
-                       ->get();
+                       ->first();
              
              $specs = DB::table('spec')
                      ->leftJoin('body', 'spec.b_id','=','body.b_id')
@@ -260,13 +261,25 @@ class OrderController extends Controller
                      ->where('spec.o_id','=',$o_id)
                      ->get();
              
+             $pic =  DB::table('orders')
+                       ->leftJoin('user', 'orders.u_id_designer', '=', 'user.u_id')
+                       ->where('orders.o_id','=',$o_id)
+                       ->first();
+             
              $user = User::all();
              
              $units = Unit::all();
              
-             $design = Design::all();
+             $design = DB::table('design')
+                       ->where('o_id','=',$o_id)
+                       ->first();
+             
+             $designs = DB::table('design')
+                       ->leftJoin('unit','design.o_id','=','unit.o_id')
+                       ->where('design.o_id','=',$o_id)
+                       ->get();
             //dd($orders);
-            return view('admin/order_info',compact('orders','specs','units','design','user')); 
+            return view('admin/job_order',compact('orders','specs','pic','units','design','designs')); 
     }
     
     public function invoiceInfo($o_id){
