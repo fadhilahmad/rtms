@@ -38,7 +38,7 @@
                             </label>
                             <div class="col-sm-8">
                                 {{-- input text field for cloth name --}}
-                                {{Form::text('cloth_name', '', ['class' => 'form-control', 'placeholder' => 'Cloth Name'])}}
+                                {{Form::text('cloth_name', '', ['class' => 'form-control', 'placeholder' => 'Cloth Name', 'required' => 'required'])}}
                             </div>
                         </div>
                         {{-- material --}}
@@ -84,7 +84,7 @@
                                 @if(count($deliverysettings) > 0)
                                     @foreach ($deliverysettings as $deliverysetting)
                                         {{-- <input name="somedate" type="date" min={{\Carbon\Carbon::now()}} max={{\Carbon\Carbon::now()->addDays($deliverysetting->min_day)}}> --}}
-                                        <input name="somedate" type="date" min={{\Carbon\Carbon::now(new DateTimeZone('Asia/Kuala_Lumpur'))->addDays($deliverysetting->min_day)}}>                              
+                                        <input name="somedate" type="date" min={{\Carbon\Carbon::now(new DateTimeZone('Asia/Kuala_Lumpur'))->addDays($deliverysetting->min_day)}} required="true">                              
                                     @endforeach
                                 @else
                                     <p>No delivery setting recorded</p>
@@ -100,7 +100,7 @@
                             </label>
                             <div class="col-sm-10">
                                 <div>
-                                    <input type='radio' onclick='javascript:categoryType();' value="Size" name="category" id="size"/> 
+                                    <input type='radio' onclick='javascript:categoryType();' value="Size" name="category" id="size" required/> 
                                     <label for="radio">Size</label>
                                 </div>
                                 <div>
@@ -166,7 +166,7 @@
                                                             {{-- radio field for type --}}
                                                             @if(count($bodies) > 0)
                                                                 @foreach ($bodies as $body)
-                                                                    {{Form::radio('type0', $body->b_id)}} {{ $body->b_desc }}<br>
+                                                                    {{Form::radio('type0', $body->b_id, false, array('id'=>'type0'))}} {{ $body->b_desc }}<br>
                                                                     {{-- <p>{{$body->b_desc}}</p> --}}
                                                                 @endforeach
                                                             @else
@@ -187,7 +187,7 @@
                                                         {{-- radio field for sleeve --}}
                                                         @if(count($sleeves) > 0)
                                                             @foreach ($sleeves as $sleeve)
-                                                                {{Form::radio('sleeve0', $sleeve->sl_id)}} {{ $sleeve->sl_desc }}<br>
+                                                                {{Form::radio('sleeve0', $sleeve->sl_id, false, array('id'=>'sleeve0'))}} {{ $sleeve->sl_desc }}<br>
                                                                 {{-- <p>{{$sleeve->sl_desc}}</p> --}}
                                                             @endforeach
                                                         @else
@@ -213,33 +213,21 @@
                                             <br>
                                             <div class="row">
                                                 {{-- neck --}}
-                                                    <div class="col-sm">
-                                                        <label  class="form-control-label">
-                                                            {{-- label for neck --}}
-                                                            <Strong>{{Form::label('type', 'Neck Type')}}</strong>                                                        
-                                                        </label>
-                                                        <div>
-                                                            {{-- <input type='radio' onclick='javascript:collarType();' name="collartype0" id="roundneck" value="0"/> Round Neck<br>
-                                                            <input type="radio" onclick="javascript:collarType();" name="collartype0" id="collar" value="Collar"/> Collar
-                                                        </div>
-                                                        <div id="typecollar" style="display:none">
-                                                            <br> --}}
-                                                        {{-- {{Form::label('collartype', 'Collar Type')}}<br> --}}
-
-                                                        {{-- <select name="necktype0" id="necktype0" class="form-control"> --}}
-                                                        {{-- radio field for collar neck --}}
-                                                        @if(count($necks) > 0)
-                                                            @foreach ($necks as $neck)
-                                                                <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}
-                                                                <img src="/uploads/{{$neck->n_url}}" style="width:10%">
-                                                                {{-- <option value="{{ $neck->n_id }}">{{ $neck->n_desc }}</option> --}}
-                                                            @endforeach
-                                                        @endif
-                                                        {{-- </select> --}}
-                                                            
-                                                        {{-- </div> --}}
-                                                    </div>
+                                                <div class="col-sm">
+                                                    <label  class="form-control-label">
+                                                        {{-- label for neck --}}
+                                                        <Strong>{{Form::label('type', 'Neck Type')}}</strong>                                                        
+                                                    </label>
+                                                    <div>
+                                                    {{-- radio field for collar neck --}}
+                                                    @if(count($necks) > 0)
+                                                        @foreach ($necks as $neck)
+                                                            <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}
+                                                            <img src="/uploads/{{$neck->n_url}}" style="width:10%">
+                                                        @endforeach
+                                                    @endif
                                                 </div>
+                                            </div>
                                         
                                         </td>
                                     </tr>
@@ -380,7 +368,7 @@
                     
                     
                         {{-- Submit button --}}
-                        {{Form::submit('Submit', ['class'=>'btn btn-primary float-right'])}}
+                        {{Form::submit('Submit', ['class'=>'btn btn-primary float-right', 'onclick' => 'validate()'])}}
                         
                         {!! Form::close() !!} 
 
@@ -409,6 +397,20 @@
 
 
 <script type="text/javascript">
+
+    // validate form
+    function validate() {
+        var category;
+        if(document.getElementById("size").checked){
+            category = "size";
+        }else if(document.getElementById("nameset").checked){
+            category = "nameset";
+        }
+        console.log("Category: "+category);
+        document.getElementById("type0").required = true;
+        document.getElementById("sleeve0").required = true;
+        document.getElementById("necktype0").required = true;
+    }
 
     // function to calculate total quantity for case size
     function findTotal(){
@@ -488,22 +490,31 @@
 
     // function to remove one row in nameset table
     function removeRow(numRow) {
-        $('#namesettable'+ numRow.toString() +' tr:last').remove();
-        // update quantity for nameset
-        var arr = document.getElementById('quantitynameset');
-        var tot= 0;
-        for(var i=0;i<arr.length;i++){
-            if(parseInt(arr[i].value))
-                tot += parseInt(arr[i].value);
-        }
         var namesetnumamount = document.getElementById('namesetnum'+numRow).value;
+        if(namesetnumamount != 0){
 
-        totnameset -= 1;
-        namesetnumamount = parseInt(namesetnumamount)-1;
-        document.getElementById('namesetnum'+numRow).value = namesetnumamount;
-        console.log("After remove: "+document.getElementById('namesetnum'+numRow).value);
-        document.getElementById('total_quantity').value = tot;
-        document.getElementById('totalcasenameset').value = totnameset;
+            $('#namesettable'+ numRow.toString() +' tr:last').remove();
+            // update quantity for nameset
+            var arr = document.getElementById('quantitynameset');
+            var tot= 0;
+            if(arr != null){
+                for(var i=0;i<arr.length;i++){
+                    if(parseInt(arr[i].value))
+                        tot += parseInt(arr[i].value);
+                }
+            }
+            
+            // var namesetnumamount = document.getElementById('namesetnum'+numRow).value;
+
+            totnameset -= 1;
+            namesetnumamount = parseInt(namesetnumamount)-1;
+            document.getElementById('namesetnum'+numRow).value = namesetnumamount;
+            console.log("After remove: "+document.getElementById('namesetnum'+numRow).value);
+            document.getElementById('total_quantity').value = tot;
+            document.getElementById('totalcasenameset').value = totnameset;
+
+        }
+        
         //console.log("After remove: "+document.getElementById('totalcasenameset').value);
     }
 
@@ -588,7 +599,7 @@
         numnameset += 1;
         document.getElementById('setamount').value = num;
         document.getElementById('totset').value = num;
-        //console.log(document.getElementById('setamount').value);
+        console.log("Total set: "+document.getElementById('setamount').value);
         // console.log(typeof(document.getElementById('setamount').value));
 
         var totalsetnum = document.getElementById('totset').value -1;

@@ -145,6 +145,7 @@ Route::get('customer/invoice', 'Customer\CustomerController@invoice')->name('inv
 Route::get('customer/view_invoice', 'Customer\CustomerController@viewInvoice')->middleware('customer');
 // route to receipt page for customer
 Route::get('customer/receipt', 'Customer\CustomerController@receipt')->name('receipt')->middleware('customer');
+Route::get('customer/customer_receipt_info/{id}', 'Customer\CustomerController@customerReceiptInfo')->name('customer.customerreceiptinfo')->middleware('customer');
 Route::post('customer/neworder', 'Customer\CustomerController@store')->name('customer.store');
 Route::post('customer/viewinvoice','Customer\CustomerController@viewInvoice')->name('customer.viewinvoice');
 //Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->name('customer.orderlist');

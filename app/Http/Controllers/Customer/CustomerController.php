@@ -342,74 +342,52 @@ class CustomerController extends Controller
     // method to view receipt page for customer
     public function receipt()
     {
-        return view('customer/receipt');
+        $receipts = DB::table('receipt')
+                ->leftJoin('orders','receipt.o_id','=','orders.o_id')
+                ->leftJoin('user','orders.u_id_customer','=','user.u_id')
+                ->where('receipt.re_status','=','1')
+                ->paginate(30);
+        $user = User::all();
+        return view('customer/receipt',compact('receipts','user'));
+        // return view('customer/receipt');
+    }
+    // method for customer view receipt details
+    public function customerReceiptInfo($id)
+    {
+        
+            $receipts = DB::table('receipt')
+                ->leftJoin('orders','receipt.o_id','=','orders.o_id')
+                ->leftJoin('user','orders.u_id_customer','=','user.u_id')
+                ->where('receipt.re_id','=',$id)
+                ->first();
+            
+            //dd($orders);
+            return view('customer/customer_receipt_info',compact('receipts'));        
     }
     // method to view or print invoice details
     public function viewInvoice(Request $request){
-        $action = $request->input('actionbutton');
+
         $orderid = $request->input('orderid');
-        // var_dump($action);
-        if($action == "View"){
-            $userid = auth()->user()->u_id;
-            $user = User::where('u_id', '=' , $userid)->get();
-            $orderconfirm = Order::where('o_id', '=' , $orderid)->get();
-            $units = Unit::where('o_id', '=', $orderid)->get();
-            $specsget = Spec::where('o_id', '=', $orderid)->get();
-            $invoices = Invoice::where('o_id', '=', $orderid)->get();
-            //var_dump($bodytype);
-            $materials = Material::all();
-            $bodies = Body::all();
-            $sleeves = Sleeve::all();
-            $necks = Neck::all();
-            //$prices = Price::all();
-            $usertype = auth()->user()->u_type;
-            $prices = array();
-            $neckid = Spec::where('o_id', '=' , $orderid)->pluck('n_id')->toArray();
-            $bodyid = Spec::where('o_id', '=' , $orderid)->pluck('b_id')->toArray();
-            $sleeveid = Spec::where('o_id', '=' , $orderid)->pluck('sl_id')->toArray();
-            $specid = Spec::where('o_id', '=' , $orderid)->pluck('s_id')->toArray();
-            $category;
-            $size;
-            $price;
-            $totprice = 0;
-            $totorderrow = count($neckid);
-            for($i = 0; $i < $totorderrow; $i++){
-                $necktype = Neck::find($neckid[$i]);
-                $price = Price::where('n_type', '=', $necktype->n_type)
-                    ->where('b_id', '=' , $bodyid[$i])
-                    ->where('sl_id', '=' , $sleeveid[$i])
-                    ->where('u_type', '=' , $usertype)->pluck('price');
-                $category = Order::where('o_id', '=', $orderid)->pluck('category');
-                
-                $size = Unit::where('o_id', '=', $orderid)->pluck('size');
-                $totsize = count($size);
-                $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
-                $totunits = count($specs);
-                for($j = 0; $j < $totunits; $j++){
-                    $size = Unit::where('o_id', '=', $orderid)
-                    ->where('s_id', '=', $specs[$i])
-                    ->pluck('size');
-                    $quantity = Unit::where('o_id', '=', $orderid)
-                    ->where('s_id', '=', $specs[$i])
-                    ->pluck('un_quantity');
-                    $totsize = count($size);
-                    $pricescalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]);
-                    array_push($prices, $pricescalc); 
-                }
-            }
-            return view('customer/view_invoice')
-            ->with('users', $user)
-            ->with('orders', $orderconfirm)
-            ->with('invoices', $invoices)
-            ->with('orderid', $orderid)
-            ->with('units', $units)
-            ->with('specs', $specsget)
-            ->with('bodies', $bodies)
-            ->with('sleeves', $sleeves)
-            ->with('necks', $necks)
-            ->with('prices', $prices)
-            ->with('usertype', $usertype);
-        }
+        $orders = DB::table('orders')
+                ->where('o_id','=',$orderid)
+                ->first();
+        $specs = DB::table('spec')
+                ->leftJoin('body', 'spec.b_id','=','body.b_id')
+                ->leftJoin('sleeve', 'spec.sl_id', '=', 'sleeve.sl_id')
+                ->leftJoin('neck', 'spec.n_id','=','neck.n_id')
+                ->where('spec.o_id','=',$orderid)
+                ->get();
+        $user = DB::table('user')
+                ->leftJoin('orders', 'user.u_id', '=', 'orders.u_id_customer')
+                ->where('orders.o_id','=',$orderid)
+                ->first();
+        $units = Unit::all();
+        $invoice = Invoice::selectRaw('*')
+                ->where('o_id','=',$orderid)
+                ->first();
+        $invoice_p = InvoicePermanent::all();
+        return view('customer/view_invoice',compact('orders','specs','user','units','invoice','invoice_p'));
+
     }
     /**
      * Display a listing of the resource. 
@@ -561,10 +539,7 @@ class CustomerController extends Controller
     
                     }else{
                         $mockupdesign = 'noimage.jpg';
-                        //var_dump("no file");
                     }
-                    // $idunit = $unit->un_id;
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
                 }
                 $idunit = null;
                 $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
@@ -605,84 +580,72 @@ class CustomerController extends Controller
                     $size = "XXS";
                     $unitquantity = $xxs; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
                 }
                 if($xs != 0){
                     $name = null;
                     $size = "XS";
                     $unitquantity = $xs; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($s != 0){
                     $name = null;
                     $size = "S";
                     $unitquantity = $s; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($m != 0){
                     $name = null;
                     $size = "M";
                     $unitquantity = $m; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($l != 0){
                     $name = null;
                     $size = "L";
                     $unitquantity = $l; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl != 0){
                     $name = null;
                     $size = "XL";
                     $unitquantity = $xl; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl2 != 0){
                     $name = null;
                     $size = "2XL";
                     $unitquantity = $xl2; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl3 != 0){
                     $name = null;
                     $size = "3XL";
                     $unitquantity = $xl3; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl4 != 0){
                     $name = null;
                     $size = "4XL";
                     $unitquantity = $xl4; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl5 != 0){
                     $name = null;
                     $size = "5XL";
                     $unitquantity = $xl5; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl6 != 0){
                     $name = null;
                     $size = "6XL";
                     $unitquantity = $xl6;
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl7 != 0){
                     $name = null;
                     $size = "7XL";
                     $unitquantity = $xl7;
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 $idunit = null;
                 $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 

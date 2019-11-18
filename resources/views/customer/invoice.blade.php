@@ -14,15 +14,6 @@
                         </div>
                     @endif
 
-                    {{-- @foreach($orders as $order)
-                        <p>Cloth Name: {{$order->file_name}}</p>
-                    @endforeach
-
-                    <p><b>Customer Name:</b> </p>
-                    <p><b>Invoice Date:</b> </p>
-                    <p><b>File Name:</b> </p>
-                    <p><b>Category:</b> </p> --}}
-
                     @if(count($orders) > 0)
 
                         <table class="table table-hover">
@@ -56,11 +47,9 @@
                                             @endif
                                         @endforeach
                                         <td>
-                                            {{-- {!!Form::open( array( 'route'=>'customer.orderlist', $order->o_id, 'method' => 'POST') )!!} --}}
                                             {!! Form::open(array( 'route'=>'customer.viewinvoice', 'method' => 'POST')) !!}
                                                 <input type="hidden" name="orderid" value="{{$order->o_id}}">
                                                 <input type="submit" style="display: inline-block;" name="actionbutton" value="View" class="btn btn-primary">
-                                                <input type="submit" style="display: inline-block;" name="actionbutton" value="Print" class="btn btn-primary">
                                             {!!Form::close()!!}
 
                                         </td>
