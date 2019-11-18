@@ -563,9 +563,11 @@ class CustomerController extends Controller
                         $mockupdesign = 'noimage.jpg';
                         //var_dump("no file");
                     }
-                    $idunit = $unit->un_id;
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
+                    // $idunit = $unit->un_id;
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
                 }
+                $idunit = null;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
             }else{
                 // case size
                 $xxs = $request->input('quantitysinglexxs'.$i);
@@ -603,85 +605,87 @@ class CustomerController extends Controller
                     $size = "XXS";
                     $unitquantity = $xxs; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
                 }
                 if($xs != 0){
                     $name = null;
                     $size = "XS";
                     $unitquantity = $xs; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($s != 0){
                     $name = null;
                     $size = "S";
                     $unitquantity = $s; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($m != 0){
                     $name = null;
                     $size = "M";
                     $unitquantity = $m; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($l != 0){
                     $name = null;
                     $size = "L";
                     $unitquantity = $l; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl != 0){
                     $name = null;
                     $size = "XL";
                     $unitquantity = $xl; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl2 != 0){
                     $name = null;
                     $size = "2XL";
                     $unitquantity = $xl2; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl3 != 0){
                     $name = null;
                     $size = "3XL";
                     $unitquantity = $xl3; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl4 != 0){
                     $name = null;
                     $size = "4XL";
                     $unitquantity = $xl4; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl5 != 0){
                     $name = null;
                     $size = "5XL";
                     $unitquantity = $xl5; 
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl6 != 0){
                     $name = null;
                     $size = "6XL";
                     $unitquantity = $xl6;
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
                 if($xl7 != 0){
                     $name = null;
                     $size = "7XL";
                     $unitquantity = $xl7;
                     $idunit = $this->storeUnit($orderid, $idspec, $name, $size, $unitquantity, $printid, $taylorid, $unitstatus); 
-                    $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
+                    // $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid);
                 }
+                $idunit = null;
+                $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid); 
             }
             
         }
