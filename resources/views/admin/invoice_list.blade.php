@@ -39,7 +39,7 @@ text-align: center;
                                 <td>{{$inv->file_name}}</td>
                                 <td>{{$inv->quantity_total}}</td>
                                 <td>{{$inv->total_price}}</td>
-                                <td>{{$inv->created_at}}</td>
+                                <td>{{date('d/m/Y', strtotime($inv->created_at))}}</td>
                                 <td><a href="{{route('admin.invoiceinfo',$inv->o_id)}}"><button class="btn btn-primary">View</button></a>
                                 
                                 

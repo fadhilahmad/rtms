@@ -34,7 +34,8 @@
     
     @can('isAdmin')
         <div class="admin-menu">
-          <ul id="side-admin-menu" class="side-menu list-unstyled"> 
+          <ul id="side-admin-menu" class="side-menu list-unstyled">
+            <li> <a href="{{ route('admin.dashboard') }}"> <i class="fa fa-dashboard"> </i>Dashboard</a></li>
             <li><a href="#orderDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-plus-square"></i> Order </a>
               <ul id="orderDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.delivery') }}">Delivery Schedule</a></li>
@@ -43,16 +44,16 @@
                 <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>
               </ul>
             </li> 
-            <li><a href="#paymentDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file"></i>Manage Payment </a>
+            <li><a href="#paymentDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file"></i>Payment </a>
               <ul id="paymentDropdown" class="collapse list-unstyled ">
-                <li><a href="{{ route('admin.payment') }}">Payment</a></li>
+                <li><a href="{{ route('admin.payment') }}">Pending Payment</a></li>
                 <li><a href="{{ route('admin.invoicelist') }}">Invoice </a></li>
                 <li><a href="{{ route('admin.receiptlist') }}">Receipt</a></li>
               </ul>
             </li>
             <li> <a href="{{ route('admin.sale') }}"> <i class="fa fa-money"> </i>Sale</a></li>
             <li> <a href="{{ route('admin.stocklist') }}"> <i class="icon-screen"> </i>Manage Stock </a></li>
-            <li><a href="#manageCustomerDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-user"></i> Manage Customer </a>
+            <li><a href="#manageCustomerDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-user"></i>Customer </a>
               <ul id="manageCustomerDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.home') }}">End User List</a></li>
                 <li><a href="{{ route('admin.agentlist') }}">Agent List</a></li>
@@ -61,7 +62,7 @@
                 <li><a href="{{ route('admin.newapplication') }}">New Application</a></li>
               </ul>
             </li>
-            <li><a href="#manageStaffDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-child"></i> Manage Staff </a>
+            <li><a href="#manageStaffDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-child"></i>Staff </a>
               <ul id="manageStaffDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.managestaff') }}">Staff List</a></li>
                 <li><a href="{{ route('admin.staffapplication') }}">New Application</a></li>
