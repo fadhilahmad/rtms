@@ -214,7 +214,7 @@
                                                     </td>
                                                     <td>
                                                       @if(!empty ( $xs ))                                                       
-                                                            @if($designs->where('s_id',$spec->s_id)->where('size','XS')->where('d_type','<>','3')->count()>0)
+                                                            @if($designs->where('s_id',$spec->s_id)->where('size','XS')->where('d_type','3')->count()>0)
                                                             <input type="checkbox" name="jobdone" value="" checked="" disabled="">
                                                             @else
                                                             <input type="checkbox" name="jobdone" value="" disabled="">
