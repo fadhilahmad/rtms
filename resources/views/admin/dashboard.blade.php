@@ -12,8 +12,8 @@
             <div class="col-xl-2 col-md-4 col-6">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-user"></i></div>
-                <div class="name"><strong class="text-uppercase">Registered End Users</strong>
-                  <div class="count-number">{{$end_user}}</div>
+                <div class="name"><strong class="text-uppercase">Registered Users</strong>
+                  <div class="count-number">{{$user}}</div>
                 </div>
               </div>
             </div>
@@ -21,15 +21,6 @@
             <div class="col-xl-2 col-md-4 col-6">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-padnote"></i></div>
-                <div class="name"><strong class="text-uppercase">Active Agents</strong>
-                  <div class="count-number">{{$agent}}</div>
-                </div>
-              </div>
-            </div>
-            <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
-              <div class="wrapper count-title d-flex">
-                <div class="icon"><i class="icon-check"></i></div>
                 <div class="name"><strong class="text-uppercase">Pending Application</strong>
                   <div class="count-number">{{$application}}</div>
                 </div>
@@ -38,9 +29,18 @@
             <!-- Count item widget-->
             <div class="col-xl-2 col-md-4 col-6">
               <div class="wrapper count-title d-flex">
-                <div class="icon"><i class="icon-bill"></i></div>
+                <div class="icon"><i class="icon-check"></i></div>
                 <div class="name"><strong class="text-uppercase">Submited Orders</strong>
                   <div class="count-number">{{$orders}}</div>
+                </div>
+              </div>
+            </div>
+            <!-- Count item widget-->
+            <div class="col-xl-2 col-md-4 col-6">
+              <div class="wrapper count-title d-flex">
+                <div class="icon"><i class="icon-bill"></i></div>
+                <div class="name"><strong class="text-uppercase">Orders Delivered</strong>
+                  <div class="count-number">{{$deliver}}</div>
                 </div>
               </div>
             </div>
@@ -105,20 +105,21 @@
             <!-- Pie Chart-->
             <div class="col-lg-3 col-md-6">
               <div class="card project-progress">
-                <h2 class="display h4">Project Beta progress</h2>
-                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                <h2 class="display h4">Payment Status</h2>
+                <p>Percentage of complete, deposited and pending payment from overall orders</p>
                 <div class="pie-chart">
-                  <canvas id="pieChart" width="300" height="300"> </canvas>
+                  <canvas id="paymentChart" width="300" height="300"> </canvas>
                 </div>
               </div>
             </div>
             <!-- Line Chart -->
             <div class="col-lg-6 col-md-12 flex-lg-last flex-md-first align-self-baseline">
               <div class="card sales-report">
-                <h2 class="display h4">Sales marketing report</h2>
-                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor amet officiis</p>
+                <h2 class="display h4">Payment Collected Last 7 days</h2>
+<!--                <p>Payment collected vs Pending</p>-->
+                <br><br>
                 <div class="line-chart">
-                  <canvas id="lineCahrt"></canvas>
+                  <canvas id="saleChart"></canvas>
                 </div>
               </div>
             </div>
@@ -132,44 +133,75 @@
             <div class="col-lg-4">
               <!-- Income-->
               <div class="card income text-center">
+                <div class="icon"><i class="icon-bill"></i></div>
+                <div class="number">RM {{$income}}</div><strong class="text-primary">Collected</strong>
+                <p>Total collected payment.</p>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <!-- Income-->
+              <div class="card income text-center">
+                <div class="icon"><i class="icon-check"></i></div>
+                <div class="number">RM {{$income2}}</div><strong class="text-primary">Pending</strong>
+                <p>Total pending value.</p>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <!-- Income-->
+              <div class="card income text-center">
                 <div class="icon"><i class="icon-line-chart"></i></div>
-                <div class="number">{{$income}}</div><strong class="text-primary">All Income</strong>
-                <p>Total payment collected.</p>
+                <div class="number">RM {{$income3}}</div><strong class="text-primary">Income</strong>
+                <p>Total sale.
+               
+                </p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+      
+      <section class="statistics mt-30px mb-30px">
+        <div class="container-fluid">
+          <div class="row d-flex">
             <div class="col-lg-4">
-              <!-- Monthly Usage-->
-              <div class="card data-usage">
-                <h2 class="display h4">Disk Usage</h2>
-                <div class="row d-flex align-items-center">
-                  <div class="col-sm-6">
-                    <div id="progress-circle" class="d-flex align-items-center justify-content-center"></div>
-                  </div>
-                  <div class="col-sm-6"><strong class="text-primary">80.56 Gb</strong><small>Current Plan</small><span>100 Gb</span></div>
-                </div>
-                <p>Keep below 80% for best perormance</p>
-              </div>
-            </div>
-            <div class="col-lg-4">
-              <!-- User Actibity-->
               <div class="card user-activity">
-                <h2 class="display h4">Orders Activity</h2>
-<!--                <div class="number">210</div>
-                <h3 class="h4 display">Social Users</h3>
+                <h2 class="display h4">Design Department</h2>
+                <div class="number">{{$design}}</div>
+                <h3 class="h4 display">Designed</h3>
                 <div class="progress">
-                  <div role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
-                </div>-->
-                <div class="page-statistics d-flex justify-content-between">
-                  <div class="page-statistics-left"><span>Designing</span><strong>230</strong></div>
-                  <div class="page-statistics-right"><span>Completed</span><strong>73.4%</strong></div>
+                  <div role="progressbar" style="width: {{$dp}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
                 </div>
                 <div class="page-statistics d-flex justify-content-between">
-                  <div class="page-statistics-left"><span>Printing</span><strong>230</strong></div>
-                  <div class="page-statistics-right"><span>Completed</span><strong>73.4%</strong></div>
+                  <div class="page-statistics-left"><span>Total Job</span><strong>{{$total_unit}}</strong></div>
+                  <div class="page-statistics-right"><span>Completed</span><strong>{{$design_p}}%</strong></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card user-activity">
+                <h2 class="display h4">Print Department</h2>
+                <div class="number">{{$print}}</div>
+                <h3 class="h4 display">Printed</h3>
+                <div class="progress">
+                  <div role="progressbar" style="width: {{$pp}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
                 </div>
                 <div class="page-statistics d-flex justify-content-between">
-                  <div class="page-statistics-left"><span>Sewing</span><strong>230</strong></div>
-                  <div class="page-statistics-right"><span>Completed</span><strong>73.4%</strong></div>
+                  <div class="page-statistics-left"><span>Total Job</span><strong>{{$total_unit}}</strong></div>
+                  <div class="page-statistics-right"><span>Completed</span><strong>{{$print_p}}%</strong></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="card user-activity">
+                <h2 class="display h4">Tailor</h2>
+                <div class="number">{{$tailor}}</div>
+                <h3 class="h4 display">Sew</h3>
+                <div class="progress">
+                  <div role="progressbar" style="width: {{$tp}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" class="progress-bar progress-bar bg-primary"></div>
+                </div>
+                <div class="page-statistics d-flex justify-content-between">
+                  <div class="page-statistics-left"><span>Total Job</span><strong>{{$total_unit}}</strong></div>
+                  <div class="page-statistics-right"><span>Completed</span><strong>{{$tailor_p}}%</strong></div>
                 </div>
               </div>
             </div>
@@ -177,4 +209,120 @@
         </div>
       </section>
 </div>
+<script type="text/javascript">
+/*global $, document, Chart, LINECHART, data, options, window*/
+$(document).ready(function () {
+
+    'use strict';
+
+    // Main Template Color
+    var brandPrimary = '#33b35a';
+
+
+    // ------------------------------------------------------- //
+    // Line Chart
+    // ------------------------------------------------------ //
+    var LINECHART = $('#saleChart');
+    var myLineChart = new Chart(LINECHART, {
+        type: 'line',
+        options: {
+            legend: {
+                display: false
+            }
+        },
+        data: {
+            labels: [                   
+                    @foreach($labelday as $day)    
+                    {{$day}}+'/'+{{$month}},
+                    @endforeach                            
+                    ],
+            datasets: [
+                {
+                    label: "Payment",
+                    fill: true,
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(77, 193, 75, 0.4)",
+                    borderColor: brandPrimary,
+                    borderCapStyle: 'butt',
+                    borderDash: [],
+                    borderDashOffset: 0.0,
+                    borderJoinStyle: 'miter',
+                    borderWidth: 1,
+                    pointBorderColor: brandPrimary,
+                    pointBackgroundColor: "#fff",
+                    pointBorderWidth: 1,
+                    pointHoverRadius: 5,
+                    pointHoverBackgroundColor: brandPrimary,
+                    pointHoverBorderColor: "rgba(220,220,220,1)",
+                    pointHoverBorderWidth: 2,
+                    pointRadius: 1,
+                    pointHitRadius: 0,
+                    data: [
+                    @foreach($labelsale as $sale)    
+                    {{$sale}},
+                    @endforeach
+                    ],
+                    spanGaps: false
+                },
+//                {
+//                    label: "Pending",
+//                    fill: true,
+//                    lineTension: 0.3,
+//                    backgroundColor: "rgba(75,192,192,0.4)",
+//                    borderColor: "rgba(75,192,192,1)",
+//                    borderCapStyle: 'butt',
+//                    borderDash: [],
+//                    borderDashOffset: 0.0,
+//                    borderJoinStyle: 'miter',
+//                    borderWidth: 1,
+//                    pointBorderColor: "rgba(75,192,192,1)",
+//                    pointBackgroundColor: "#fff",
+//                    pointBorderWidth: 1,
+//                    pointHoverRadius: 5,
+//                    pointHoverBackgroundColor: "rgba(75,192,192,1)",
+//                    pointHoverBorderColor: "rgba(220,220,220,1)",
+//                    pointHoverBorderWidth: 2,
+//                    pointRadius: 1,
+//                    pointHitRadius: 10,
+//                    data: [65, 59, 30, 81, 46, 55, 30],
+//                    spanGaps: false
+//                }
+            ]
+        }
+    });
+
+
+    // ------------------------------------------------------- //
+    // Pie Chart
+    // ------------------------------------------------------ //
+    var PIECHART = $('#paymentChart');
+    var myPieChart = new Chart(PIECHART, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                "Completed",
+                "Deposited",
+                "Pending"
+            ],
+            datasets: [
+                {
+                    data: [{{$com}}, {{$depo}}, {{$pen}}],
+                    borderWidth: [1, 1, 1],
+                    backgroundColor: [
+                        brandPrimary,
+                        "rgba(75,192,192,1)",
+                        "#FFCE56"
+                    ],
+                    hoverBackgroundColor: [
+                        brandPrimary,
+                        "rgba(75,192,192,1)",
+                        "#FFCE56"
+                    ]
+                }]
+        }
+    });
+
+});
+    
+</script>
 @endsection
