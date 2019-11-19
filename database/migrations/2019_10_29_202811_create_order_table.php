@@ -21,6 +21,8 @@ class CreateOrderTable extends Migration
             $table->integer('quantity_total');
             $table->text('note')->nullable();
             $table->text('designer_note')->nullable();
+            $table->text('design_link')->nullable();
+            $table->text('delivery_type')->nullable();
             $table->integer('ref_num')->nullable();
             $table->date('delivery_date');
             $table->integer('o_status')->nullable();
