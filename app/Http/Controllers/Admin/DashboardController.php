@@ -5,6 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
+use App\User;
+use App\LeaveDay;
+use App\Leave;
+use App\Body;
+use App\Neck;
+use App\Sleeve;
+use App\Material;
+use App\DeliverySetting;
+use App\Design;
+use App\Unit;
+use App\Order;
+use App\Invoice;
+use App\Receipt;
 
 class DashboardController extends Controller
 {
@@ -16,13 +29,9 @@ class DashboardController extends Controller
         
     public function showDashboard()
     {
-        $end_user = DB::table('user')
-                    ->where('u_type','=',7)
-                    ->where('u_status','=',1)
-                    ->count();
-        
-        $agent = DB::table('user')
-                    ->whereIn('u_type',['6','8','9'])
+         
+        $user = DB::table('user')
+                    ->whereIn('u_type',['6','7','8','9'])
                     ->where('u_status','=',1)
                     ->count();
         
@@ -32,6 +41,10 @@ class DashboardController extends Controller
                     ->count();
         
         $orders = DB::table('orders')
+                    ->count('o_id');
+        
+        $deliver = DB::table('orders')
+                    ->where('o_status','=',9)
                     ->count('o_id');
         
         $invoice = DB::table('invoice')
@@ -46,6 +59,78 @@ class DashboardController extends Controller
                     ->where('re_status','=',1)
                     ->sum('total_paid');
         
-        return view('admin/dashboard',compact('end_user','agent','application','orders','invoice','payment','income'));
+        $income2 = DB::table('orders')
+                    ->sum('balance');
+        
+        $income3 = DB::table('invoice')
+                    ->where('i_status','=',1)
+                    ->sum('total_price');
+        
+        $completed = DB::table('orders')
+                    ->where('balance','=',0)
+                    ->count();
+        
+        $pending = DB::table('orders')
+                    ->leftJoin('invoice','orders.o_id','=','invoice.o_id')
+                    ->whereColumn([['orders.balance', '=', 'invoice.total_price']])
+                    ->count();
+        
+        $deposited = DB::table('orders')
+                    ->leftJoin('invoice','orders.o_id','=','invoice.o_id')
+                    ->whereColumn([['orders.balance', '!=', 'invoice.total_price']])
+                    ->where('orders.balance','!=',0)
+                    ->count();
+        
+        $com = intval($completed/$orders*100);
+        $pen = intval($pending/$orders*100);
+        $depo = intval($deposited/$orders*100);
+        
+        $total_unit = DB::table('orders')
+                    ->sum('quantity_total');
+        
+        $design = DB::table('orders')
+                    ->whereNotIn('o_status', [0, 1, 2])
+                    ->sum('quantity_total');
+        
+        $print = DB::table('orders')
+                    ->whereNotIn('o_status', [0, 1, 2,3])
+                    ->sum('quantity_total');
+        
+        $tailor = DB::table('orders')
+                    ->whereIn('o_status', [6, 7, 8, 9, 10])
+                    ->sum('quantity_total');
+        
+        $design_p = round($design/$total_unit*100, 1);
+        $dp = intval($design/$total_unit*100);
+        
+        $print_p = round($print/$total_unit*100, 1);
+        $pp = intval($print/$total_unit*100);
+        
+        $tailor_p = round($tailor/$total_unit*100, 1);
+        $tp = intval($tailor/$total_unit*100);
+        
+        $today = date('d');
+        $month = date('m');
+        $year = date('Y');
+        
+        $last7 = $today - 7;
+        
+        for($x = $last7; $x < $today; $x++){
+            $labelday[] = $last7;                      
+            $thisdate = $year . '-' . $month . '-' . $last7;
+            $summ = Receipt::select('total_paid')
+                ->whereDate('created_at', $thisdate)
+                ->first();
+           
+            if(is_null($summ)){
+                $labelsale[] = 0;
+            }else{
+                $labelsale[] = $summ['total_paid'];
+            }
+            $last7++;
+        }
+          //dd($labelsale);       
+        return view('admin/dashboard',compact('user','application','orders','invoice','payment','income','income2','income3','deliver','com',
+                'pen','depo','total_unit','design','design_p','print','print_p','tailor','tailor_p','dp','pp','tp','labelday','month','labelsale'));
     }
 }
