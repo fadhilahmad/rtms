@@ -15,7 +15,7 @@
                     @endif
                     @if ($prices != null)
 
-                        {{-- ---------------------------- form ----------------------------------- --}}
+                        {{-- ---------------------------- form -----------------------------------    --}}
                         {{-- form from laravel collective   ['action' => 'CustomerController@store', 'method' => 'POST', 'enctype' => 'multipart/form-data']   --}}
                         {!! Form::open(array( 'route'=>'customer.store', 'method' => 'POST', 'enctype' => 'multipart/form-data')) !!}
                         {{-- current date --}}                   
@@ -66,6 +66,8 @@
                             <label class="col-sm-2 form-control-label">
                                 {{-- label for quantity --}}
                                 {{Form::label('quantity', 'Quantity')}}
+                                <input type="hidden" name="hiddenquantity" id="hiddenquantity">
+                                <input type="hidden" name="hiddennsquantity" id="hiddennsquantity">
                             </label>
                             <div class="col-sm-8">
                                 {{-- input text field for amount --}}
@@ -91,6 +93,23 @@
                                 @endif
                                 {{-- {{Form::date('delivery_date', \Carbon\Carbon::now()->addDays(7), array('disabled'))}} --}}
                         </div>
+                        </div>
+                        <div class="line"></div>
+                        {{-- delivery --}}
+                        <div class="form-group row">
+                            <label class="col-sm-2 form-control-label">
+                                {{Form::label('deal', 'Deal Type')}}                          
+                            </label>
+                            <div class="col-sm-10">
+                                <div>
+                                    <input type='radio' value="Delivery" name="dealtype" id="delivery" required/> 
+                                    <label for="radio">Delivery</label>
+                                </div>
+                                <div>
+                                    <input type="radio" value="Self-pickup" name="dealtype" id="selfpickup"/> 
+                                    <label for="radio">Self-pickup</label>
+                                </div>
+                            </div>
                         </div>
                         <div class="line"></div>
                         {{-- category --}}
@@ -119,7 +138,7 @@
                             <div class="col-sm-8">
                                 {{-- use laravel collective package --}} 
                                 {{-- {{Form::file('cover_image')}} --}}
-                                <input type="file" name="cover_image">
+                                <input type="file" name="cover_image" required>
                                 {{-- <input type="file" name="cover_image[]" multiple> --}}
                         </div>
                             
@@ -141,10 +160,10 @@
                         
                             <div class="card-header col-sm-10 ">
                                 Set
-                                <button type="button" class="btn btn-primary" style="float: right"; id="btnAddRow" onclick="addSet()">
+                                <button type="button" class="btn btn-primary" style="float: right;" id="btnAddRow" onclick="addSet()">
                                     <i class="fa fa-plus"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary" style="float: right"; id="btnRemoveRow" onclick="deleterow()">
+                                <button type="button" class="btn btn-primary" style="float: right; display:none;" id="btnRemoveRow" onclick="deleterow()">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>                          
@@ -246,27 +265,27 @@
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">XXS</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantityxxs0" name="quantitysinglexxs0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">XS</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantityxs0" name="quantitysinglexs0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">S</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantitys0" name="quantitysingles0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">M</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantitym0" name="quantitysinglem0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">L</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantityl0" name="quantitysinglel0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">XL</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantityxl0" name="quantitysinglexl0"></td>
                                                         </tr>
                                                     </table>
                                                     <table id="namesettablesize" style="width:48%; margin: 0px auto;">
@@ -276,27 +295,27 @@
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">2XL</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantity2xl0" name="quantitysingle2xl0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">3XL</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantity3xl0" name="quantitysingle3xl0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">4XL</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantity4xl0" name="quantitysingle4xl0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">5XL</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantity5xl0" name="quantitysingle5xl0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">6XL</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantity6xl0" name="quantitysingle6xl0"></td>
                                                         </tr>
                                                         <tr>
                                                             <td id="namesetdata">7XL</td>
-                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl0"></td>
+                                                            <td id="namesetdata"><input oninput="findTotal()" type="number" min="1" class="form-control totalnameset" id="quantity7xl0" name="quantitysingle7xl0"></td>
                                                         </tr>
                                                     </table>
                                                     </div>
@@ -327,7 +346,7 @@
                                                                 <th id="namesethead">Quantity</th> 
                                                             </tr>
                                                             <tr>
-                                                                <td id="namesetdata"><input type="text" class="form-control" id="name0" name="name0-0"></td>
+                                                                <td id="namesetdata"><input type="text" placeholder="Your Name / Number" class="form-control" id="name0" name="name0-0" <?php if(isset($_POST['category'])) echo "required" ?> ></td>
                                                                 <td id="namesetdata"><select name="size0-0" id="size0" class="form-control">
                                                                         <option value="xxs">XXS</option>
                                                                         <option value="xs">XS</option>
@@ -344,7 +363,7 @@
                                                                     </select>
                                                                 </td>
                                                                 <td id="namesetdata"><input oninput="findTotalNameset()" class="form-control totalnameset" 
-                                                                    type="number" id="quantitynameset" name="quantitysinglenamesetname0-0"></td>
+                                                                    type="number" id="quantitynameset" name="quantitysinglenamesetname0-0" placeholder="1" readonly="true"></td>
                                                                 
                                                             </tr>
                                                         </table>  
@@ -361,14 +380,15 @@
                             </div>
                                                             
                         </div>
-                        <input type="hidden" id="setamount" name="setamount">
+                        <input type="hidden" id="setamount" name="setamount" value="1">
                         <input type="hidden" id="totalcasenameset" name="totalcasenameset">
                         <input type="hidden" id="totalcasesize" name="totalcasesize">
                         <br><br>
                     
                     
                         {{-- Submit button --}}
-                        {{Form::submit('Submit', ['class'=>'btn btn-primary float-right', 'onclick' => 'validate()'])}}
+                        <input type="Submit" class="btn btn-primary float-right" onclick="validate()">
+                        {{-- {{Form::submit('Submit', ['class'=>'btn btn-primary float-right', 'onclick' => 'validate()'])}} --}}
                         
                         {!! Form::close() !!} 
 
@@ -406,10 +426,41 @@
         }else if(document.getElementById("nameset").checked){
             category = "nameset";
         }
-        console.log("Category: "+category);
-        document.getElementById("type0").required = true;
-        document.getElementById("sleeve0").required = true;
-        document.getElementById("necktype0").required = true;
+        //console.log("Category: "+category);
+
+        var setamount = parseInt(document.getElementById('setamount').value);
+        //console.log("Set amount: "+setamount);
+
+        for(var i=0;i<setamount;i++){
+            document.getElementById("type"+i.toString()).required = true;
+            document.getElementById("sleeve"+i.toString()).required = true;
+            document.getElementById("necktype"+i.toString()).required = true;
+            if(category == "size"){
+
+                var xxs = document.getElementById("quantityxxs"+i.toString()).value;
+                var xs = document.getElementById("quantityxs"+i.toString()).value;
+                var s = document.getElementById("quantitys"+i.toString()).value;
+                var m = document.getElementById("quantitym"+i.toString()).value;
+                var l = document.getElementById("quantityl"+i.toString()).value;
+                var xl = document.getElementById("quantityxl"+i.toString()).value;
+                var xl2 = document.getElementById("quantity2xl"+i.toString()).value;
+                var xl3 = document.getElementById("quantity3xl"+i.toString()).value;
+                var xl4 = document.getElementById("quantity4xl"+i.toString()).value;
+                var xl5 = document.getElementById("quantity5xl"+i.toString()).value;
+                var xl6 = document.getElementById("quantity6xl"+i.toString()).value;
+                var xl7 = document.getElementById("quantity7xl"+i.toString()).value;
+                
+                if(xxs == "" && xs == "" && s == "" && m == "" && l == "" && xl == "" && xl2 == "" && xl3 == "" && xl4 == "" && xl5 == "" && xl6 == "" && xl7 == ""){
+                    // alert("Error! You have to enter quantity at least one of the size");
+                    document.getElementById("quantityxxs"+i.toString()).required = true;
+                }else{
+                    document.getElementById("quantityxxs"+i.toString()).required = false;
+                    // console.log("not empty");
+                }
+
+            }
+        }
+        
     }
 
     // function to calculate total quantity for case size
@@ -434,10 +485,10 @@
 
         var arr = document.getElementsByClassName('totalnameset');
         var tot= 0;
-        //console.log(arr.length);
+        //console.log("Tot nameset: "+arr.length);
         for(var i=0;i<arr.length;i++){
             if(parseInt(arr[i].value))
-                // console.log(arr[i].value);
+                //console.log(arr[i].value);
                 tot += parseInt(arr[i].value);
                 //console.log(typeof(arr[i].value));
         }
@@ -448,17 +499,35 @@
         }
         
     }
+
+    function calctotarr(){
+        var l = arrnsamount.length;
+        var t = 0;
+        for(var i=0; i<l; i++){
+            t += parseInt(arrnsamount[i]);
+        }
+        if (document.getElementById('nameset').checked) {
+            document.getElementById('total_quantity').value = t;
+        }
+        
+        //console.log("Total amount: "+t);
+    }
     
     var totnameset = 1;
     var namesetnumamount;
+    var arrnsamount = [1];
     // function to add one row in nameset table
     function addRow(numRow) {
+
+        // var q = parseInt(document.getElementById('hiddenquantity').value);
+        // document.getElementById('total_quantity').value = q+1;
+        // document.getElementById('hiddenquantity').value = q+1;
 
         // get the value of namesetnum
         var namesetnumamount = document.getElementById('namesetnum'+numRow).value;
         //console.log(namesetnumamount);
         
-        var newRow = $('<tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name'+ numRow.toString() +'-'+ namesetnumamount.toString() +'"></td>'+
+        var newRow = $('<tr><td id="namesetdata"><input type="text" placeholder="Your Name / Number" class="form-control" id="name" name="name'+ numRow.toString() +'-'+ namesetnumamount.toString() +'" <?php if(isset($_POST["category"])) echo "required" ?>></td>'+
             '<td id="namesetdata"><select name="size'+ numRow.toString() +'-'+ namesetnumamount.toString() +'" id="size" class="form-control">'+
                 '<option value="xxs">XXS</option>'+
                 '<option value="xs">XS</option>'+
@@ -475,14 +544,25 @@
             '</select></td>'+
             '<td id="namesetdata">'+
                 '<input oninput="findTotalNameset()" type="number" class="form-control totalnameset"  '+
-                'id="quantitynameset" name="quantitysinglenamesetname'+ numRow.toString() +'-'+ namesetnumamount.toString() +'">'+
+                'id="quantitynameset" name="quantitysinglenamesetname'+ numRow.toString() +'-'+ namesetnumamount.toString() +'"  placeholder="1" readonly="true">'+
             '</td></tr>');
         $('#namesettable'+ numRow.toString() +' tr:last').after(newRow);
         totnameset += 1;
         namesetnumamount = parseInt(namesetnumamount)+1;
         document.getElementById('namesetnum'+numRow).value = namesetnumamount;
         document.getElementById('totalcasenameset').value = totnameset;
-        console.log("After add: "+document.getElementById('namesetnum'+numRow).value);
+        //console.log("Number row: "+numRow);
+        //console.log("After add: "+document.getElementById('namesetnum'+numRow).value);
+
+        arrnsamount[numRow] = document.getElementById('namesetnum'+numRow).value;
+        //console.log("arr after add nameset row: "+arrnsamount);
+        calctotarr();
+        
+        // if(document.getElementById('setamount').value == numRow){
+        //     document.getElementById('hiddennsquantity').value = document.getElementById('namesetnum'+numRow).value;
+        // }
+        
+        
         numRow += 1;
         //console.log("After add: "+document.getElementById('namesetnum'+numRow).value)
         //console.log(document.getElementById('totalcasenameset').value);
@@ -490,8 +570,13 @@
 
     // function to remove one row in nameset table
     function removeRow(numRow) {
+
         var namesetnumamount = document.getElementById('namesetnum'+numRow).value;
         if(namesetnumamount != 0){
+
+            // var q = parseInt(document.getElementById('hiddenquantity').value);
+            // document.getElementById('total_quantity').value = q-1;
+            // document.getElementById('hiddenquantity').value = q-1;
 
             $('#namesettable'+ numRow.toString() +' tr:last').remove();
             // update quantity for nameset
@@ -509,8 +594,16 @@
             totnameset -= 1;
             namesetnumamount = parseInt(namesetnumamount)-1;
             document.getElementById('namesetnum'+numRow).value = namesetnumamount;
-            console.log("After remove: "+document.getElementById('namesetnum'+numRow).value);
-            document.getElementById('total_quantity').value = tot;
+            //console.log("After remove: "+document.getElementById('namesetnum'+numRow).value);
+
+            arrnsamount[numRow] = document.getElementById('namesetnum'+numRow).value;
+            //console.log("arr after remove nameset row: "+arrnsamount);
+            calctotarr();
+
+            // if(document.getElementById('setamount').value == numRow){
+            //     document.getElementById('hiddennsquantity').value = document.getElementById('namesetnum'+numRow).value;
+            // }
+            //document.getElementById('total_quantity').value = tot;
             document.getElementById('totalcasenameset').value = totnameset;
 
         }
@@ -525,9 +618,28 @@
     var num = 1;
     var numnameset = 1;
     function addSet() {
+
+        arrnsamount.push(1);
+        //console.log("Nameset arr after add: "+arrnsamount);
+        calctotarr();
+
+        // if(document.getElementById('hiddenquantity').value != ""){
+        //     var q = parseInt(document.getElementById('hiddenquantity').value);
+        //     document.getElementById('total_quantity').value = q+1;
+        //     document.getElementById('hiddenquantity').value = q+1;
+        // }else{
+        //     document.getElementById('total_quantity').value = 2;
+        //     document.getElementById('hiddenquantity').value = 2;
+        //     document.getElementById('hiddennsquantity').value = 1;
+        // }
+        // var q = parseInt(document.getElementById('hiddenquantity').value);
+        // document.getElementById('total_quantity').value = q+1;
+        // document.getElementById('hiddenquantity').value = q+1;
+
+        document.getElementById('btnRemoveRow').style.display = 'block';
         var newRow = $('<tr><td><hr><div class="row">'+
                         '<div class="col-sm">'+
-                            '<strong>{{Form::label("type", "Type")}}</strong><br>@foreach ($bodies as $body)<input type="radio" name="type'+ num.toString() +'" id="idtype'+ num.toString() +'" value={{ $body->b_id }}> {{ $body->b_desc }}<br>@endforeach</div><div class="col-sm"><strong>{{Form::label("sleeve", "Sleeve")}}</strong><br>@foreach ($sleeves as $sleeve)<input type="radio" name="sleeve'+ num.toString() +'" id="idsleeve'+ num.toString() +'" value={{ $sleeve->sl_id }}> {{ $sleeve->sl_desc }}<br>@endforeach</div><div class="col-sm"><strong>{{Form::label("collar_color", "Collar Color")}}</strong><input type="text" id="collar_color'+ num.toString() +'" name="collar_color'+ num.toString() +'" class="form-control"><br></div></div><br>'+
+                            '<strong>{{Form::label("type", "Type")}}</strong><br>@foreach ($bodies as $body)<input type="radio" name="type'+ num.toString() +'" id="type'+ num.toString() +'" value={{ $body->b_id }}> {{ $body->b_desc }}<br>@endforeach</div><div class="col-sm"><strong>{{Form::label("sleeve", "Sleeve")}}</strong><br>@foreach ($sleeves as $sleeve)<input type="radio" name="sleeve'+ num.toString() +'" id="sleeve'+ num.toString() +'" value={{ $sleeve->sl_id }}> {{ $sleeve->sl_desc }}<br>@endforeach</div><div class="col-sm"><strong>{{Form::label("collar_color", "Collar Color")}}</strong><input type="text" id="collar_color'+ num.toString() +'" name="collar_color'+ num.toString() +'" class="form-control"><br></div></div><br>'+
                             '<div class="row"><div class="col-sm"><strong>{{Form::label("type", "Neck Type")}}</strong><br>@if(count($necks) > 0) @foreach ($necks as $neck)<input type="radio" name="necktype'+ num.toString() +'" id="necktype'+ num.toString() +'" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}<img src="/uploads/{{$neck->n_url}}" style="width:10%"> @endforeach @endif<br></div></div><div id="adddivsize'+ num.toString() +'" name="adddivsize" style="display:none">'+
                             '<div class="form-group"><input type="hidden" id="totset" name="totset" value="">'+
                             '<strong>{{Form::label("size", "Case Size")}}</strong><br>'+ 
@@ -537,36 +649,36 @@
                                     '<th id="namesethead">Quantity</th> '+
                                 '</tr>'+
                                 '<tr><td id="namesetdata">XXS</td>'+
-                                '   <td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxxs" name="quantitysinglexxs'+ num.toString() +'"></td>'+
+                                '   <td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxxs'+ num.toString() +'" name="quantitysinglexxs'+ num.toString() +'"></td>'+
                                 '</tr>'+
                                 '<tr><td id="namesetdata">XS</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxs" name="quantitysinglexs'+ num.toString() +'"></td>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxs'+ num.toString() +'" name="quantitysinglexs'+ num.toString() +'"></td>'+
                                 '</tr>'+
                                 '<tr><td id="namesetdata">S</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitys" name="quantitysingles'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitys'+ num.toString() +'" name="quantitysingles'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">M</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitym" name="quantitysinglem'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantitym'+ num.toString() +'" name="quantitysinglem'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">L</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityl" name="quantitysinglel'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityl'+ num.toString() +'" name="quantitysinglel'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">XL</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxl" name="quantitysinglexl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantityxl'+ num.toString() +'" name="quantitysinglexl'+ num.toString() +'"></td></tr>'+
                             '</table>'+
                             '<table id="namesettablesize" style="width:48%; margin: 0px auto;">'+
                                 '<tr><th id="namesethead">Size</th>'+
                                     '<th id="namesethead">Quantity</th> '+
                                 '</tr>'+
                                 '<tr><td id="namesetdata">2XL</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity2xl" name="quantitysingle2xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity2xl'+ num.toString() +'" name="quantitysingle2xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">3XL</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity3xl" name="quantitysingle3xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity3xl'+ num.toString() +'" name="quantitysingle3xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">4XL</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity4xl" name="quantitysingle4xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity4xl'+ num.toString() +'" name="quantitysingle4xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">5XL</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity5xl" name="quantitysingle5xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity5xl'+ num.toString() +'" name="quantitysingle5xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">6XL</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity6xl" name="quantitysingle6xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity6xl'+ num.toString() +'" name="quantitysingle6xl'+ num.toString() +'"></td></tr>'+
                                 '<tr><td id="namesetdata">7XL</td>'+
-                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity7xl" name="quantitysingle7xl'+ num.toString() +'"></td></tr>'+
+                                    '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset" id="quantity7xl'+ num.toString() +'" name="quantitysingle7xl'+ num.toString() +'"></td></tr>'+
                             '</table></div></div></div><br>'+
                         '<div id="adddivnameset'+ num.toString() +'" name="adddivnameset" style="display:none">'+
                             '<div class="form-group col-sm-10"><input type="hidden" id="namesetnum'+ num.toString() +'" name="namesetnum'+ num.toString() +'" value="1">'+
@@ -577,7 +689,7 @@
                                         '<th id="namesethead">Size</th>'+
                                         '<th id="namesethead">Quantity</th> '+
                                     '</tr>'+
-                                    '<tr><td id="namesetdata"><input type="text" class="form-control" id="name" name="name'+ numnameset.toString() +'-0"></td>'+
+                                    '<tr><td id="namesetdata"><input type="text" class="form-control" placeholder="Your Name / Number" id="name" name="name'+ numnameset.toString() +'-0" <?php if(isset($_POST["category"])) echo "required" ?>></td>'+
                                         '<td id="namesetdata"><select name="size'+ numnameset.toString() +'-0" id="size" class="form-control">'+
                                             '<option value="xxs">XXS</option><option value="xs">XS</option>'+
                                             '<option value="s">S</option><option value="m">M</option>'+
@@ -588,7 +700,7 @@
                                             '</select>'+
                                         '</td>'+
                                         '<td id="namesetdata"><input oninput="findTotalNameset()" type="number" class="form-control totalnameset"'+
-                                            ' id="quantity" name="quantitysinglenamesetname'+ numnameset.toString() +'-0">'+
+                                            ' id="quantity" name="quantitysinglenamesetname'+ numnameset.toString() +'-0"  placeholder="1" readonly="true">'+
                                         '</td>'+
                                     '</tr>'+
                                 '</table>'+
@@ -599,7 +711,8 @@
         numnameset += 1;
         document.getElementById('setamount').value = num;
         document.getElementById('totset').value = num;
-        console.log("Total set: "+document.getElementById('setamount').value);
+        //console.log("Total set after add: "+document.getElementById('setamount').value);
+        
         // console.log(typeof(document.getElementById('setamount').value));
 
         var totalsetnum = document.getElementById('totset').value -1;
@@ -619,7 +732,7 @@
             document.getElementById('divnameset').style.display = 'none';
             document.getElementById('divsize').style.display = 'block';
         } else if (document.getElementById('nameset').checked) {
-            findTotalNameset();
+            //findTotalNameset();
             var i;
             for(i = 1; i <= totalsetnum; i++){
                 document.getElementById('adddivnameset'+ i.toString() +'').style.display = 'block';
@@ -635,7 +748,7 @@
                 document.getElementById('divnameset').style.display = 'none';
                 document.getElementById('divsize').style.display = 'block';
             } else if (document.getElementById('nameset').checked) {
-                findTotalNameset();
+                //findTotalNameset();
                 document.getElementById('divsize').style.display = 'none';
                 document.getElementById('divnameset').style.display = 'block';
             }
@@ -645,22 +758,63 @@
 
     // function to remove one set row for spec table
     function deleterow() {
-        var table = document.getElementById('settable');
-        var rowCount = table.rows.length;
-        num -= 1;
-        document.getElementById('setamount').value = num;
-        console.log(num);
-        table.deleteRow(rowCount -1);
-        table.deleteRow(rowCount -2);
+
+        
+
+        if(document.getElementById('setamount').value != "1"){
+
+            // if(document.getElementById('hiddennsquantity').value == ""){
+            //     //console.log("hidden nameset quantity empty: "+document.getElementById('hiddennsquantity').value);
+            //     var q = parseInt(document.getElementById('hiddenquantity').value);
+            //     document.getElementById('total_quantity').value = q-1;
+            //     document.getElementById('hiddenquantity').value = q-1;
+            // }else{
+            //     //console.log("hidden nameset quantity: "+document.getElementById('hiddennsquantity').value);
+            //     // if(document.getElementById('setamount').value == num){
+            //     //     //document.getElementById('hiddennsquantity').value = document.getElementById('namesetnum'+num).value;
+            //     //     var nsq = document.getElementById('hiddennsquantity').value;
+            //     //     var q = parseInt(document.getElementById('hiddenquantity').value);
+            //     //     document.getElementById('total_quantity').value = q-nsq;
+            //     //     document.getElementById('hiddenquantity').value = q-nsq;
+                
+            //     // }
+
+            //     var nsq = document.getElementById('hiddennsquantity').value;
+            //     var q = parseInt(document.getElementById('hiddenquantity').value);
+            //     document.getElementById('total_quantity').value = q-nsq;
+            //     document.getElementById('hiddenquantity').value = q-nsq;
+
+                
+            // }
+
+            var arramount = arrnsamount.pop();
+            console.log("Nameset arr after remove: "+arrnsamount);
+            //console.log("Nameset arr removed amount: "+arramount);
+            calctotarr();
+            
+
+            var table = document.getElementById('settable');
+            var rowCount = table.rows.length;
+            num -= 1;
+            document.getElementById('totset').value = num;
+            document.getElementById('setamount').value = num;
+            //console.log("Total set after remove: "+document.getElementById('setamount').value);
+            //console.log(num);
+            table.deleteRow(rowCount -1);
+            table.deleteRow(rowCount -2);
+        }else{
+            //console.log("set amount val: "+document.getElementById('setamount').value);
+        }
+        
     }
 
-    // function to display or hide case nameset and size when user chose category
+    // function to display or hide case nameset and size when user chose category   
     function categoryType() {
-
+   
         if(document.getElementById('totset').value != ""){
 
-            var totalsetnum = document.getElementById('totset').value -1;
-            console.log(totalsetnum);
+            var totalsetnum = document.getElementById('totset').value-1;
+            console.log("Added set: "+totalsetnum);
             if (document.getElementById('size').checked) {
                 findTotal();
                 var i;
@@ -672,7 +826,18 @@
                 document.getElementById('divnameset').style.display = 'none';
                 document.getElementById('divsize').style.display = 'block';
             } else if (document.getElementById('nameset').checked) {
-                findTotalNameset();
+
+                // if(document.getElementById('hiddenquantity').value == ""){
+                //     console.log("empty");
+                // var q = parseInt(document.getElementById('hiddenquantity').value);
+                // console.log(q);
+                // document.getElementById('total_quantity').value = q;
+                // document.getElementById('hiddenquantity').value = 1;
+                // }
+
+                
+                calctotarr();
+                //findTotalNameset();
                 var i;
                 for(i = 1; i <= totalsetnum; i++){
                     document.getElementById('adddivnameset'+ i.toString() +'').style.display = 'block';
@@ -688,7 +853,22 @@
                 document.getElementById('divnameset').style.display = 'none';
                 document.getElementById('divsize').style.display = 'block';
             } else if (document.getElementById('nameset').checked) {
-                findTotalNameset();
+
+                // if(document.getElementById('hiddenquantity').value == ""){
+                //     //console.log("empty");
+                //     // document.getElementById('total_quantity').value = tot;
+                //     document.getElementById('total_quantity').value = 1;
+                //     document.getElementById('hiddenquantity').value = 1;
+                //     console.log(document.getElementById('hiddenquantity').value);
+                // }else{
+                //     var q = parseInt(document.getElementById('hiddenquantity').value);
+                //     console.log(q);
+                //     document.getElementById('total_quantity').value = q;
+                // }
+
+                calctotarr();
+
+                //findTotalNameset();
                 document.getElementById('divsize').style.display = 'none';
                 document.getElementById('divnameset').style.display = 'block';
             }

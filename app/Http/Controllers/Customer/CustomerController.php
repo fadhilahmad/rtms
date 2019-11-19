@@ -202,7 +202,7 @@ class CustomerController extends Controller
             }
             $invoice = new Invoice;
             $invoice->o_id = $orderid;
-            $invoice->i_status = 1;
+            $invoice->i_status = 0;
             $invoice->total_price = $totprice; 
             $invoice->save();
 
@@ -214,50 +214,62 @@ class CustomerController extends Controller
     // method to calculate total price with quantity
     public function calcPrice($price, $category, $size, $quantity){
         $pricecalc = 0;
-        if($category == "Nameset"){
+        if($category[0] == "Nameset"){
             $priceint = intval($price[0]);
             $quantityint = intval($quantity);
             $pricecalc = $priceint + 4;
             $pricecalc *= $quantityint;
+            if($size == "4xl" || $size == "5xl"){
+                $pricecalc += 4;
+            }else if($size == "6xl" || $size == "7xl"){
+                $pricecalc += 8;
+            }
         }else{
             $pricecalc = intval($price[0]);
             $quantityint = intval($quantity);
             $pricecalc *= $quantityint;
+            if($size == "4XL" || $size == "5XL"){
+                $priceint = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc = $priceint + 4;
+                $pricecalc *= $quantityint;
+            }else if($size == "6XL" || $size == "7XL"){
+                $priceint = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc = $priceint + 8;
+                $pricecalc *= $quantityint;
+            }else{
+                $pricecalc = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc *= $quantityint;
+            }
         }
-        if($size == "4XL" || $size == "5XL"){
-            $priceint = intval($price[0]);
-            $quantityint = intval($quantity);
-            $pricecalc = $priceint + 4;
-            $pricecalc *= $quantityint;
-        }else if($size == "6XL" || $size == "7XL"){
-            $priceint = intval($price[0]);
-            $quantityint = intval($quantity);
-            $pricecalc = $priceint + 8;
-            $pricecalc *= $quantityint;
-        }else{
-            $pricecalc = intval($price[0]);
-            $quantityint = intval($quantity);
-            $pricecalc *= $quantityint;
-        }
+        var_dump("price: ".$pricecalc);
+        var_dump("size: ".$size);
         return $pricecalc;
     }
     // method to calculate total price without quantity
     public function calcPricePerUnit($price, $category, $size){
         $pricecalc = 0;
-        if($category == "Nameset"){
+        if($category[0] == "Nameset"){
             $priceint = intval($price[0]);
             $pricecalc = $priceint + 4;
+            if($size == "4xl" || $size == "5xl"){
+                $pricecalc += 4;
+            }else if($size == "6xl" || $size == "7xl"){
+                $pricecalc += 8;
+            }
         }else{
             $pricecalc = intval($price[0]);
-        }
-        if($size == "4XL" || $size == "5XL"){
-            $priceint = intval($price[0]);
-            $pricecalc = $priceint + 4;
-        }else if($size == "6XL" || $size == "7XL"){
-            $priceint = intval($price[0]);
-            $pricecalc = $priceint + 8;
-        }else{
-            $pricecalc = intval($price[0]);
+            if($size == "4XL" || $size == "5XL"){
+                $priceint = intval($price[0]);
+                $pricecalc = $priceint + 4;
+            }else if($size == "6XL" || $size == "7XL"){
+                $priceint = intval($price[0]);
+                $pricecalc = $priceint + 8;
+            }else{
+                $pricecalc = intval($price[0]);
+            }
         }
         return $pricecalc;
     }
@@ -333,36 +345,13 @@ class CustomerController extends Controller
         ->get();
         $materials = Material::all();
         $invoices = Invoice::all();
-        //var_dump($orderconfirm);
+        // $invoices = Invoice::where('i_status', '=' , 1);
+        $invoiceconfirm = Invoice::where('i_status', '=' , 1)->get();
         return view('customer/invoice')
         ->with('orders', $orderconfirm)
         ->with('materials', $materials)
-        ->with('invoices', $invoices);
-    }
-    // method to view receipt page for customer
-    public function receipt()
-    {
-        $receipts = DB::table('receipt')
-                ->leftJoin('orders','receipt.o_id','=','orders.o_id')
-                ->leftJoin('user','orders.u_id_customer','=','user.u_id')
-                ->where('receipt.re_status','=','1')
-                ->paginate(30);
-        $user = User::all();
-        return view('customer/receipt',compact('receipts','user'));
-        // return view('customer/receipt');
-    }
-    // method for customer view receipt details
-    public function customerReceiptInfo($id)
-    {
-        
-            $receipts = DB::table('receipt')
-                ->leftJoin('orders','receipt.o_id','=','orders.o_id')
-                ->leftJoin('user','orders.u_id_customer','=','user.u_id')
-                ->where('receipt.re_id','=',$id)
-                ->first();
-            
-            //dd($orders);
-            return view('customer/customer_receipt_info',compact('receipts'));        
+        ->with('invoices', $invoices)
+        ->with('invoiceconfirm', $invoiceconfirm);
     }
     // method to view or print invoice details
     public function viewInvoice(Request $request){
@@ -388,6 +377,31 @@ class CustomerController extends Controller
         $invoice_p = InvoicePermanent::all();
         return view('customer/view_invoice',compact('orders','specs','user','units','invoice','invoice_p'));
 
+    }
+    // method to view receipt page for customer
+    public function receipt()
+    {
+        $receipts = DB::table('receipt')
+                ->leftJoin('orders','receipt.o_id','=','orders.o_id')
+                ->leftJoin('user','orders.u_id_customer','=','user.u_id')
+                ->where('receipt.re_status','=','1')
+                ->paginate(30);
+        $user = User::all();
+        return view('customer/receipt',compact('receipts','user'));
+        // return view('customer/receipt');
+    }
+    // method for customer view receipt details
+    public function customerReceiptInfo($id)
+    {
+        
+            $receipts = DB::table('receipt')
+                ->leftJoin('orders','receipt.o_id','=','orders.o_id')
+                ->leftJoin('user','orders.u_id_customer','=','user.u_id')
+                ->where('receipt.re_id','=',$id)
+                ->first();
+            
+            //dd($orders);
+            return view('customer/customer_receipt_info',compact('receipts'));        
     }
     /**
      * Display a listing of the resource. 
@@ -429,6 +443,7 @@ class CustomerController extends Controller
         $note = $request->input('note');
         $refnum = null; // currently auto assign
         $deliverydate = $request->input('somedate');
+        $deliverytype = $request->input('dealtype');
         $orderstatus = 2; // set to drafted
         $customerid = auth()->user()->u_id;
         $customername = auth()->user()->username;
@@ -461,6 +476,7 @@ class CustomerController extends Controller
         $order->quantity_total = $totalquantity;
         $order->note = $note;
         $order->ref_num = $refnum;
+        $order->delivery_type = $deliverytype;
         $order->delivery_date = $deliverydate;
         $order->o_status = $orderstatus;
         $order->u_id_customer = $customerid;
@@ -511,7 +527,8 @@ class CustomerController extends Controller
                     $unit = new Unit;
                     $name = $request->input('name'.$i.'-'.$j);
                     $size = $request->input('size'.$i.'-'.$j);
-                    $unitquantity = $request->input('quantitysinglenamesetname'.$i.'-'.$j); 
+                    // $unitquantity = $request->input('quantitysinglenamesetname'.$i.'-'.$j);
+                    $unitquantity = 1; // one quantity per unit
                     $unit->o_id = $orderid;
                     $unit->s_id = $idspec; 
                     $unit->name = $name; 
