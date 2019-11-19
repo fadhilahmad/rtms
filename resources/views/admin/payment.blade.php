@@ -24,6 +24,7 @@ text-align: center;
                               <tr>
                                 <th scope="col">Ref No</th>
                                 <th scope="col">Customer Name</th>
+                                <th scope="col">Phone</th>
                                 <th scope="col">File name</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Total Price</th>
@@ -38,6 +39,7 @@ text-align: center;
                               <tr>
                                 <th scope="row">{{$ord->ref_num}}</th>
                                 <td>{{$ord->u_fullname}}</td>
+                                <td>{{$ord->phone}}</td>
                                 <td>{{$ord->file_name}}</td>
                                 <td>{{$ord->quantity_total}}</td>
                                 <td>{{$ord->total_price}}</td>
