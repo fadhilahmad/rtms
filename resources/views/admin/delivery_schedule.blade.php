@@ -28,34 +28,13 @@ td.fc-event-container{
         $('#calendar').fullCalendar({
             // put your options and callbacks here
             events : [ 
+                
+                @foreach($orders as $order)               
                 {
-                    title : 'order 1234 : 98',
-                    start : '2019-11-19',
+                    title : '{{$order->ref_num}}: {{$order->quantity_total}}',
+                    start : '{{$order->delivery_date}}',
                 },
-                {
-                    title : 'order 456 : 23',
-                    start : '2019-11-19',
-                },
-                {
-                    title : 'order 456 : 23',
-                    start : '2019-11-19',
-                },
-                {
-                    title : 'order 456 : 23',
-                    start : '2019-11-10',
-                },
-                {
-                    title : 'order 456 : 23',
-                    start : '2019-11-10',
-                },
-                {
-                    title : 'order 456 : 23',
-                    start : '2019-11-24',
-                },
-                {
-                    title : 'order 456 : 23',
-                    start : '2019-12-20',
-                },
+                @endforeach             
             ]
         })
     });
