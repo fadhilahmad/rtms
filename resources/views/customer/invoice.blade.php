@@ -16,7 +16,7 @@
 
                     @if(count($orders) > 0)
 
-                        @if(count($invoiceconfirm) > 0)
+                        {{-- @if(count($invoiceconfirm) > 0) --}}
 
                             <table class="table table-hover">
                                 <thead class="thead-dark">
@@ -62,9 +62,9 @@
                                     
                                 </tbody>
                             </table>
-                        @else
+                        {{-- @else
                             <p>Invoice still pending</p>
-                        @endif
+                        @endif --}}
 
                     @else
                         <p>No order created</p>

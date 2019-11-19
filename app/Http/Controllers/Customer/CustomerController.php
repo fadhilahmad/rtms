@@ -202,7 +202,7 @@ class CustomerController extends Controller
             }
             $invoice = new Invoice;
             $invoice->o_id = $orderid;
-            $invoice->i_status = 0;
+            $invoice->i_status = 1;
             $invoice->total_price = $totprice; 
             $invoice->save();
 
@@ -346,12 +346,12 @@ class CustomerController extends Controller
         $materials = Material::all();
         $invoices = Invoice::all();
         // $invoices = Invoice::where('i_status', '=' , 1);
-        $invoiceconfirm = Invoice::where('i_status', '=' , 1)->get();
+        // $invoiceconfirm = Invoice::where('i_status', '=' , 1)->get();
         return view('customer/invoice')
         ->with('orders', $orderconfirm)
         ->with('materials', $materials)
-        ->with('invoices', $invoices)
-        ->with('invoiceconfirm', $invoiceconfirm);
+        ->with('invoices', $invoices);
+        // ->with('invoiceconfirm', $invoiceconfirm)
     }
     // method to view or print invoice details
     public function viewInvoice(Request $request){
