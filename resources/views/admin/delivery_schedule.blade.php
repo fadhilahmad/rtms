@@ -27,6 +27,17 @@ td.fc-event-container{
         // page is now ready, initialize the calendar...
         $('#calendar').fullCalendar({
             // put your options and callbacks here
+
+            //function utk tukar color date
+            dayRender: function (date, cell) {
+                var today = new Date().toDateString();
+                var ddate = date.toDate().toDateString();
+
+                if (ddate == today) {
+                    cell.css("background-color", "red");
+                }
+
+            },
             events : [ 
                 
                 @foreach($orders as $order)               
@@ -35,7 +46,18 @@ td.fc-event-container{
                     start : '{{$order->delivery_date}}',
                 },
                 @endforeach             
-            ]
+            ],
+            //add extra field
+            eventRender: function(event, element) {
+                var new_description =                    
+                     '<strong>Total: </strong>' + event.total;
+                element.append(new_description);
+                //if nak change color specific field
+                if(event.total != null) {
+                    element.css('background-color', '#000');
+                }
+            }
+
         })
     });
 </script>

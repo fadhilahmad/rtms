@@ -238,13 +238,14 @@
                                                         <Strong>{{Form::label('type', 'Neck Type')}}</strong>                                                        
                                                     </label>
                                                     <div>
-                                                    {{-- radio field for collar neck --}}
-                                                    @if(count($necks) > 0)
-                                                        @foreach ($necks as $neck)
-                                                            <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}
-                                                            <img src="/uploads/{{$neck->n_url}}" style="width:10%">
-                                                        @endforeach
-                                                    @endif
+                                                        {{-- radio field for collar neck --}}
+                                                        @if(count($necks) > 0)
+                                                            @foreach ($necks as $neck)
+                                                                <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}
+                                                                <img src="/uploads/{{$neck->n_url}}" style="width:10%">
+                                                            @endforeach
+                                                        @endif
+                                                    </div>  
                                                 </div>
                                             </div>
                                         
