@@ -5,18 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
-use App\User;
-use App\LeaveDay;
-use App\Leave;
-use App\Body;
-use App\Neck;
-use App\Sleeve;
-use App\Material;
-use App\DeliverySetting;
-use App\Design;
-use App\Unit;
-use App\Order;
-use App\Invoice;
 use App\Receipt;
 
 class DashboardController extends Controller
