@@ -74,7 +74,7 @@ Route::get('admin/receipt_info/{id}', 'Admin\PaymentController@receiptInfo')->na
 //page receipt_pending
 Route::get('admin/receipt_pending', 'Admin\AdminController@receiptPending')->name('admin.receiptpending')->middleware('admin');
 //page sale
-Route::get('admin/sale', 'Admin\AdminController@sale')->name('admin.sale')->middleware('admin');
+Route::get('admin/sale', 'Admin\SaleController@viewSale')->name('admin.sale')->middleware('admin');
 //page admin_profile
 Route::get('admin/admin_profile', 'Admin\AdminController@adminProfile')->name('admin.profile')->middleware('admin');
 Route::patch('admin/admin_profile/update/{id}', 'Admin\AdminController@updateProfile')->name('admin.update')->middleware('admin');
