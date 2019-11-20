@@ -42,6 +42,7 @@
                 <li><a href="{{ route('admin.orderlist') }}">Job Order</a></li>
                 <li><a href="{{ route('admin.ordersetting') }}">Order Setting</a></li>
                 <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>
+                {{-- <li><a href="{{ route('admin.neworder') }}">New order</a></li> --}}
               </ul>
             </li> 
             <li><a href="#paymentDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file"></i>Payment </a>

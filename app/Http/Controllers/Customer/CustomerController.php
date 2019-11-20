@@ -109,7 +109,7 @@ class CustomerController extends Controller
     // method to view order list page for customer based on customer id
     public function customerOrderList()
     {
-        // // set limit to view on page to different type of users
+        // // set limit to view on page to customer only
         // if(!Gate::allows('isCustomer')){
         //     abort(404, "Sorry, you cannot do this action");
         // }
@@ -136,143 +136,6 @@ class CustomerController extends Controller
             return view('customer/customer_orderlist')->with('orders', $orders);
         }
     }
-
-    public function requestConfirm($orderid){
-        
-        $orderidrequest = $orderid;
-        if($orderidrequest != null){
-            //-------------------- confirm design ----------------------//
-            $user_id = auth()->user()->u_id;
-            $userrefnum = Order::where('ref_num', '!=' , null)->pluck('ref_num')->toArray();
-            $totalrefnum = count($userrefnum);
-            $newrefnum = $totalrefnum + 1;
-            // update ref num in table order
-            DB::table('orders')
-                ->where('o_id', '=', $orderidrequest)
-                ->update(array('ref_num' => $newrefnum,
-                'o_status'=>'2'));
-            $orderid = $orderidrequest;
-            $neckid = Spec::where('o_id', '=' , $orderidrequest)->pluck('n_id')->toArray();
-            $bodyid = Spec::where('o_id', '=' , $orderidrequest)->pluck('b_id')->toArray();
-            $sleeveid = Spec::where('o_id', '=' , $orderidrequest)->pluck('sl_id')->toArray();
-            $specid = Spec::where('o_id', '=' , $orderidrequest)->pluck('s_id')->toArray();
-            $usertype = auth()->user()->u_type;
-            $category;
-            $size;
-            $price;
-            $totprice = 0;
-            $totorderrow = count($neckid);
-            for($i = 0; $i < $totorderrow; $i++){
-
-                $necktype = Neck::find($neckid[$i]);
-                $price = Price::where('n_type', '=', $necktype->n_type)
-                    ->where('b_id', '=' , $bodyid[$i])
-                    ->where('sl_id', '=' , $sleeveid[$i])
-                    ->where('u_type', '=' , $usertype)->pluck('price');
-                $category = Order::where('o_id', '=', $orderidrequest)->pluck('category');
-                $size = Unit::where('o_id', '=', $orderidrequest)->pluck('size');
-                $totsize = count($size);
-                $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
-                $totunits = count($specs);
-                $specprice = 0;
-                $specquantity = 0;
-                $oneunitprice = 0;
-                for($j = 0; $j < $totunits; $j++){
-                    $size = Unit::where('o_id', '=', $orderidrequest)
-                    ->where('s_id', '=', $specid[$i])
-                    ->pluck('size');
-                    $quantity = Unit::where('o_id', '=', $orderidrequest)
-                    ->where('s_id', '=', $specid[$i])
-                    ->pluck('un_quantity');
-                    $totsize = count($size);
-                    $specquantity += $quantity[$j];
-                    $pricecalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]);
-                    $priceperunit = $this->calcPricePerUnit($price, $category, $size[$j]); 
-                    $specprice += $pricecalc;
-                    $totprice += $pricecalc;
-                }
-                $oneunitprice += intval($price[0]);
-                $invoicePermanent = new InvoicePermanent;
-                $invoicePermanent->s_id = $specid[$i];
-                $invoicePermanent->o_id = $orderidrequest;
-                $invoicePermanent->spec_total_price = $specprice;
-                $invoicePermanent->one_unit_price = $oneunitprice;
-                $invoicePermanent->spec_total_quantity = $specquantity;
-                $invoicePermanent->save();
-            }
-            $invoice = new Invoice;
-            $invoice->o_id = $orderid;
-            $invoice->i_status = 1;
-            $invoice->total_price = $totprice; 
-            $invoice->save();
-
-            DB::table('orders')
-                ->where('o_id', '=', $orderid)
-                ->update(array('balance' => $totprice));
-        }
-    }
-    // method to calculate total price with quantity
-    public function calcPrice($price, $category, $size, $quantity){
-        $pricecalc = 0;
-        if($category[0] == "Nameset"){
-            $priceint = intval($price[0]);
-            $quantityint = intval($quantity);
-            $pricecalc = $priceint + 4;
-            $pricecalc *= $quantityint;
-            if($size == "4xl" || $size == "5xl"){
-                $pricecalc += 4;
-            }else if($size == "6xl" || $size == "7xl"){
-                $pricecalc += 8;
-            }
-        }else{
-            $pricecalc = intval($price[0]);
-            $quantityint = intval($quantity);
-            $pricecalc *= $quantityint;
-            if($size == "4XL" || $size == "5XL"){
-                $priceint = intval($price[0]);
-                $quantityint = intval($quantity);
-                $pricecalc = $priceint + 4;
-                $pricecalc *= $quantityint;
-            }else if($size == "6XL" || $size == "7XL"){
-                $priceint = intval($price[0]);
-                $quantityint = intval($quantity);
-                $pricecalc = $priceint + 8;
-                $pricecalc *= $quantityint;
-            }else{
-                $pricecalc = intval($price[0]);
-                $quantityint = intval($quantity);
-                $pricecalc *= $quantityint;
-            }
-        }
-        var_dump("price: ".$pricecalc);
-        var_dump("size: ".$size);
-        return $pricecalc;
-    }
-    // method to calculate total price without quantity
-    public function calcPricePerUnit($price, $category, $size){
-        $pricecalc = 0;
-        if($category[0] == "Nameset"){
-            $priceint = intval($price[0]);
-            $pricecalc = $priceint + 4;
-            if($size == "4xl" || $size == "5xl"){
-                $pricecalc += 4;
-            }else if($size == "6xl" || $size == "7xl"){
-                $pricecalc += 8;
-            }
-        }else{
-            $pricecalc = intval($price[0]);
-            if($size == "4XL" || $size == "5XL"){
-                $priceint = intval($price[0]);
-                $pricecalc = $priceint + 4;
-            }else if($size == "6XL" || $size == "7XL"){
-                $priceint = intval($price[0]);
-                $pricecalc = $priceint + 8;
-            }else{
-                $pricecalc = intval($price[0]);
-            }
-        }
-        return $pricecalc;
-    }
     // method to view mockup image
     public function customerViewOrder($order_id)
     {
@@ -291,48 +154,82 @@ class CustomerController extends Controller
     // method to display job order page
     public function customerViewJobOrder($order_id)
     {
-        $userid = auth()->user()->u_id;
-        $user = User::find($userid);
-        $design = Design::where('o_id', $order_id)->get();
-        //$specs = Spec::where('o_id', $order_id)->get();
-        //$units = Unit::where('o_id', $order_id)->get();
-        $order = Order::find($order_id);
-        $materials = Material::all();
-        $sleeves = Sleeve::all();
-        $necks = Neck::all();
-        $designer = User::find($order->u_id_designer);
-        $specs = DB::table('spec')
-            ->leftJoin('body', 'spec.b_id','=','body.b_id')
-            ->leftJoin('sleeve', 'spec.sl_id', '=', 'sleeve.sl_id')
-            ->leftJoin('neck', 'spec.n_id','=','neck.n_id')
-            ->where('spec.o_id','=',$order_id)
-            ->get();
-        $units = DB::table('unit')
-            ->join('design', 'unit.un_id','=','design.un_id')
-            ->where('unit.o_id','=',$order_id)
-            ->get();
-        $invoicepermanents = InvoicePermanent::where('o_id', $order_id)->get();
-        // $units = DB::table('unit')
-        //     ->leftJoin('spec', 'spec.b_id','=','body.b_id')
-        //     ->where('o_id', $order_id)->get();
 
-        //$specs = Spec::find($order_id);
-
-        //var_dump($spec);
+        $orders =  DB::table('orders')
+                ->join('material', 'orders.material_id', '=', 'material.m_id')
+                ->leftJoin('user', 'orders.u_id_customer', '=', 'user.u_id')
+                ->where('orders.o_id','=',$order_id)
+                ->first();
         
-        //->with('specs', $specs)
+        $specs = DB::table('spec')
+                ->leftJoin('body', 'spec.b_id','=','body.b_id')
+                ->leftJoin('sleeve', 'spec.sl_id', '=', 'sleeve.sl_id')
+                ->leftJoin('neck', 'spec.n_id','=','neck.n_id')
+                ->where('spec.o_id','=',$order_id)
+                ->get();
+        
+        $pic =  DB::table('orders')
+                ->leftJoin('user', 'orders.u_id_designer', '=', 'user.u_id')
+                ->where('orders.o_id','=',$order_id)
+                ->first();
+        
+        $user = User::all();
+        
+        $units = Unit::all();
+        
+        $design = DB::table('design')
+                ->where('o_id','=',$order_id)
+                ->first();
+        
+        $designs = DB::table('design')
+                ->leftJoin('unit','design.o_id','=','unit.o_id')
+                ->where('design.o_id','=',$order_id)
+                ->get();
+        return view('customer.cust_job_order',compact('orders','specs','pic','units','design','designs')); 
 
-        return view('customer.cust_job_order')
-        ->with('user', $user)
-        ->with('order', $order)
-        ->with('designs', $design)
-        ->with('specs', $specs)
-        ->with('units', $units)
-        ->with('materials', $materials)
-        ->with('sleeves', $sleeves)
-        ->with('necks', $necks)
-        ->with('designer', $designer)
-        ->with('invoicepermanents', $invoicepermanents);
+
+        // $userid = auth()->user()->u_id;
+        // $user = User::find($userid);
+        // $design = Design::where('o_id', $order_id)->get();
+        // //$specs = Spec::where('o_id', $order_id)->get();
+        // //$units = Unit::where('o_id', $order_id)->get();
+        // $order = Order::find($order_id);
+        // $materials = Material::all();
+        // $sleeves = Sleeve::all();
+        // $necks = Neck::all();
+        // $designer = User::find($order->u_id_designer);
+        // $specs = DB::table('spec')
+        //     ->leftJoin('body', 'spec.b_id','=','body.b_id')
+        //     ->leftJoin('sleeve', 'spec.sl_id', '=', 'sleeve.sl_id')
+        //     ->leftJoin('neck', 'spec.n_id','=','neck.n_id')
+        //     ->where('spec.o_id','=',$order_id)
+        //     ->get();
+        // $units = DB::table('unit')
+        //     ->join('design', 'unit.un_id','=','design.un_id')
+        //     ->where('unit.o_id','=',$order_id)
+        //     ->get();
+        // $invoicepermanents = InvoicePermanent::where('o_id', $order_id)->get();
+        // // $units = DB::table('unit')
+        // //     ->leftJoin('spec', 'spec.b_id','=','body.b_id')
+        // //     ->where('o_id', $order_id)->get();
+
+        // //$specs = Spec::find($order_id);
+
+        // //var_dump($spec);
+        
+        // //->with('specs', $specs)
+
+        // return view('customer.cust_job_order')
+        // ->with('user', $user)
+        // ->with('order', $order)
+        // ->with('designs', $design)
+        // ->with('specs', $specs)
+        // ->with('units', $units)
+        // ->with('materials', $materials)
+        // ->with('sleeves', $sleeves)
+        // ->with('necks', $necks)
+        // ->with('designer', $designer)
+        // ->with('invoicepermanents', $invoicepermanents);
         
     }
     // method to view invoice page for customer
@@ -404,22 +301,6 @@ class CustomerController extends Controller
             return view('customer/customer_receipt_info',compact('receipts'));        
     }
     /**
-     * Display a listing of the resource. 
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-    }
-    /**
      * 
      * Store a newly created resource in storage.
      *
@@ -486,7 +367,7 @@ class CustomerController extends Controller
         $order->save();
         // ------------------ insert data into table spec ---------------------------------- //
         $orderid = $order->o_id;
-        $neckid; // if round neck, assign 0
+        $neckid; 
         $bodyid;
         $sleeveid;
         $collarcolor;
@@ -700,42 +581,157 @@ class CustomerController extends Controller
         $design->d_type = $designtype;
         $design->save();
     } 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // function
-    public function show($id)
-    {
+    public function requestConfirm($orderid){
+        
+        $orderidrequest = $orderid;
+        if($orderidrequest != null){
+            //-------------------- confirm design ----------------------//
+            $user_id = auth()->user()->u_id;
+            $thisyear = date("Y");
+            //var_dump("This year: ".$thisyear);
+            $recordedyear = Order::select('ref_num')
+                ->whereYear('created_at', $thisyear)
+                ->first();
+            //var_dump("Recorded year: ".$recordedyear);
+            if($recordedyear == null){
+                $newrefnum = date("y")."/1"; 
+                DB::table('orders')
+                    ->where('o_id', '=', $orderidrequest)
+                    ->update(array('ref_num' => $newrefnum,
+                    'o_status'=>'2'));
+            }else{
+
+                $userrefnum = Order::where('ref_num', '!=' , null)->whereYear('created_at', $thisyear)->pluck('ref_num')->toArray();
+                $totalrefnum = count($userrefnum);
+                $newrefnum = date("y")."/".($totalrefnum + 1); 
+                //var_dump("ref num: ".$newrefnum);
+                // update ref num in table order
+                DB::table('orders')
+                    ->where('o_id', '=', $orderidrequest)
+                    ->update(array('ref_num' => $newrefnum,
+                    'o_status'=>'2'));
+            }
+            
+            $orderid = $orderidrequest;
+            $neckid = Spec::where('o_id', '=' , $orderidrequest)->pluck('n_id')->toArray();
+            $bodyid = Spec::where('o_id', '=' , $orderidrequest)->pluck('b_id')->toArray();
+            $sleeveid = Spec::where('o_id', '=' , $orderidrequest)->pluck('sl_id')->toArray();
+            $specid = Spec::where('o_id', '=' , $orderidrequest)->pluck('s_id')->toArray();
+            $usertype = auth()->user()->u_type;
+            $category;
+            $size;
+            $price;
+            $totprice = 0;
+            $totorderrow = count($neckid);
+            for($i = 0; $i < $totorderrow; $i++){
+
+                $necktype = Neck::find($neckid[$i]);
+                $price = Price::where('n_type', '=', $necktype->n_type)
+                    ->where('b_id', '=' , $bodyid[$i])
+                    ->where('sl_id', '=' , $sleeveid[$i])
+                    ->where('u_type', '=' , $usertype)->pluck('price');
+                $category = Order::where('o_id', '=', $orderidrequest)->pluck('category');
+                $size = Unit::where('o_id', '=', $orderidrequest)->pluck('size');
+                $totsize = count($size);
+                $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
+                $totunits = count($specs);
+                $specprice = 0;
+                $specquantity = 0;
+                $oneunitprice = 0;
+                for($j = 0; $j < $totunits; $j++){
+                    $size = Unit::where('o_id', '=', $orderidrequest)
+                    ->where('s_id', '=', $specid[$i])
+                    ->pluck('size');
+                    $quantity = Unit::where('o_id', '=', $orderidrequest)
+                    ->where('s_id', '=', $specid[$i])
+                    ->pluck('un_quantity');
+                    $totsize = count($size);
+                    $specquantity += $quantity[$j];
+                    $pricecalc = $this->calcPrice($price, $category, $size[$j], $quantity[$j]);
+                    $priceperunit = $this->calcPricePerUnit($price, $category, $size[$j]); 
+                    $specprice += $pricecalc;
+                    $totprice += $pricecalc;
+                }
+                $oneunitprice += intval($price[0]);
+                $invoicePermanent = new InvoicePermanent;
+                $invoicePermanent->s_id = $specid[$i];
+                $invoicePermanent->o_id = $orderidrequest;
+                $invoicePermanent->spec_total_price = $specprice;
+                $invoicePermanent->one_unit_price = $oneunitprice;
+                $invoicePermanent->spec_total_quantity = $specquantity;
+                $invoicePermanent->save();
+            }
+            $invoice = new Invoice;
+            $invoice->o_id = $orderid;
+            $invoice->i_status = 1;
+            $invoice->total_price = $totprice; 
+            $invoice->save();
+
+            DB::table('orders')
+                ->where('o_id', '=', $orderid)
+                ->update(array('balance' => $totprice));
+        }
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
+    // method to calculate total price with quantity
+    public function calcPrice($price, $category, $size, $quantity){
+        $pricecalc = 0;
+        if($category[0] == "Nameset"){
+            $priceint = intval($price[0]);
+            $quantityint = intval($quantity);
+            $pricecalc = $priceint + 4;
+            $pricecalc *= $quantityint;
+            if($size == "4xl" || $size == "5xl"){
+                $pricecalc += 4;
+            }else if($size == "6xl" || $size == "7xl"){
+                $pricecalc += 8;
+            }
+        }else{
+            $pricecalc = intval($price[0]);
+            $quantityint = intval($quantity);
+            $pricecalc *= $quantityint;
+            if($size == "4XL" || $size == "5XL"){
+                $priceint = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc = $priceint + 4;
+                $pricecalc *= $quantityint;
+            }else if($size == "6XL" || $size == "7XL"){
+                $priceint = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc = $priceint + 8;
+                $pricecalc *= $quantityint;
+            }else{
+                $pricecalc = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc *= $quantityint;
+            }
+        }
+        //var_dump("price: ".$pricecalc);
+        //var_dump("size: ".$size);
+        return $pricecalc;
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
+    // method to calculate total price without quantity
+    public function calcPricePerUnit($price, $category, $size){
+        $pricecalc = 0;
+        if($category[0] == "Nameset"){
+            $priceint = intval($price[0]);
+            $pricecalc = $priceint + 4;
+            if($size == "4xl" || $size == "5xl"){
+                $pricecalc += 4;
+            }else if($size == "6xl" || $size == "7xl"){
+                $pricecalc += 8;
+            }
+        }else{
+            $pricecalc = intval($price[0]);
+            if($size == "4XL" || $size == "5XL"){
+                $priceint = intval($price[0]);
+                $pricecalc = $priceint + 4;
+            }else if($size == "6XL" || $size == "7XL"){
+                $priceint = intval($price[0]);
+                $pricecalc = $priceint + 8;
+            }else{
+                $pricecalc = intval($price[0]);
+            }
+        }
+        return $pricecalc;
     }
 }
