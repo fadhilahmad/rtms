@@ -17,6 +17,7 @@ use App\DeliverySetting;
 use App\Design;
 use App\Unit;
 use App\Order;
+use App\Price;
 use DB;
 
 class AdminController extends Controller
@@ -281,6 +282,25 @@ class AdminController extends Controller
                 ->get();
         
         return view('admin/pricing', compact('body','sleeve'));
+    }
+
+    // method to view new order page
+    public function neworder() 
+    {
+        // get data from tables
+        $materials = Material::where('m_status', 1)->get();
+        $deliverysettings = DeliverySetting::all();
+        $bodies = Body::where('b_status', 1)->get();
+        $sleeves = Sleeve::where('sl_status', 1)->get();
+        $necks = Neck::where('n_status', 1)->get();
+        $prices = Price::all();
+        return view('admin/neworder')
+        ->with('materials', $materials)
+        ->with('deliverysettings', $deliverysettings)
+        ->with('bodies', $bodies)
+        ->with('sleeves', $sleeves)
+        ->with('necks', $necks)
+        ->with('prices', $prices);
     }
     
    
