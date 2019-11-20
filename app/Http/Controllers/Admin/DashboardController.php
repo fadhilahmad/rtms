@@ -69,9 +69,20 @@ class DashboardController extends Controller
                     ->where('orders.balance','!=',0)
                     ->count();
         
-        $com = intval($completed/$orders*100);
-        $pen = intval($pending/$orders*100);
-        $depo = intval($deposited/$orders*100);
+        
+        if($orders==0){
+            $com = 0;
+            $pen = 0;
+            $depo = 0;
+        } else {          
+            $com = intval($completed/$orders*100);
+            $pen = intval($pending/$orders*100);
+            $depo = intval($deposited/$orders*100);
+        }
+        
+//        $com = intval($completed/$orders*100);
+//        $pen = intval($pending/$orders*100);
+//        $depo = intval($deposited/$orders*100);
         
         $total_unit = DB::table('orders')
                     ->sum('quantity_total');
@@ -88,14 +99,34 @@ class DashboardController extends Controller
                     ->whereIn('o_status', [6, 7, 8, 9, 10])
                     ->sum('quantity_total');
         
-        $design_p = round($design/$total_unit*100, 1);
-        $dp = intval($design/$total_unit*100);
+        if($total_unit==0){
+            $design_p = 0;
+            $dp = 0;
+
+            $print_p = 0;
+            $pp = 0;
+
+            $tailor_p = 0;
+            $tp = 0;
+        }else{
+            $design_p = round($design/$total_unit*100, 1);
+            $dp = intval($design/$total_unit*100);
+
+            $print_p = round($print/$total_unit*100, 1);
+            $pp = intval($print/$total_unit*100);
+
+            $tailor_p = round($tailor/$total_unit*100, 1);
+            $tp = intval($tailor/$total_unit*100);  
+        }
         
-        $print_p = round($print/$total_unit*100, 1);
-        $pp = intval($print/$total_unit*100);
-        
-        $tailor_p = round($tailor/$total_unit*100, 1);
-        $tp = intval($tailor/$total_unit*100);
+//        $design_p = round($design/$total_unit*100, 1);
+//        $dp = intval($design/$total_unit*100);
+//        
+//        $print_p = round($print/$total_unit*100, 1);
+//        $pp = intval($print/$total_unit*100);
+//        
+//        $tailor_p = round($tailor/$total_unit*100, 1);
+//        $tp = intval($tailor/$total_unit*100);
         
         $today = date('d');
         $month = date('m');
