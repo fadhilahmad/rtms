@@ -300,6 +300,10 @@ class OrderController extends Controller
                        ->where('orders.o_id','=',$o_id)
                        ->first();
              
+             $charges = DB::table('additional_charges')
+                       ->where('o_id','=',$o_id)
+                       ->get();
+             
              $units = Unit::all();
              
              $invoice = Invoice::selectRaw('*')
@@ -311,6 +315,6 @@ class OrderController extends Controller
             // dd($specs);      
         
         
-        return view('admin/invoice_info',compact('orders','specs','user','units','invoice','invoice_p'));
+        return view('admin/invoice_info',compact('orders','specs','user','units','invoice','invoice_p','charges'));
     }
 }                

@@ -83,4 +83,39 @@ class PaymentController extends Controller
             //dd($orders);
             return view('admin/receipt_info',compact('receipts'));        
     }
+    
+    public function addCharges(Request $request)
+    {
+        $data = $request->all();
+        
+        $desc = $data['desc'];
+        $price = $data['price'];
+        $oid = $data['oid'];
+        
+        $order = DB::table('orders')
+                ->where('o_id',$oid)
+                ->first();
+        
+        $bal = $order->balance;
+        $balance = $bal + $price;
+        
+        DB::table('additional_charges')->insert([
+                     'o_id' => $oid,
+                     'ac_desc'=> $desc,
+                     'charges'=> $price,
+                     'created_at' => DB::raw('now()'),
+                     'updated_at' => DB::raw('now()')
+                    ]);
+        
+        DB::table('orders')
+                    ->where('o_id', '=', $oid)
+                    ->update(array('balance' => $balance,'updated_at'=>DB::raw('now()')));
+        
+        DB::table('invoice')
+                    ->where('o_id', '=', $oid)
+                    ->update(array('total_price' => $balance,'updated_at'=>DB::raw('now()')));
+        
+       // dd($data);
+        return response()->json(['success'=>'ok']);
+    }
 }

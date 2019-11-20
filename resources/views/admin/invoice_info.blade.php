@@ -91,7 +91,23 @@ text-align: center;
                             <tr>
                                 <td>{{$no}}</td>
                                 <td>{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}<br>
-                                                                  
+                                @php $check_4xl = $units->where('s_id',$spec->s_id)->where('size','4XL')->pluck('un_quantity')->first();  
+                                     $check_5xl = $units->where('s_id',$spec->s_id)->where('size','5XL')->pluck('un_quantity')->first();
+                                     $check_6xl = $units->where('s_id',$spec->s_id)->where('size','6XL')->pluck('un_quantity')->first();
+                                     $check_7xl = $units->where('s_id',$spec->s_id)->where('size','7XL')->pluck('un_quantity')->first();
+                                @endphp
+                                @if(!empty ( $check_4xl ))
+                                    4XL   {{$check_4xl}} unit (+RM{{4*$check_4xl}})<br>
+                                @endif
+                                @if(!empty ( $check_5xl ))
+                                    5XL   {{$check_5xl}} unit (+RM{{4*$check_5xl}})<br>
+                                @endif
+                                @if(!empty ( $check_6xl ))
+                                    6XL   {{$check_6xl}} unit (+RM{{8*$check_6xl}})<br>
+                                @endif
+                                @if(!empty ( $check_7xl ))
+                                    7XL    {{$check_7xl}} unit (+RM{{8*$check_7xl}})<br>                                         
+                                @endif
                                 </td>
                                 @php $display = $invoice_p->where('s_id',$spec->s_id)->first();  @endphp
                                 <td>{{$total_unit[] = $display->spec_total_quantity}}</td>
@@ -100,12 +116,24 @@ text-align: center;
                             </tr>
                             @php $no++; $index++ @endphp
                             @endforeach
+                            
+                            @foreach($charges as $charge)
+                            <tr>
+                                <td>{{$no}}</td>
+                                <td>{{$charge->ac_desc}}</td>
+                                <td></td>
+                                <td></td>                                                               
+                                <td>{{$total_price[] = $charge->charges}}</td>
+                            </tr>
+                            @php $no++; $index++ @endphp
+                            @endforeach
+                            
                             <tr>
                                 <td></td>
                                 <td>Jumlah Keseluruhan</td>
                                 <td>{{array_sum ( $total_unit )}}</td>
                                 <td></td>
-                                <td>{{array_sum ( $total_price )}}</td>
+                                <td>{{--array_sum ( $total_price )--}}{{$invoice->total_price}}</td>
                             </tr>  
 <!--                            <tr>
                                 <td class="no-border"></td>
