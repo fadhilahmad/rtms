@@ -17,30 +17,30 @@ Route::get('/home', 'HomeController@index')->name('home');
 //////////////////////////////////////////////////////////////ADMIN PAGE///////////////////////////////////////////////////////////////////////
 //page manage_customer dropdown
 Route::get('admin/manage_customer', 'HomeController@adminHome')->name('admin.home')->middleware('admin');
-Route::any('admin/manage_customer','Admin\ManageCustomerController@CustomerList');
-Route::post('admin/manage_customer','Admin\ManageCustomerController@edit')->name('edit_customer');
+Route::any('admin/manage_customer','Admin\ManageCustomerController@CustomerList')->middleware('admin');
+Route::post('admin/manage_customer','Admin\ManageCustomerController@edit')->name('edit_customer')->middleware('admin');
 //page agent_list
 Route::get('admin/agent_list', 'Admin\AdminController@agentList')->name('admin.agentlist')->middleware('admin');
-Route::any('admin/agent_list','Admin\ManageAgentController@AgentList');
-Route::post('admin/agent_list','Admin\ManageAgentController@edit')->name('edit_agent');
+Route::any('admin/agent_list','Admin\ManageAgentController@AgentList')->middleware('admin');
+Route::post('admin/agent_list','Admin\ManageAgentController@edit')->name('edit_agent')->middleware('admin');
 //page add_customer
 Route::get('admin/add_customer', 'Admin\AdminController@addCustomer')->name('admin.addcustomer')->middleware('admin');
-Route::post('admin/add_customer','Admin\RegisterCustomerController@register');
+Route::post('admin/add_customer','Admin\RegisterCustomerController@register')->middleware('admin');
 //page add_agent
 Route::get('admin/add_agent', 'Admin\AdminController@addAgent')->name('admin.addagent')->middleware('admin');
-Route::post('admin/add_agent','Admin\RegisterAgentController@register');
+Route::post('admin/add_agent','Admin\RegisterAgentController@register')->middleware('admin');
 //page customer_application
 Route::get('admin/customer_application', 'Admin\AdminController@customerApplication')->name('admin.newapplication')->middleware('admin');
-Route::get('admin/customer_application/{id}/type/{type}','Admin\ManageCustomerController@approve')->name('approve');
+Route::get('admin/customer_application/{id}/type/{type}','Admin\ManageCustomerController@approve')->name('approve')->middleware('admin');
 //manage manage_staff
 Route::get('admin/manage_staff', 'Admin\AdminController@manageStaff')->name('admin.managestaff')->middleware('admin');
-Route::post('admin/manage_staff','Admin\ManageStaffController@edit')->name('edit_staff');
+Route::post('admin/manage_staff','Admin\ManageStaffController@edit')->name('edit_staff')->middleware('admin');
 //page staff_application
 Route::get('admin/staff_application', 'Admin\AdminController@staffApplication')->name('admin.staffapplication')->middleware('admin');
-Route::get('admin/staff_application/{id}/type/{type}','Admin\ManageStaffController@approve')->name('staff_approve');
+Route::get('admin/staff_application/{id}/type/{type}','Admin\ManageStaffController@approve')->name('staff_approve')->middleware('admin');
 //page add_newstaff
 Route::get('admin/add_newstaff', 'Admin\AdminController@addStaff')->name('admin.addstaff')->middleware('admin');
-Route::post('admin/add_newstaff','Admin\RegisterStaffController@register');
+Route::post('admin/add_newstaff','Admin\RegisterStaffController@register')->middleware('admin');
 //page leave_list
 Route::get('admin/leave_list', 'Admin\AdminController@leaveList')->name('admin.leavelist')->middleware('admin');
 //page leave_application
@@ -48,8 +48,8 @@ Route::get('admin/leave_application', 'Admin\AdminController@leaveApplication')-
 Route::post('admin/leave_application','Admin\LeaveController@application')->name('leave_application')->middleware('admin');
 //page leave_day
 Route::get('admin/leave_day', 'Admin\AdminController@leaveDay')->name('admin.leavesetting')->middleware('admin');
-Route::post('admin/leave_day','Admin\LeaveController@setting')->name('leave_setting');
-Route::post('admin/leave_day2','Admin\LeaveController@updateDay')->name('leave_update');
+Route::post('admin/leave_day','Admin\LeaveController@setting')->name('leave_setting')->middleware('admin');
+Route::post('admin/leave_day2','Admin\LeaveController@updateDay')->name('leave_update')->middleware('admin');
 //page staff_performance
 Route::get('admin/staff_performance', 'Admin\AdminController@staffPerformance')->name('admin.staffperformance')->middleware('admin');
 //page order_setting
