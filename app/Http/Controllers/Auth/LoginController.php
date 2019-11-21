@@ -54,38 +54,35 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
    
-        if(auth()->attempt(array('username' => $input['username'], 'password' => $input['password'])))
+        if(auth()->attempt(array('username' => $input['username'], 'password' => $input['password'],'u_status' => 1)))
         {
-            if (auth()->user()->u_type == 1 OR auth()->user()->u_type == 2 AND auth()->user()->u_status == 1)  //CASE ADMIN
+            if (auth()->user()->u_type == 1 OR auth()->user()->u_type == 2 )  //CASE ADMIN
             {
                 return redirect()->route('admin.home');
             }
             
-            elseif(auth()->user()->u_type == 3 OR auth()->user()->u_type == 4 OR auth()->user()->u_type == 5 AND auth()->user()->u_status == 1 ) //CASE DEPARTMENT
+            elseif(auth()->user()->u_type == 3 OR auth()->user()->u_type == 4 OR auth()->user()->u_type == 5  ) //CASE DEPARTMENT
             {
                 return redirect()->route('department.home');
             }
             
-            elseif(auth()->user()->u_type == 6 OR auth()->user()->u_type == 7 AND auth()->user()->u_status == 1 ) //CASE CUSTOMER 
+            elseif(auth()->user()->u_type == 6 OR auth()->user()->u_type == 7 ) //CASE CUSTOMER 
             {
                 return redirect()->route('customer.home');
             }
-            
-            elseif(auth()->user()->u_status == 2)
-            {
-                return redirect()->route('login')
-                    ->with('error','Waiting for admin approval');
-            }
-            
-            elseif(auth()->user()->u_status == 0)
-            {
-                return redirect()->route('login')
-                    ->with('error','Please contact admin');
-            }
-            
+                                    
         }
-        else
+        elseif(auth()->attempt(array('username' => $input['username'], 'password' => $input['password'],'u_status' => 2)))
         {
+           return redirect()->route('login')
+                   ->with('error','Waiting for admin approval');
+        }
+        elseif(auth()->attempt(array('username' => $input['username'], 'password' => $input['password'],'u_status' => 0)))
+        {
+           return redirect()->route('login')
+                   ->with('error','Please contact admin');
+        }
+        else{
            return redirect()->route('login')
                    ->with('error','wrong password');
 
