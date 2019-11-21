@@ -123,6 +123,9 @@ Route::get('department/performance', 'Department\departmentController@performanc
 //page leave
 Route::get('department/leave', 'Department\departmentController@leave')->name('leave')->middleware('department');
 Route::post('department/leave', 'Department\departmentController@leaveApplication')->name('department.leave')->middleware('department');
+//stock page
+Route::get('department/stock', 'Department\departmentController@stockList')->name('department.stock')->middleware('department');
+Route::post('department/stock', 'Department\departmentController@updateStock')->name('department.updatestock')->middleware('department');
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////
 //Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
 Route::get('customer/customer_profile', 'Customer\customerController@customerProfile')->middleware('customer');
