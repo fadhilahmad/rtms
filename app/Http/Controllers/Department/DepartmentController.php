@@ -12,6 +12,7 @@ use App\Leave;
 use App\LeaveDay;
 use App\Design;
 use App\Unit;
+use App\Material;
 use DB;
 
 class DepartmentController extends Controller
@@ -230,5 +231,41 @@ class DepartmentController extends Controller
            
            return redirect('department/joblist');            
         }
+    }
+    
+    public function stockList() 
+    {
+        $material = Material::selectRaw('*')
+                ->where('m_status','=',1)                
+                ->get();
+        
+        return view('department/stock', compact('material'));
+    }
+    
+    public function updateStock(Request $request){
+        
+        $data = $request->all();
+        
+        if($data['operator']=='add'){
+            $newstock = $data['oldvalue']+$data['value'];
+            
+                DB::table('material')
+                    ->where('m_id', '=', $data['m_id'])
+                    ->update(array('m_stock' => $newstock,'updated_at'=>DB::raw('now()')));
+                
+                return redirect('department/stock')->with('message', 'Stock updated');           
+            
+        }
+        if($data['operator']=='minus'){
+            $newstock = $data['oldvalue']-$data['value'];
+            
+                DB::table('material')
+                    ->where('m_id', '=', $data['m_id'])
+                    ->update(array('m_stock' => $newstock,'updated_at'=>DB::raw('now()')));
+                
+                return redirect('department/stock')->with('message', 'Stock updated');           
+            
+        }
+        
     }
 }
