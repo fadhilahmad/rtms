@@ -29,13 +29,24 @@ td.fc-event-container{
             // put your options and callbacks here
 
             //function utk tukar color date
-            dayRender: function (date, cell) {
-                var today = new Date().toDateString();
-                var ddate = date.toDate().toDateString();
-
-                if (ddate == today) {
-                    cell.css("background-color", "red");
-                }
+            dayRender: function (date, cell) {               
+                var today = new Date();
+                var tomorrow = new Date();
+                     tomorrow.setDate(tomorrow.getDate() + 1);
+                var lusa = new Date();
+                     lusa.setDate(lusa.getDate() + 2);
+                
+                if (date.isSame(today, "day")) {
+                        cell.css("background-color", "yellow");
+                    }
+                                     
+                if (date.isSame(tomorrow, "day")) {
+                        cell.css("background-color", "yellow");
+                    }
+                    
+                if (date.isSame(lusa, "day")) {
+                        cell.css("background-color", "yellow");
+                    }
 
             },
             events : [ 
@@ -45,18 +56,25 @@ td.fc-event-container{
                     title : '{{$order->ref_num}}: {{$order->quantity_total}}',
                     start : '{{$order->delivery_date}}',
                 },
-                @endforeach             
+                @endforeach
+                
+                @foreach($total as $tot)               
+                {
+                    title : 'Total: {{$tot->sum}}',
+                    start : '{{$tot->delivery_date}}',
+                },
+                @endforeach 
             ],
             //add extra field
-            eventRender: function(event, element) {
-                var new_description =                    
-                     '<strong>Total: </strong>' + event.total;
-                element.append(new_description);
-                //if nak change color specific field
-                if(event.total != null) {
-                    element.css('background-color', '#000');
-                }
-            }
+//            eventRender: function(event, element) {
+//                var new_description =                    
+//                     '<strong>Total: </strong>' + event.total;
+//                element.append(new_description);
+//                //if nak change color specific field
+//                if(event.total != null) {
+//                    element.css('background-color', '#000');
+//                }
+//            }
 
         })
     });
