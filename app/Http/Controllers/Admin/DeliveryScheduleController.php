@@ -20,6 +20,15 @@ class DeliveryScheduleController extends Controller
                     ->where('o_status','<>',9)
                     ->get();
         
-        return view('admin/delivery_schedule',compact('orders'));
+        $total = DB::table('orders')
+                    ->selectRaw('*, sum(quantity_total) as sum')
+                    ->where('o_status','<>',9)
+                    ->groupBy('delivery_date')
+//                    ->sum('quantity_total');
+                    ->get();
+        
+       // dd($total);
+        
+        return view('admin/delivery_schedule',compact('orders','total'));
     }
 }
