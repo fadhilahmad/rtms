@@ -1,9 +1,6 @@
 @extends('layouts.layout')
 
 @section('content')
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -18,7 +15,7 @@
                     @if(Auth::user()->u_type==3)
                         <div class="card-header">DESIGNER ORDER LIST</div><br>
                         @php $no=1; @endphp
-                        @foreach($orders as $order)
+                                    @foreach($orders as $order)
                             <div class="panel panel-primary">
                                 <div class="panel-heading">Order Status : @if($order->o_status==0) Draft @else Customer Request Redesign @endif</div>                                                                  
                                 <div class="panel-body">
@@ -74,7 +71,7 @@
                                 </div>                                
                             </div>
                           @php $no++; @endphp
-                         @endforeach
+                                  @endforeach
                     @endif
 
                     @if($department==4 || $department==5)
@@ -178,7 +175,6 @@
   </div>
 </div>
 
-<script src="{{ asset('js/app.js') }}"></script>
 <script type="text/javascript">
 $(document).on("click", ".edit", function () {
      var name = $(this).data('tittle');
