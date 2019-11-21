@@ -13,25 +13,22 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                 </div>
-                <input id="username" type="text" class="form-control @error('username') is-invalid @enderror" placeholder="Username" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
-                @error('username')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <input id="username" type="text" class="form-control " placeholder="Username" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                
                 
             </div>
             <div class="input-group form-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-key"></i></span>
                 </div>
-                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" placeholder="Password" name="password" required autocomplete="current-password">
-                @error('password')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
+                <input id="password" type="password" class="form-control " placeholder="Password" name="password" required autocomplete="current-password">
+                
             </div>
+               @if(session()->has('error'))
+                        <div class="alert alert-danger">
+                            {{ session()->get('error') }}
+                        </div>
+               @endif
     
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
