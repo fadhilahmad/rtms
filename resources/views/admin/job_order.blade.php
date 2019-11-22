@@ -1,14 +1,14 @@
 @extends('layouts.layout')
 
 @section('content')
-<div class="container-scroll">
+<div  class="container-scroll">
     <div class ="card">
         <div class="card-header order-form ">REZEAL TEXTILE ORDER FORM</div>  
             <div class="card-body">   
                 <form class="form-horizontal">
                     <div class="scroll_page">
                         <!-- first column -->
-                        <div class="col-10 scroll_page--box">
+                        <div class="col-8 scroll_page--box">
                             <!-- date & ref.num field -->
                             <div class="form-group row">
                                 <label class="col-sm-2">Date</label>
@@ -92,7 +92,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-2">JPEG Mockup </label>
                                 <div class="col-sm-10">
-                                    <img src="{{url('orders/mockup/'.$design->d_url)}}" width="80%" height="80%">
+                                    <img src="{{url('orders/mockup/'.$design->d_url)}}" width="70%">
                                 </div>
                             </div>
                             <!-- <div class="form-group row">
@@ -111,12 +111,12 @@
                         
                         </div>
                         <!-- Second column -->
-                        <div class="col-12 scroll_page--box">
+                        <div class="col-10 scroll_page--box">
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <img src="{{url('img/collar-type.jpeg')}}" style="width:35vw; margin: 0px auto; margin-bottom:20px;">
+                                <div class="col">
+                                    <img src="{{url('img/collar-type.jpeg')}}" style="width:30vw; margin: 0px auto; margin-bottom:20px;">
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col">
                                     <table class="table table-bordered"  style="margin: 0px auto; margin-top:20px;">
                                             <thead  style="background-color:yellow; color:black">
                                                 <tr>
@@ -160,12 +160,12 @@
                             </div>
                             <br>
                             <br>
-                            <div class="form-group col-sm-6">
+                            <div class="form-group col-6">
                                 @if($orders->category=="Size")
                                 @foreach($specs as $spec)
                                 <strong>{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}</strong>
-                                <div class="row">
-                                    <table class="table table-bordered"  style="width:50%; margin: 0px auto; margin-top:20px;">
+                                <div style="display:flex; margin-top:20px">
+                                    <table class="table table-bordered"  style=" margin: 0px auto; margin-top:20px;">
                                         <thead  style="background-color:yellow; color:black">
                                             <tr>
                                                 <th scope="col">Size</th>
@@ -339,7 +339,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <table class="table table-bordered" style="width:50%; margin: 0px auto; margin-top:20px;">
+                                    <table class="table table-bordered" style="margin: 0px auto; margin-top:20px;">
                                         <thead  style="background-color:yellow; color:black">
                                             <tr>
                                                 <th scope="col">Size</th>
@@ -523,11 +523,11 @@
                                 @endforeach
                                 @elseif($orders->category="Nameset")
                                 
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-6">
                                     @foreach($specs as $spec)
                                     <strong>{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}</strong>
                                     <div class="row">
-                                        <table class="table table-bordered"  style="width:50%; margin: 0px auto; margin-top:20px;">
+                                        <table class="table table-bordered"  style="margin: 0px auto; margin-top:20px;">
                                             <thead  style="background-color:yellow; color:black">
                                                 <tr>
                                                     <th scope="col">Name</th>
@@ -586,11 +586,14 @@
         </div>        
     </div>  
 </div>
+<style type="text/css" media="print">
+ @page { size: landscape;  }
+</style>
 
 <script type="text/javascript">
 function printFunction() {
-  window.print();
-}    
+  window.print(); 
+ }       
 </script>
 @endsection
 
