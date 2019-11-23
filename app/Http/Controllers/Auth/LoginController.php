@@ -61,12 +61,12 @@ class LoginController extends Controller
                 return redirect()->route('admin.dashboard');
             }
             
-            elseif(auth()->user()->u_type == 4 OR auth()->user()->u_type == 5  ) //CASE DEPARTMENT
+            elseif(  auth()->user()->u_type == 5  ) //CASE DEPARTMENT
             {
                 return redirect()->route('department.home');
             }
             
-            elseif(auth()->user()->u_type == 3 ) //CASE Designer
+            elseif(auth()->user()->u_type == 3 OR auth()->user()->u_type == 4 ) //CASE Designer and tailor
             {
                 return redirect()->route('job_list');
             }
