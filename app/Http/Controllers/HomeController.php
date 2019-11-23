@@ -45,6 +45,7 @@ class HomeController extends Controller
                         ->join('material', 'orders.material_id', '=', 'material.m_id')
                         ->where('orders.u_id_designer','=',$u_id)
                         ->whereIn('orders.o_status', [0,10])
+                        ->orderBy('delivery_date', 'asc')
                         ->get();
            // dd($orders);            
 
@@ -55,6 +56,7 @@ class HomeController extends Controller
             $orders =  DB::table('orders')
                        ->join('material', 'orders.material_id', '=', 'material.m_id')
                         ->where('orders.o_status','=','3')
+                        ->orderBy('delivery_date', 'asc')
                         ->get();
             //dd($orders);
             return view('department/department_orderlist',compact('orders'))->with('department',$department);          
@@ -64,6 +66,7 @@ class HomeController extends Controller
             $orders =  DB::table('orders')
                        ->join('material', 'orders.material_id', '=', 'material.m_id')
                         ->where('orders.o_status','=','5')
+                        ->orderBy('delivery_date', 'asc')
                         ->get();
             //dd($orders);
             return view('department/department_orderlist',compact('orders'))->with('department',$department);             
