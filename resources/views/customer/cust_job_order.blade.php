@@ -1,49 +1,49 @@
 @extends('layouts.layout')
 
 @section('content')
-<div class="container-scroll">
+<div  class="container-scroll">
     <div class ="card">
         <div class="card-header order-form ">REZEAL TEXTILE ORDER FORM</div>  
             <div class="card-body">   
                 <form class="form-horizontal">
-                    <div class="scroll_page">
+                    <div class="scroll_page" id="allcolumn">
                         <!-- first column -->
-                        <div class="col-10 scroll_page--box">
+                        <div class="col-8 scroll_page--box" id="firstcolumn" name="col8div1">
                             <!-- date & ref.num field -->
                             <div class="form-group row">
-                                <label class="col-sm-2">Date</label>
-                                <div class="col-sm-4">
+                                <label class="col-sm-2 padding-0" name="colsm1lbl">Date</label>
+                                <div class="col-sm-4 padding-0" name="colsm2div">
                                     : <input id="date" name="date" type="email" value="{{ date('d/m/Y', strtotime($orders->created_at)) }}" disabled="">
                                 </div>
-                                <label class="col-sm-1">Ref Num</label>
-                                <div class="col-sm-5">
+                                <label class="col-sm-1 padding-0" name="colsm1lblref">Ref Num</label>
+                                <div class="col-sm-5 padding-0" name="colsm2divref">
                                     : <input id="refnum" name="refnum"  type="text" value="{{ $orders->ref_num }}" disabled="" >
                                 </div>
                             </div>
                             <!-- customer field -->
                             <div class="form-group row">
-                                <label class="col-sm-2">Customer</label>
+                                <label class="col-sm-2" name="colsm1lbl">Customer</label>
                                 <div class="col-sm-10">
                                 : <input id="customer"  name="customer" type="text" value="{{ $orders->u_fullname }}" disabled="">
                                 </div>
                             </div>
                             <!-- file name field -->
                             <div class="form-group row">
-                                <label class="col-sm-2">File Name</label>
+                                <label class="col-sm-2" name="colsm1lbl">File Name</label>
                                 <div class="col-sm-10">
                                 : <input id="file_name" name="file_name" type="text" value="{{ $orders->file_name }}" disabled="">
                                 </div>
                             </div>
                             <!-- material checkbox -->
                             <div class="form-group row">
-                                <label class="col-sm-2">Material</label>
+                                <label class="col-sm-2" name="colsm1lbl">Material</label>
                                 <div class="col-sm-10">
                                 : <input id="file_name" name="file_name" type="text" value="{{ $orders->m_desc }}" disabled="">
                                 </div>
                             </div>
                             <!-- sleeve checkbox -->                                
                             <div class="form-group row">
-                                <label class="col-sm-2">Sleeve</label>                                   
+                                <label class="col-sm-2" name="colsm1lbl">Sleeve</label>                                   
                                     <div class="col-sm-10">                                            
                                         : 
                                         @foreach ($specs as $spec)                                                    
@@ -54,7 +54,7 @@
                             </div>
                                 <!-- collar no field -->                                
                                 <div class="form-group row">
-                                <label class="col-sm-2">Collar No</label>
+                                <label class="col-sm-2" name="colsm1lbl">Collar No</label>
                                 <div class="col-sm-10">
                                     : 
                                     @foreach ($specs as $spec) 
@@ -64,21 +64,21 @@
                             </div>
                             <!-- delivery date field -->                                
                             <div class="form-group row">
-                                <label class="col-sm-2">Delivery Date</label>
+                                <label class="col-sm-2" name="colsm1lbl">Delivery Date</label>
                                 <div class="col-sm-10">
                                 : <input id="delivery_date" name="delivery_date" type="text" value="{{ date('d/m/Y', strtotime($orders->delivery_date)) }}" disabled="">
                                 </div>
                             </div>
                             <!-- Person in charge field -->                                
                             <div class="form-group row">
-                                <label class="col-sm-2">Person in charge</label>
+                                <label class="col-sm-2" name="colsm1lbl">Person in charge</label>
                                 <div class="col-sm-10">
                                 : <input id="pic" name="pic" type="text" value="{{ $pic->u_fullname }}" disabled="">
                                 </div>
                             </div>
                             <!-- collar colour field -->                                
                             <div class="form-group row">
-                                <label class="col-sm-2">Collar Colour</label>
+                                <label class="col-sm-2" name="colsm1lbl">Collar Colour</label>
                                 <div class="col-sm-10">
                                 :
                                     @foreach ($specs as $spec)
@@ -90,19 +90,14 @@
                             </div>
                             <!-- jpeg mockup field -->                                                            
                             <div class="form-group row">
-                                <label class="col-sm-2">JPEG Mockup </label>
+                                <label class="col-sm-2" name="colsm1lbl">JPEG Mockup </label>
                                 <div class="col-sm-10">
-                                    <img src="{{url('orders/mockup/'.$design->d_url)}}" width="80%" height="80%">
+                                    <img class="imgmockup" src="{{url('orders/mockup/'.$design->d_url)}}" width="70%">
                                 </div>
                             </div>
-                            <!-- <div class="form-group row">
-                                <div class="col-sm-5">                                   
-                                <center><img src="{{url('orders/mockup/'.$design->d_url)}}" width="80%" height="80%"></center>
-                                </div>
-                            </div>         -->
                             <!-- remarks field -->        
                             <div class="form-group row">
-                                <label class="col-sm-2">Remarks</label> :
+                                <label class="col-sm-2" name="colsm1lbl">Remarks</label> :
                                 <div class="col-sm-6">
                                     <textarea rows="4" cols="50" value="" disabled=""> {{ $orders->note }}                               
                                     </textarea>
@@ -111,12 +106,12 @@
                         
                         </div>
                         <!-- Second column -->
-                        <div class="col-12 scroll_page--box">
+                        <div class="col-10 scroll_page--box" id="secondcolumn" name="col10div2">
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <img src="{{url('img/collar-type.jpeg')}}" style="width:35vw; margin: 0px auto; margin-bottom:20px;">
+                                <div class="col">
+                                    <img class="imgcollar" src="{{url('img/collar-type.jpeg')}}">
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col">
                                     <table class="table table-bordered"  style="margin: 0px auto; margin-top:20px;">
                                             <thead  style="background-color:yellow; color:black">
                                                 <tr>
@@ -146,13 +141,12 @@
                                             
                                             </tbody>
                                         </table>
-                                        <div class="row offset-sm-6" style="margin-top:50px;">
-                                            <input class="col-3" disabled value="Total" style="background-color:yellow"/>
-                                            <input class="col-3" disabled  value="{{ $orders->quantity_total }}" style="background-color:red; color:white"/> <p>PCS</p>
+                                        <div class="row offset-sm-4" style="margin-top:50px;">
+                                            <input class="col-4" type="text" value="Total" name="col4inputtot" id="totquan" disabled/>
+                                            <input class="col-3" type="text" name="col3inputquan" id="totval"  value="{{ $orders->quantity_total }}" disabled/> <p>PCS</p>
                                         </div>
                                         <div class="text-big-red">
-                                            <h1 style="font-size:100px;">{{ $orders->m_desc }}</h1>
-                                            <!-- <h1 style="font-size:150px;"></h1> -->
+                                            <h1 class="h1class">{{ $orders->m_desc }}</h1>
                                         </div>
                                     
                         
@@ -160,12 +154,12 @@
                             </div>
                             <br>
                             <br>
-                            <div class="form-group col-sm-6">
+                            <div class="form-group col-3">
                                 @if($orders->category=="Size")
                                 @foreach($specs as $spec)
-                                <strong>{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}</strong>
-                                <div class="row">
-                                    <table class="table table-bordered"  style="width:50%; margin: 0px auto; margin-top:20px;">
+                                <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
+                                <div style="display:flex; margin-top:20px">
+                                    <table class="table table-bordered"  style=" margin: 0px auto; margin-top:20px; text-align: center;">
                                         <thead  style="background-color:yellow; color:black">
                                             <tr>
                                                 <th scope="col">Size</th>
@@ -175,342 +169,26 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <th scope="row">XXS</th>
-                                                @php $xxs = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','XXS')->first();  @endphp
-                                                <td>
-                                                    @if($xxs!="NULL")
-                                                    {{$xxs['un_quantity']}}
-                                                    @endif
+                                            @foreach($units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id) as $unit)
+                                            <tr>                                     
+                                                <td scope="row" style="text-transform: uppercase;">{{$unit->size}}</td>
+                                                <td>{{$unit->un_quantity}}</td>
+                                                <td>                                                                                                         
+                                                    @if($unit->un_status != 0)
+                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                    @else
+                                                    <input type="checkbox" name="jobdone" value="" disabled="">
+                                                    @endif 
                                                 </td>
                                                 <td>
-                                                    @if(!empty ( $xxs ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','XXS')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $xxs ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','XXS')->where('un_status','<>','0')->count()>0)
+                                                    @if($unit->un_status != 0 && $unit->un_status != 1)
                                                     <input type="checkbox" name="jobdone" value="" checked="" disabled="">
                                                     @else
                                                     <input type="checkbox" name="jobdone" value="" disabled="">
                                                     @endif
-                                                    @endif
-                                                </td>
+                                                </td>                                             
                                             </tr>
-                                            <tr>
-                                                <th scope="row">XS</th>
-                                                @php $xs = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','XS')->first();  @endphp
-                                                <td>
-                                                    @if($xxs!="NULL")
-                                                    {{$xs['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $xs ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','XS')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $xs ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','XS')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">S</th>
-                                                @php $s = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','S')->first();  @endphp
-                                                <td>
-                                                    @if($s!="NULL")
-                                                    {{$s['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','S')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','S')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">M</th>
-                                                @php $m = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','M')->first();  @endphp
-                                                <td>
-                                                    @if($m!="NULL")
-                                                    {{$m['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $m ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','M')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $m ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','M')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">L</th>
-                                                @php $l = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','L')->first();  @endphp
-                                                <td>
-                                                    @if($l!="NULL")
-                                                    {{$l['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $l ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','L')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $l ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','L')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">XL</th>
-                                                @php $xl = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','XL')->first();  @endphp
-                                                <td>
-                                                    @if($xl!="NULL")
-                                                    {{$xl['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $xl ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','XL')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $xl ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','XL')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <table class="table table-bordered" style="width:50%; margin: 0px auto; margin-top:20px;">
-                                        <thead  style="background-color:yellow; color:black">
-                                            <tr>
-                                                <th scope="col">Size</th>
-                                                <th scope="col">Qty</th>
-                                                <th scope="col">Designed</th>
-                                                <th scope="col">Printed</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th scope="row">2XL</th>
-                                                @php $xl = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','2XL')->first();  @endphp
-                                                <td>
-                                                    @if($xl!="NULL")
-                                                    {{$xl['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $xl ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','2XL')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $xl ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','2XL')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">3XL</th>
-                                                @php $s = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','3XL')->first();  @endphp
-                                                <td>
-                                                    @if($s!="NULL")
-                                                    {{$s['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','3XL')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','3XL')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">4XL</th>
-                                                @php $s = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','4XL')->first();  @endphp
-                                                <td>
-                                                    @if($s!="NULL")
-                                                    {{$s['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','4XL')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','4XL')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">5XL</th>
-                                                @php $s = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','5XL')->first();  @endphp
-                                                <td>
-                                                    @if($s!="NULL")
-                                                    {{$s['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','5XL')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','5XL')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">6XL</th>
-                                                @php $s = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','6XL')->first();  @endphp
-                                                <td>
-                                                    @if($s!="NULL")
-                                                    {{$s['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','6XL')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','6XL')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">7XL</th>
-                                                @php $s = $units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id)->where('size','7XL')->first();  @endphp
-                                                <td>
-                                                    @if($s!="NULL")
-                                                    {{$s['un_quantity']}}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))                                                       
-                                                        @if($designs->where('s_id',$spec->s_id)->where('size','7XL')->where('d_type','3')->count()>0)
-                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                        @else
-                                                        <input type="checkbox" name="jobdone" value="" disabled="">
-                                                        @endif                                                                                                               
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if(!empty ( $s ))
-                                                    @if($units->where('s_id',$spec->s_id)->where('size','7XL')->where('un_status','<>','0')->count()>0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                            @endforeach 
                                             <tr>
                                                 <th scope="row">Total</th>
                                                 <td style="background-color:#0051ff; color:white">{{$units->where('s_id',$spec->s_id)->where('o_id',$spec->o_id)->sum('un_quantity')}}</td>
@@ -523,11 +201,11 @@
                                 @endforeach
                                 @elseif($orders->category="Nameset")
                                 
-                                <div class="form-group col-sm-6">
+                                <div class="form-group col-3">
                                     @foreach($specs as $spec)
-                                    <strong>{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}</strong>
+                                    <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
                                     <div class="row">
-                                        <table class="table table-bordered"  style="width:50%; margin: 0px auto; margin-top:20px;">
+                                        <table class="table table-bordered"  style="margin: 0px auto; margin-top:20px; text-align: center;">
                                             <thead  style="background-color:yellow; color:black">
                                                 <tr>
                                                     <th scope="col">Name</th>
@@ -544,14 +222,14 @@
                                                     <td scope="row" style="text-transform: uppercase;">{{$unit->size}}</td>
                                                     <td>{{$unit->un_quantity}}</td>
                                                     <td>                                                                                                         
-                                                        @if($designs->where('s_id',$spec->s_id)->where('d_type','3')->count()>0)
+                                                        @if($unit->un_status != 0)
                                                         <input type="checkbox" name="jobdone" value="" checked="" disabled="">
                                                         @else
                                                         <input type="checkbox" name="jobdone" value="" disabled="">
                                                         @endif 
                                                     </td>
                                                     <td>
-                                                        @if($units->where('s_id',$spec->s_id)->where('un_status','<>','0')->count()>0)
+                                                        @if($unit->un_status != 0 && $unit->un_status != 1)
                                                         <input type="checkbox" name="jobdone" value="" checked="" disabled="">
                                                         @else
                                                         <input type="checkbox" name="jobdone" value="" disabled="">
@@ -568,6 +246,7 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <BR><BR>
                                     @endforeach
                                 </div>
                                 
@@ -586,11 +265,102 @@
         </div>        
     </div>  
 </div>
+<style type="text/css" media="print">
+
+ @page { size: landscape;  }
+
+</style>
+
+<style type="text/css">
+
+    .h1class {
+        font-size: 70px;
+    }
+    .imgcollar {
+        width:30vw; 
+        margin: 0px auto; 
+        margin-bottom:20px;
+    }
+    #idspan {
+        color: red; 
+        font-size:25px; 
+        text-transform: uppercase;
+    }
+    #totquan{
+        background-color:yellow;
+    } 
+    #totval{
+        background-color:red; 
+        color:white;
+    } 
+    /* .totset{
+        background-color:blue; 
+        color:white
+    } */
+
+    @media print {
+
+        html, body {
+            height: auto;
+            font-size: 6.5pt;
+            /* column-gap: 1rem; */
+        }
+        .imgmockup {
+            width: 130px;
+            height: 130px;
+        }
+        .imgcollar {
+            width:15vw; 
+            margin: 0px auto; 
+            margin-bottom:20px;
+        }
+        .print{
+            display: none;
+        }
+        .h1class {
+            font-size: 38pt;
+        }
+        input[type="checkbox"]{
+            width: 7px; /*Desired width*/
+            height: 7px; /*Desired height*/
+        }
+        #idspan {
+            color: red; 
+            font-size:10px; 
+            text-transform: uppercase;
+        }
+        #totquan{
+            background-color:yellow; !important;
+            -webkit-print-color-adjust: exact; 
+        } 
+        #totval{
+            background-color:red;  !important;
+            -webkit-print-color-adjust: exact; 
+            color:white;
+        } 
+        /* .totset{
+            background-color:blue; !important;
+            color: white;
+            -webkit-print-color-adjust: exact; 
+        } */
+
+   }
+   
+   </style>
 
 <script type="text/javascript">
 function printFunction() {
-  window.print();
-}    
+
+    $('#allcolumn div[name="col8div1"]').removeClass('col-8').addClass('col-4');
+    $('#firstcolumn label[name="colsm1lbldate"]').removeClass('col-sm-2').addClass('col-sm-1');
+    $('#firstcolumn div[name="colsm2divdate"]').removeClass('col-sm-4').addClass('col-sm-1');
+    $('#firstcolumn label[name="colsm1lblref"]').removeClass('col-sm-1').addClass('col-sm-1');
+    $('#firstcolumn div[name="colsm2divref"]').removeClass('col-sm-5').addClass('col-sm-1');
+
+    $('#allcolumn div[name="col10div2"]').removeClass('col-10').addClass('col-6');
+
+    window.print(); 
+}       
 </script>
 @endsection
 
