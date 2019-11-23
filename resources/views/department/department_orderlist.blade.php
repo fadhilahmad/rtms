@@ -1,6 +1,15 @@
 @extends('layouts.layout')
 
 @section('content')
+<style>
+.table {
+   margin: auto;
+   width: 70% !important; 
+}
+td,th {
+text-align: center;
+} 
+</style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
@@ -78,9 +87,75 @@
                         <div class="card-header">ORDER LIST</div><br>
                         @php $no=1; @endphp
                         @foreach($orders as $order)
-                            <div class="panel panel-primary">
-                                <div class="panel-heading">Order Status : @if($order->o_status=3) Waiting to print @else($order->o_status=5) Waiting to sew @endif</div>                                                                  
+                        <div class="row">
+                            <div class="col-sm-12"><center>REF NO : {{$order->ref_num}}</center></div>
+                        </div><br>
+                           <table class="table table-hover">
+                                  <tr>
+                                    <thead class="thead-light">
+                                    <th scope="col">Status</th>
+                                    <td>@if($order->o_status=3) Waiting to print @else($order->o_status=5) Waiting to sew @endif</td>
+                                    </thead>
+                                  </tr>
+                                  <tr>
+                                    <thead class="thead-light">
+                                    <th scope="col">File Name</th>
+                                    <td>{{$order->file_name}}</td>
+                                    </thead>
+                                  </tr>
+                                  <tr>
+                                    <thead class="thead-light">
+                                    <th scope="col">Category</th>
+                                    <td>{{$order->category}}</td>
+                                    </thead>
+                                  </tr>
+                                  <tr>
+                                    <thead class="thead-light">
+                                    <th scope="col">Quantity</th>
+                                    <td>{{$order->quantity_total}}</td>
+                                    </thead>
+                                  </tr>
+                                  <tr>
+                                    <thead class="thead-light">
+                                    <th scope="col">Material</th>
+                                    <td>{{$order->m_desc}}</td>
+                                    </thead>
+                                  </tr>
+                                  <tr>
+                                    <thead class="thead-light">
+                                    <th scope="col">Note</th>
+                                    <td>{{$order->note}}</td>
+                                    </thead>
+                                  </tr>
+                                  <tr>
+                                    <thead class="thead-light">
+                                    <th scope="col">Delivery Date</th>
+                                    <td>{{$order->delivery_date}}</td>
+                                    </thead>
+                                  </tr>
+                                  <tr>
+                                    <thead class="thead-light">
+                                    <td colspan="2">
+                                        <form class="lock" action="{{ route('update_order') }}" method="POST">
+                                                {{ csrf_field() }}
+                                                <input type="hidden" name="oid" value=" {{$order->o_id}}">
+                                                @php if(Auth::user()->u_type==5){$role='print';}if(Auth::user()->u_type==4){$role='tailor';} @endphp
+                                                <input type="hidden" name="role" value=" {{$role}}">
+                                            <input class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to lock this order?')" value="Lock">
+                                        </form>
+                                    </td>
+                                    </thead>
+                                  </tr>
+                           </table><br>
+                           <hr><br>
+                        
+<!--                            <div class="panel panel-primary">                                                                 
                                 <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">Order Status</div>
+                                        <div class="col-sm-1">:</div>
+                                        <div class="col-sm-8">@if($order->o_status=3) Waiting to print @else($order->o_status=5) Waiting to sew @endif</div>
+                                    </div><br>
                                     <div class="row">
                                         <div class="col-sm-3">File name</div>
                                         <div class="col-sm-1">:</div>
@@ -109,7 +184,7 @@
                                     <div class="row">
                                         <div class="col-sm-3">Delivery Date</div>
                                         <div class="col-sm-1">:</div>
-                                        <div class="col-sm-8">{{$order->delivery_date}}</div>
+                                        <div class="col-sm-8">{{ date('d/m/Y', strtotime($order->delivery_date)) }}</div>
                                     </div><br>
                                     <div class="row">
                                         <div class="col-sm-4"></div>
@@ -124,7 +199,7 @@
                                         </div>                                                                                 
                                     </div>                                    
                                 </div>                                
-                            </div>
+                            </div>-->
                           @php $no++; @endphp
                          @endforeach
                     @endif                    
