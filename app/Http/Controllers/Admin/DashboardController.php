@@ -96,7 +96,7 @@ class DashboardController extends Controller
                     ->sum('quantity_total');
         
         $tailor = DB::table('orders')
-                    ->whereIn('o_status', [6, 7, 8, 9, 10])
+                    ->whereIn('o_status', [6, 7, 8, 9, 10,11])
                     ->sum('quantity_total');
         
         if($total_unit==0){
@@ -134,17 +134,18 @@ class DashboardController extends Controller
         
         $last7 = $today - 7;
         
-        for($x = $last7; $x < $today; $x++){
+        for($x = $last7; $x <= $today; $x++){
             $labelday[] = $last7;                      
             $thisdate = $year . '-' . $month . '-' . $last7;
             $summ = Receipt::select('total_paid')
                 ->whereDate('created_at', $thisdate)
-                ->first();
-           
+                ->sum('total_paid');
+        
             if(is_null($summ)){
                 $labelsale[] = 0;
             }else{
-                $labelsale[] = $summ['total_paid'];
+               // dd($summ);
+                $labelsale[] = $summ;
             }
             $last7++;
         }
