@@ -8,9 +8,14 @@
             <div class="card">
                 <div class="card-header">New Order</div>
                 <div class="card-body">                 
-                    @if (session('status'))
+                    {{-- @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
+                        </div>
+                    @endif --}}
+                    @if(session()->has('message'))
+                        <div class="alert alert-danger">
+                            {{ session()->get('message') }}
                         </div>
                     @endif
                     @if ($prices != null)
@@ -238,14 +243,13 @@
                                                         <Strong>{{Form::label('type', 'Neck Type')}}</strong>                                                        
                                                     </label>
                                                     <div>
-                                                        {{-- radio field for collar neck --}}
-                                                        @if(count($necks) > 0)
-                                                            @foreach ($necks as $neck)
-                                                                <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}
-                                                                <img src="/uploads/{{$neck->n_url}}" style="width:10%">
-                                                            @endforeach
-                                                        @endif
-                                                    </div>  
+                                                    {{-- radio field for collar neck --}}
+                                                    @if(count($necks) > 0)
+                                                        @foreach ($necks as $neck)
+                                                            <input type="radio" name="necktype0" id="necktype0" value="{{ $neck->n_id }}"/> {{ $neck->n_desc }}
+                                                            <img src="{{URL::to('/')}}/uploads/{{$neck->n_url}}" style="width:10%">
+                                                        @endforeach
+                                                    @endif
                                                 </div>
                                             </div>
                                         

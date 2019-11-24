@@ -154,8 +154,9 @@ Route::get('customer/view_invoice', 'Customer\CustomerController@viewInvoice')->
 // route to receipt page for customer
 Route::get('customer/receipt', 'Customer\CustomerController@receipt')->name('receipt')->middleware('customer');
 Route::get('customer/customer_receipt_info/{id}', 'Customer\CustomerController@customerReceiptInfo')->name('customer.customerreceiptinfo')->middleware('customer');
-Route::post('customer/neworder', 'Customer\CustomerController@store')->name('customer.store');
-Route::post('customer/viewinvoice','Customer\CustomerController@viewInvoice')->name('customer.viewinvoice');
+Route::post('customer/neworder', 'Customer\CustomerController@store')->name('customer.store')->middleware('customer');
+Route::post('customer/viewinvoice','Customer\CustomerController@viewInvoice')->name('customer.viewinvoice')->middleware('customer');
+//Route::post('customer/neworder1', 'Department\PriceCheckingController@BaseOnBodyId')->middleware('customer');
 //Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->name('customer.orderlist');
 /////////////////////////////////////////////////////////////////REGISTRATION PAGE///////////////////////////////////////////////////
 //register agent (by link)

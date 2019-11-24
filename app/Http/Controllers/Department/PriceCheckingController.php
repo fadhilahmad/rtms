@@ -16,7 +16,7 @@ class PriceCheckingController extends Controller
           
           $sl_info =  DB::table('price')
                        ->join('sleeve', 'price.sl_id', '=', 'sleeve.sl_id')
-                       ->where('price.sl_id','=',$data['bid'])
+                       ->where('price.b_id','=',$data['bid'])
                        ->get();
           
                foreach ($sl_info as $sl){
@@ -24,6 +24,7 @@ class PriceCheckingController extends Controller
                    $sldesc[]=$sl->sl_desc;
                }
           
-          return response()->json(['slid'=>$slid,'sldesc'=>$sldesc]);
+         return response()->json(['slid'=>$slid,'sldesc'=>$sldesc]);
+          //return response()->json(['slid'=>'ss']);
     }   
 }
