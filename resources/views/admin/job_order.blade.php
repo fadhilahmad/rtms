@@ -10,7 +10,7 @@
                         <!-- first column -->
                         <div class="col-8 scroll_page--box" id="firstcolumn" name="col8div1">
                             <!-- date & ref.num field -->
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2 padding-0" name="colsm1lbl">Date</label>
                                 <div class="col-sm-4 padding-0" name="colsm2div">
                                     : <input id="date" name="date" type="email" value="{{ date('d/m/Y', strtotime($orders->created_at)) }}" disabled="">
@@ -21,28 +21,28 @@
                                 </div>
                             </div>
                             <!-- customer field -->
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Customer</label>
                                 <div class="col-sm-10">
                                 : <input id="customer"  name="customer" type="text" value="{{ $orders->u_fullname }}" disabled="">
                                 </div>
                             </div>
                             <!-- file name field -->
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">File Name</label>
                                 <div class="col-sm-10">
                                 : <input id="file_name" name="file_name" type="text" value="{{ $orders->file_name }}" disabled="">
                                 </div>
                             </div>
                             <!-- material checkbox -->
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Material</label>
                                 <div class="col-sm-10">
                                 : <input id="file_name" name="file_name" type="text" value="{{ $orders->m_desc }}" disabled="">
                                 </div>
                             </div>
                             <!-- sleeve checkbox -->                                
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Sleeve</label>                                   
                                     <div class="col-sm-10">                                            
                                         : 
@@ -53,7 +53,7 @@
                                     </div>                                                                                                                
                             </div>
                                 <!-- collar no field -->                                
-                                <div class="form-group row">
+                                <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Collar No</label>
                                 <div class="col-sm-10">
                                     : 
@@ -63,21 +63,21 @@
                                 </div>
                             </div>
                             <!-- delivery date field -->                                
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Delivery Date</label>
                                 <div class="col-sm-10">
                                 : <input id="delivery_date" name="delivery_date" type="text" value="{{ date('d/m/Y', strtotime($orders->delivery_date)) }}" disabled="">
                                 </div>
                             </div>
                             <!-- Person in charge field -->                                
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Person in charge</label>
                                 <div class="col-sm-10">
                                 : <input id="pic" name="pic" type="text" value="{{ $pic->u_fullname }}" disabled="">
                                 </div>
                             </div>
                             <!-- collar colour field -->                                
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Collar Colour</label>
                                 <div class="col-sm-10">
                                 :
@@ -89,14 +89,14 @@
                                 </div>
                             </div>
                             <!-- jpeg mockup field -->                                                            
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">JPEG Mockup </label>
                                 <div class="col-sm-10">
                                     <img class="imgmockup" src="{{url('orders/mockup/'.$design->d_url)}}" width="70%">
                                 </div>
                             </div>
                             <!-- remarks field -->        
-                            <div class="form-group row">
+                            <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Remarks</label> :
                                 <div class="col-sm-6">
                                     <textarea rows="4" cols="50" value="" disabled=""> {{ $orders->note }}                               
@@ -154,12 +154,12 @@
                             </div>
                             <br>
                             <br>
-                            <div class="form-group col-3">
+                            <div class="form-group col-3" name="rowformdiv">
                                 @if($orders->category=="Size")
                                 @foreach($specs as $spec)
                                 <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
-                                <div style="display:flex; margin-top:20px">
-                                    <table class="table table-bordered"  style=" margin: 0px auto; margin-top:20px; text-align: center;">
+                                <div style="display:flex;">
+                                    <table class="table table-bordered" id="tblsize">
                                         <thead  style="background-color:yellow; color:black">
                                             <tr>
                                                 <th scope="col">Size</th>
@@ -201,11 +201,11 @@
                                 @endforeach
                                 @elseif($orders->category="Nameset")
                                 
-                                <div class="form-group col-3">
+                                <div class="form-group col-3" name="rowformdiv">
                                     @foreach($specs as $spec)
                                     <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
                                     <div class="row">
-                                        <table class="table table-bordered"  style="margin: 0px auto; margin-top:20px; text-align: center;">
+                                        <table class="table table-bordered" id="tblnameset">
                                             <thead  style="background-color:yellow; color:black">
                                                 <tr>
                                                     <th scope="col">Name</th>
@@ -293,10 +293,28 @@
         background-color:red; 
         color:white;
     } 
+    #tblsize {
+        margin: 0px auto; 
+        margin-top:20px; 
+        text-align: center;
+    } 
+    #tblnameset {
+        margin: 0px auto; 
+        margin-top:20px; 
+        text-align: center;
+    }
     /* .totset{
         background-color:blue; 
         color:white
     } */
+
+    #allcolumn {
+        position:relative;
+    } 
+    #secondcolumn {
+        position: absolute;
+    }  
+    
 
     @media print {
 
@@ -337,12 +355,31 @@
             background-color:red;  !important;
             -webkit-print-color-adjust: exact; 
             color:white;
-        } 
+        }  
+        #tblsize {
+            margin: 0px auto; 
+            margin-top:5px; 
+            text-align: center;
+        }  
+        #tblnameset {
+            margin: 0px auto; 
+            margin-top:5px; 
+            text-align: center;
+        }
         /* .totset{
             background-color:blue; !important;
             color: white;
             -webkit-print-color-adjust: exact; 
         } */
+        #allcolumn {
+            position:initial;
+        } 
+        #firstcolumn {
+            position:relative;
+        } 
+        #secondcolumn {
+            position:absolute;
+        } 
 
    }
    
@@ -358,6 +395,7 @@ function printFunction() {
     $('#firstcolumn div[name="colsm2divref"]').removeClass('col-sm-5').addClass('col-sm-1');
 
     $('#allcolumn div[name="col10div2"]').removeClass('col-10').addClass('col-6');
+    
 
     window.print(); 
 }       
