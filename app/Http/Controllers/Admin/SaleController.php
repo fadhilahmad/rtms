@@ -31,12 +31,12 @@ class SaleController extends Controller
             $thisdate = $y . '-' . $m . '-' . $x;
             $summ = Receipt::select('total_paid')
                 ->whereDate('created_at', $thisdate)
-                ->first();
+                ->sum('total_paid');
            
             if(is_null($summ)){
                 $labelsale[] = 0;
             }else{
-                $labelsale[] = $summ['total_paid'];
+                $labelsale[] = $summ;
             }
         }
         //dd($labelsale);
@@ -64,12 +64,12 @@ class SaleController extends Controller
             $thisdate = $yy . '-' . $mm . '-' . $x;
             $summ = Receipt::select('total_paid')
                 ->whereDate('created_at', $thisdate)
-                ->first();
+                ->sum('total_paid');
            
             if(is_null($summ)){
                 $labelsale[] = 0;
             }else{
-                $labelsale[] = $summ['total_paid'];
+                $labelsale[] = $summ;
             }
         }
         
