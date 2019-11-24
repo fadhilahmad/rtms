@@ -25,6 +25,10 @@ use DB;
 class CustomerController extends Controller
 {
 
+    private $errbody;
+    private $errsleeve = 0;
+    private $errneck = 0;
+
     public function __construct()
     {
         $this->middleware('customer');
@@ -244,8 +248,8 @@ class CustomerController extends Controller
             'somedate' => 'required',
             'cloth_name' => 'required',
             'category' => 'required',
-            'cover_image' => 'image|required|max:1999'
-        ]); // set cover image max to 1999 because a lot of apache server not allowed user to upload image more than 2mb
+            'cover_image' => 'image|required'
+        ]); 
         // ------------------ insert data into table order ---------------------------------- //
         $clothname = $request->input('cloth_name');
         $category = $request->input('category');
@@ -268,6 +272,10 @@ class CustomerController extends Controller
         $image;                 
         $destinationPath; 
         $profileImage;
+
+        // $errbody;
+        // $errsleeve;
+        // $errneck;
 
         // assign order design to designer
         $userdesigner = User::where('u_type', 3)->where('u_status', 1)->pluck('u_id')->toArray();   // get all designer id
@@ -481,7 +489,14 @@ class CustomerController extends Controller
             $this->storeDesign($idunit, $mockupdesign, $orderid, $designerid, $image, $destinationPath, $profileImage); 
             return redirect('/customer/orderlist')->with('message', 'Order Submitted');
         }else{
-            return redirect('/customer/neworder')->with('message', 'Error! Price for set that you\'ve selected is not placed by admin. Please contact admin');
+            $errbodydesc = Body::where('b_id', $this->errbody)
+                ->pluck('b_desc')->toArray();
+            $errsleevedesc = Sleeve::where('sl_id', $this->errsleeve)
+                ->pluck('sl_desc')->toArray();
+            // $errneckdesc = Neck::select('n_desc')
+            //     ->where('n_id', $this->errneck)
+            //     ->get();
+            return redirect('/customer/neworder')->with('message', 'Error! Price for set "'.$errbodydesc[0].'" and "'.$errsleevedesc[0].'" that you\'ve selected is not placed by admin. Please contact admin');
         }
     }
 
@@ -559,9 +574,13 @@ class CustomerController extends Controller
                     ->where('u_type', '=' , $usertype)->pluck('price');
                 if($price->isNotEmpty() == false){
                     $boolprice = false;
-                    var_dump("empty");
-                    var_dump("Price for chosen set body id: ".$bodyid[$i].", neck type: ".$necktype->n_type.", sleeve id: ".$sleeveid[$i]." not set by admin");
+                    //var_dump("empty");
+                    //var_dump("Price for chosen set body id: ".$bodyid[$i].", neck type: ".$necktype->n_type.", sleeve id: ".$sleeveid[$i]." not set by admin");
+                    $this->errbody = $bodyid[$i];
+                    $this->errsleeve = $sleeveid[$i];
+                    $this->errneck = $necktype->n_type;
                     Order::where('o_id', '=', $orderidrequest)->delete();
+                    InvoicePermanent::where('o_id', '=', $orderidrequest)->delete();
                     break;
                 }
                 $category = Order::where('o_id', '=', $orderidrequest)->pluck('category');
@@ -586,14 +605,16 @@ class CustomerController extends Controller
                     $specprice += $pricecalc;
                     $totprice += $pricecalc;
                 }
-                $oneunitprice += intval($price[0]);
-                $invoicePermanent = new InvoicePermanent;
-                $invoicePermanent->s_id = $specid[$i];
-                $invoicePermanent->o_id = $orderidrequest;
-                $invoicePermanent->spec_total_price = $specprice;
-                $invoicePermanent->one_unit_price = $oneunitprice;
-                $invoicePermanent->spec_total_quantity = $specquantity;
-                $invoicePermanent->save();
+                if($boolprice == true){
+                    $oneunitprice += intval($price[0]);
+                    $invoicePermanent = new InvoicePermanent;
+                    $invoicePermanent->s_id = $specid[$i];
+                    $invoicePermanent->o_id = $orderidrequest;
+                    $invoicePermanent->spec_total_price = $specprice;
+                    $invoicePermanent->one_unit_price = $oneunitprice;
+                    $invoicePermanent->spec_total_quantity = $specquantity;
+                    $invoicePermanent->save();
+                }
             }
             if($boolprice == true){
                 $invoice = new Invoice;

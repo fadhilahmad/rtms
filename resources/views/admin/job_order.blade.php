@@ -3,7 +3,7 @@
 @section('content')
 <div  class="container-scroll">
     <div class ="card">
-        <div class="card-header order-form ">REZEAL TEXTILE ORDER FORM</div>  
+        <div class="card-header" id="cardheader">REZEAL TEXTILE ORDER FORM<img src="{{URL::to('/')}}/img/logo.jpeg" id="imglogo"></div>  
             <div class="card-body">   
                 <form class="form-horizontal">
                     <div class="scroll_page" id="allcolumn">
@@ -22,7 +22,7 @@
                             </div>
                             <!-- customer field -->
                             <div class="form-group row" name="rowformdiv">
-                                <label class="col-sm-2" name="colsm1lbl">Customer</label>
+                                <label class="col-sm-2" style="" name="colsm1lbl">Customer</label>
                                 <div class="col-sm-10">
                                 : <input id="customer"  name="customer" type="text" value="{{ $orders->u_fullname }}" disabled="">
                                 </div>
@@ -38,7 +38,7 @@
                             <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Material</label>
                                 <div class="col-sm-10">
-                                : <input id="file_name" name="file_name" type="text" value="{{ $orders->m_desc }}" disabled="">
+                                : <input id="material" name="material" type="text" value="{{ $orders->m_desc }}" disabled="">
                                 </div>
                             </div>
                             <!-- sleeve checkbox -->                                
@@ -57,8 +57,9 @@
                                 <label class="col-sm-2" name="colsm1lbl">Collar No</label>
                                 <div class="col-sm-10">
                                     : 
+                                    <?php $no = 1 ?>
                                     @foreach ($specs as $spec) 
-                                    {{ $spec->n_id }},
+                                    {{ $spec->n_id }} <?php if(count($specs) != $no) echo ','; $no++ ?>
                                     @endforeach                                             
                                 </div>
                             </div>
@@ -81,9 +82,10 @@
                                 <label class="col-sm-2" name="colsm1lbl">Collar Colour</label>
                                 <div class="col-sm-10">
                                 :
+                                    <?php $clno = 1; ?>
                                     @foreach ($specs as $spec)
-                                        @if($spec->collar_color != "")
-                                            {{$spec->collar_color}},
+                                        @if($spec->collar_color != "") 
+                                            {{$spec->collar_color}} ,
                                         @endif
                                     @endforeach
                                 </div>
@@ -112,12 +114,11 @@
                                     <img class="imgcollar" src="{{url('img/collar-type.jpeg')}}">
                                 </div>
                                 <div class="col">
-                                    <table class="table table-bordered"  style="margin: 0px auto; margin-top:20px;">
-                                            <thead  style="background-color:yellow; color:black">
+                                    <table class="table table-bordered" id="tbldate">
+                                            <thead>
                                                 <tr>
                                                     <th scope="col">Date</th>
                                                     <th scope="col">Notes</th>
-                                                
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -160,7 +161,7 @@
                                 <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
                                 <div style="display:flex;">
                                     <table class="table table-bordered" id="tblsize">
-                                        <thead  style="background-color:yellow; color:black">
+                                        <thead>
                                             <tr>
                                                 <th scope="col">Size</th>
                                                 <th scope="col">Qty</th>
@@ -339,24 +340,91 @@
         background-color:blue; 
         color:white
     } */
+    #cardheader {
+        color: white;
+        background-color: black;
+    }
+    #imglogo {
+        width:7%; 
+        float:right;
+    }
+    #tbldate {
+        margin: 0px auto; 
+        margin-top:20px;
+    }
+    /* #theaddate {
+        background-color:yellow; 
+        color:black;
+    } */
+    thead {
+        background-color:yellow; 
+        color:black;
+    }
+    #customer {
+        width: 85.7%; 
+        text-align:center;
+    }
+    #file_name {
+        width: 85.7%; 
+        text-align:center;
+    }
+    #date { 
+        text-align:center;
+    }
+    #refnum { 
+        text-align:center;
+    }
+    #material { 
+        text-align:center;
+    }
+    #delivery_date { 
+        text-align:center;
+    }
+    #pic { 
+        text-align:center;
+    }
 
     #allcolumn {
         position:relative;
     } 
+    /* #firstcolumn {
+        position: relative;
+    } 
+    */
     #secondcolumn {
         position: absolute;
     }  
+    /* #allcolumn {
+        position:relative;
+        overflow-y: hidden;
+    }  */
+    /* .form-horizontal {
+        position:relative;
+        overflow-y: visible;
+    }  */
+    /* 
+    .form-horizontal::-webkit-scrollbar {
+        display: none;
+    } */
+    /* #firstcolumn {
+        position:relative;
+    }  */
+    /* #secondcolumn {
+        position: absolute;
+    } */
+    
 
     @media print {
 
         html, body {
             height: auto;
-            font-size: 6.5pt;
+            font-size: 6pt;
             /* column-gap: 1rem; */
         }
         .imgmockup {
-            width: 130px;
-            height: 130px;
+            /* width: 130px;
+            height: 130px; */
+            width: 50%;
         }
         .imgcollar {
             width:15vw; 
@@ -412,6 +480,53 @@
         #secondcolumn {
             position:absolute;
         } 
+        #cardheader {
+            color: white;
+            background-color: black;
+            -webkit-print-color-adjust: exact;
+        }
+        #imglogo {
+            width:4%; 
+            float:right;
+        }
+        #tbldate {
+            margin: 0px auto; 
+            margin-top:10px;
+            -webkit-print-color-adjust: exact;
+        }
+        /* #theaddate {
+            background-color:yellow !important;
+            color:black;
+            -webkit-print-color-adjust: exact;
+        } */
+        .table th {
+            background-color:yellow !important; 
+            color:black !important;
+            -webkit-print-color-adjust: exact;
+        }
+        #customer {
+            width: 96%; 
+            text-align:center;
+        }
+        #file_name {
+            width: 96%; 
+            text-align:center;
+        }
+        #date { 
+            text-align:center;
+        }
+        #refnum { 
+            text-align:center;
+        }
+        #material { 
+            text-align:center;
+        }
+        #delivery_date { 
+            text-align:center;
+        }
+        #pic { 
+            text-align:center;
+        }
 
    }
    
@@ -427,6 +542,8 @@ function printFunction() {
     $('#firstcolumn div[name="colsm2divref"]').removeClass('col-sm-5').addClass('col-sm-1');
 
     $('#allcolumn div[name="col10div2"]').removeClass('col-10').addClass('col-6');
+    
+    // $('#allcolumn div[name="rowformdiv"]').removeClass('form-group');
 
     window.print(); 
 }       
