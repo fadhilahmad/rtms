@@ -146,7 +146,7 @@ $(document).on("click", ".add", function () {
      $(".modal-body #description").val( "" );
      $(".modal-body #payment").val( "" );
      
-     console.log(custname,oid,balance);
+    // console.log(custname,oid,balance);
 
 });
 
@@ -158,6 +158,15 @@ $(document).on("click", ".add", function () {
 
     $(".btn-submit").click(function(e){
         e.preventDefault();
+        
+        var balance = $('input[name=balance]').val();
+        var payment = $('input[name=payment]').val();
+        
+       // console.log(balance,payment);
+        if(+payment > +balance){
+            alert("Payment value exceed balance !!!");
+            return false;
+        }else{
 
         var x = document.forms["paymentform"]["payment"].value;
         var y = document.forms["paymentform"]["description"].value;
@@ -189,6 +198,7 @@ $(document).on("click", ".add", function () {
            }
         });
       }
+  }
     });
 </script>
 @endsection
