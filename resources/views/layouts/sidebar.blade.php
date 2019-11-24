@@ -24,10 +24,12 @@
     @can('isDepartment')
         <div class="department-menu">
           <ul id="side-main-menu" class="side-menu list-unstyled">
-            @if(Auth::user()->u_type!=3)
+            @if(Auth::user()->u_type==5)
             <li><a href="{{ route('department.home') }}"> <i class="fa fa-list-ol"></i> Order List</a></li>
             @endif
-            <li><a href="{{ route('job_list') }}"> <i class="fa fa-list"></i> Job List</a></li>
+            <li><a href="{{ route('job_list') }}"> <i class="fa fa-list"></i> Job List</a></li>@if(Auth::user()->u_type ==4)
+            <li><a href="{{ route('department.delivery') }}"> <i class="fa fa-list-ol"></i> Delivery List</a></li>
+            @endif
             @if(Auth::user()->u_type ==5)
             <li><a href="{{ route('department.stock') }}"> <i class="icon-screen"> </i> Stock</a></li>
             @endif
