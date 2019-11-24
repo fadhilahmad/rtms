@@ -22,6 +22,10 @@
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Delivery Date</th>
                                     <th scope="col">Design Link</th>
+                                    <th scope="col">Job Order</th>
+                                    @if($department==3)
+                                    <th scope="col">Link</th>
+                                    @endif
                                     <th scope="col">Action</th>
                                   </tr>
                                 </thead>
@@ -32,25 +36,27 @@
                                     <td>{{$order->file_name}}</td>
                                     <td>{{$order->category}}</td>
                                     <td>{{$order->quantity_total}}</td>
-                                    <td>{{$order->delivery_date}}</td>
+                                    <td>{{ date('d/m/Y', strtotime($order->delivery_date)) }}</td>
                                     <td><a href="{{$order->design_link}}" target="_blank">Google Drive Link</a></td>
-                                    <td>
+                                    <td><a href="{{ route('department.joborder',$order->o_id) }}" target="_blank">Job Order {{$order->ref_num}}</a></td>
+                                    
                                       
                                        @if($department==3)
                                          @if($order->design_link != "")
-                                         <button class="btn btn-default addLink" data-toggle="modal" data-target="#Modal" data-link="{{$order->design_link}}" data-operation="update" data-title="Update Design Link" data-oid="{{$order->o_id}}">Update Link</button>
+                                         <td><button class="btn btn-default addLink" data-toggle="modal" data-target="#Modal" data-link="{{$order->design_link}}" data-operation="update" data-title="Update Design Link" data-oid="{{$order->o_id}}">Update Link</button></td>
+                                         <td><a href="{{route('job_design',$order->o_id)}}"><button class="btn btn-primary">Update Job</button></a></td>
                                          @else
-                                         <button class="btn btn-default addLink" data-toggle="modal" data-target="#Modal" data-link="" data-operation="add" data-title="Add Design Link" data-oid="{{$order->o_id}}">Add Link</button>
-                                         @endif
-                                    <a href="{{route('job_design',$order->o_id)}}"><button class="btn btn-primary">Update Job</button></a>
+                                         <td><button class="btn btn-default addLink" data-toggle="modal" data-target="#Modal" data-link="" data-operation="add" data-title="Add Design Link" data-oid="{{$order->o_id}}">Add Link</button></td>                                         
+                                         <td>Please add link first</td>
+                                         @endif                                   
                                        @endif
                                        @if($department==4)
-                                    <a href="{{route('job_sew',$order->o_id)}}"><button class="btn btn-primary">Sew</button></a>
+                                    <td><a href="{{route('job_sew',$order->o_id)}}"><button class="btn btn-primary">Sew</button></a></td>
                                        @endif
                                        @if($department==5)
-                                    <a href="{{route('job_print',$order->o_id)}}"><button class="btn btn-primary">Print</button></a>
+                                    <td><a href="{{route('job_print',$order->o_id)}}"><button class="btn btn-primary">Print</button></a></td>
                                        @endif
-                                    </td>                                    
+                                                                        
                                   </tr>
                                   @endforeach
                                 </tbody>
@@ -63,6 +69,71 @@
         </div>
     </div>
 </div>
+@if($department==5 || $department==4)
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Job Reprint</div>
+                <div class="card-body">
+                    @if(!$reprint->isempty())
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th scope="col">Ref No</th>
+                                    <th scope="col">File Name</th>
+                                    <th scope="col">Category</th>
+                                    <th scope="col">Delivery Date</th>
+                                    <th scope="col">Design Link</th>
+                                    <th scope="col">Job Order</th>
+                                    @if($department==4)
+                                    <th scope="col">Status</th>
+                                    @endif
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($reprint as $re)
+                                  <tr>
+                                    <td>{{$re->ref_num}}</td>
+                                    <td>{{$re->file_name}}</td>
+                                    <td>{{$re->category}}</td>
+                                    <td>{{ date('d/m/Y', strtotime($re->delivery_date)) }}</td>
+                                    <td><a href="{{$re->design_link}}" target="_blank">Google Drive Link</a></td>
+                                    <td><a href="{{ route('department.joborder',$re->o_id) }}" target="_blank">Job Order {{$re->ref_num}}</a></td>
+                                                                           
+                                       @if($department==4)
+                                       <td>
+                                           @if($re->o_status==8)
+                                           Waiting to print
+                                           @elseif($re->o_status==11)
+                                           Ready to sew
+                                           @endif
+                                       </td>
+                                       @if($re->o_status==11)
+                                    <td><a href="{{route('job_sew',$re->o_id)}}"><button class="btn btn-primary">Sew</button></a></td>
+                                       @else
+                                       <td>-</td>
+                                       @endif
+                                       @endif
+                                       @if($department==5)
+                                    <td><a href="{{route('job_print_reprint',$re->o_id)}}"><button class="btn btn-primary">Print</button></a></td>
+                                       @endif
+                                                                        
+                                  </tr>
+                                  @endforeach
+                                </tbody>
+                            </table>
+                    @else
+                    No reprint job
+                    @endif
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
