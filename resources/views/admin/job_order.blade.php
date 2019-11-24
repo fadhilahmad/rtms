@@ -166,6 +166,8 @@
                                                 <th scope="col">Qty</th>
                                                 <th scope="col">Designed</th>
                                                 <th scope="col">Printed</th>
+                                                <th scope="col">Sewed</th>
+                                                <th scope="col">Delivered</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -186,7 +188,21 @@
                                                     @else
                                                     <input type="checkbox" name="jobdone" value="" disabled="">
                                                     @endif
-                                                </td>                                             
+                                                </td>
+                                                <td>                                                                                                         
+                                                    @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 5)
+                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                    @else
+                                                    <input type="checkbox" name="jobdone" value="" disabled="">
+                                                    @endif 
+                                                </td> 
+                                                <td>                                                                                                         
+                                                    @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 3 && $unit->un_status != 5)
+                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                    @else
+                                                    <input type="checkbox" name="jobdone" value="" disabled="">
+                                                    @endif 
+                                                </td>                                            
                                             </tr>
                                             @endforeach 
                                             <tr>
@@ -213,6 +229,8 @@
                                                     <th scope="col">Qty</th>
                                                     <th scope="col">Designed</th>
                                                     <th scope="col">Printed</th>
+                                                    <th scope="col">Sewed</th>
+                                                    <th scope="col">Delivered</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -234,7 +252,21 @@
                                                         @else
                                                         <input type="checkbox" name="jobdone" value="" disabled="">
                                                         @endif
-                                                    </td>                                             
+                                                    </td>   
+                                                    <td>                                                                                                         
+                                                        @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 5)
+                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                        @else
+                                                        <input type="checkbox" name="jobdone" value="" disabled="">
+                                                        @endif 
+                                                    </td> 
+                                                    <td>                                                                                                         
+                                                        @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 3 && $unit->un_status != 5)
+                                                        <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                        @else
+                                                        <input type="checkbox" name="jobdone" value="" disabled="">
+                                                        @endif 
+                                                    </td>                                          
                                                 </tr>
                                                 @endforeach 
                                                 <tr>
@@ -314,7 +346,6 @@
     #secondcolumn {
         position: absolute;
     }  
-    
 
     @media print {
 
@@ -336,6 +367,7 @@
             display: none;
         }
         .h1class {
+            padding-left: 45px;
             font-size: 38pt;
         }
         input[type="checkbox"]{
@@ -395,7 +427,6 @@ function printFunction() {
     $('#firstcolumn div[name="colsm2divref"]').removeClass('col-sm-5').addClass('col-sm-1');
 
     $('#allcolumn div[name="col10div2"]').removeClass('col-10').addClass('col-6');
-    
 
     window.print(); 
 }       
