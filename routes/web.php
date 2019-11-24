@@ -115,9 +115,14 @@ Route::post('department/job_design', 'Department\JobListController@updateDesign'
 //page job print
 Route::get('department/job_print/{oid}', 'Department\JobListController@casePrinter')->name('job_print')->middleware('department');
 Route::post('department/job_print', 'Department\JobListController@updatePrint')->name('update.print')->middleware('department');
+Route::get('department/job_reprint_print/{oid}', 'Department\JobListController@casePrinterReprint')->name('job_print_reprint')->middleware('department');
+Route::post('department/job_reprint_print', 'Department\JobListController@PrinterReprint')->name('print_reprint')->middleware('department');
 //page job sew
 Route::get('department/job_sew/{oid}', 'Department\JobListController@caseTailor')->name('job_sew')->middleware('department');
+Route::get('department/job_reprint/{oid}', 'Department\JobListController@caseReprint')->name('job_reprint')->middleware('department');
 Route::post('department/job_sew', 'Department\JobListController@updateSew')->name('update.sew')->middleware('department');
+//department job order
+Route::get('department/job_order/{oid}', 'Department\JobListController@viewJobOrder')->name('department.joborder')->middleware('department');
 //page performance
 Route::get('department/performance', 'Department\departmentController@performance')->name('performance')->middleware('department');
 //page leave
@@ -126,6 +131,10 @@ Route::post('department/leave', 'Department\departmentController@leaveApplicatio
 //stock page
 Route::get('department/stock', 'Department\departmentController@stockList')->name('department.stock')->middleware('department');
 Route::post('department/stock', 'Department\departmentController@updateStock')->name('department.updatestock')->middleware('department');
+//page delivery list
+Route::get('department/delivery_list', 'Department\DeliveryController@deliveryList')->name('department.delivery')->middleware('department');
+Route::get('department/job_delivery/{oid}', 'Department\DeliveryController@updateDelivery')->name('job_delivery')->middleware('department');
+Route::post('department/job_delivery', 'Department\DeliveryController@completeDelivery')->name('update_delivery')->middleware('department');
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////
 //Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
 Route::get('customer/customer_profile', 'Customer\customerController@customerProfile')->middleware('customer');
