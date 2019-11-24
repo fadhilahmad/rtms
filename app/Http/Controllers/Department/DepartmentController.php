@@ -99,21 +99,21 @@ class DepartmentController extends Controller
         if($u_type==3)
         {
             $order_completed = $orders->where('u_id_designer',$u_id)->where('o_status','9')->count();
-            $unit_completed = $unit->where('u_id_designer',$u_id)->whereIn('un_status',['1','2','3'])->count();
+            $unit_completed = $unit->where('u_id_designer',$u_id)->whereIn('un_status',['1','2','3','4','5'])->count();
             
              return view('department/performance')->with('unit',$unit_completed)->with('order',$order_completed);
         }
         if($u_type==5)
         {
             $order_completed = $orders->where('u_id_print',$u_id)->where('o_status','9')->count();
-            $unit_completed = $unit->where('u_id_print',$u_id)->whereIn('un_status',['2','3'])->count();
+            $unit_completed = $unit->where('u_id_print',$u_id)->whereIn('un_status',['2','3','4'])->count();
             
              return view('department/performance')->with('unit',$unit_completed)->with('order',$order_completed);
         }
         if($u_type==4)
         {
             $order_completed = $orders->where('u_id_taylor',$u_id)->where('o_status','9')->count();
-            $unit_completed = $unit->where('u_id_taylor',$u_id)->where('un_status','3')->count();
+            $unit_completed = $unit->where('u_id_taylor',$u_id)->whereIn('un_status',['3','4'])->count();
             
              return view('department/performance')->with('unit',$unit_completed)->with('order',$order_completed);
         }        
