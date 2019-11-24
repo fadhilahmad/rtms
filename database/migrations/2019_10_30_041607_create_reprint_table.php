@@ -15,15 +15,11 @@ class CreateReprintTable extends Migration
     {
         Schema::create('reprint', function (Blueprint $table) {
             $table->bigIncrements('r_id');
+            $table->unsignedBigInteger('o_id')->unsigned();
             $table->unsignedBigInteger('un_id')->unsigned();
             $table->integer('r_quantity');
             $table->integer('r_status');              
             $table->timestamps();
-            
-            $table->foreign('un_id')
-                  ->references('un_id')
-                  ->on('unit')
-                  ->onDelete('cascade');
         });
     }
 
