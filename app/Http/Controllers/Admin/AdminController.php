@@ -171,6 +171,7 @@ class AdminController extends Controller
     {
         $order = DB::table('orders')
                     ->Join('user', 'orders.u_id_customer', '=', 'user.u_id')
+                    ->where('orders.o_status','<>','9')
                     ->orderBy('orders.delivery_date', 'asc')
                     ->paginate(30);
         
