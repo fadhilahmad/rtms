@@ -37,7 +37,7 @@
                                 </td>
                                 <td>
                                     @php $id=$des->u_id;  
-                                     $job_design = $designs->where('u_id_designer',$id)->where('d_type','3')->count();
+                                     $job_design = $unit->where('u_id_designer',$id)->whereIn('un_status',['1','2','3','4','5'])->count();
                                      $design_order = $order->where('u_id_designer',$id)->where('o_status','9')->count();
                                     @endphp
                                     {{$design_order}}</td>
@@ -83,7 +83,7 @@
                                 </td>
                                 <td>
                                     @php $id=$pri->u_id;  
-                                     $job_print = $unit->where('u_id_print',$id)->whereIn('un_status',['2','1'])->count();
+                                     $job_print = $unit->where('u_id_print',$id)->whereIn('un_status',['2','3','4'])->count();
                                      $print_order = $order->where('u_id_print',$id)->where('o_status','9')->count();
                                     @endphp
                                     {{$print_order}}</td>
@@ -129,7 +129,7 @@
                                 </td>
                                 <td>
                                     @php $id=$tai->u_id;  
-                                     $job_tailor = $unit->where('u_id_taylor',$id)->where('un_status','2')->count();
+                                     $job_tailor = $unit->where('u_id_taylor',$id)->whereIn('un_status',['3','4'])->count();
                                      $tailor_order = $order->where('u_id_taylor',$id)->where('o_status','9')->count();
                                     @endphp
                                     {{$tailor_order}}</td>
