@@ -12,7 +12,7 @@
 
                     <div class="panel-body">
                         @foreach ($designs as $design)
-                            <img style="width:100%" src="/orders/mockup/{{ $design->d_url }}">
+                            <img style="width:100%" src="{{URL::to('/')}}/orders/mockup/{{ $design->d_url }}">
                             @break
                         @endforeach
                     </div>
