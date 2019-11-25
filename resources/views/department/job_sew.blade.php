@@ -60,7 +60,6 @@ text-align: center;
                                     
                                     @foreach($units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id) as $unit)
                                            <tr>
-                                              <td>{{$unit->name}}</td>
                                               <td style="text-transform: uppercase;">{{$unit->size}}</td>
                                               <td>{{$unit->un_quantity}}</td>
                                               <td>
@@ -81,7 +80,7 @@ text-align: center;
                                                   @elseif($units->where('o_id',$spec->o_id)->where('un_id',$unit->un_id)->where('un_status','2')->count()>0)
                                                   <button 
                                                         class="btn btn-default reprint" data-toggle="modal" data-target="#modal" data-refnum="{{$order->ref_num}}" data-name="{{$unit->name}}" data-size="{{$unit->size}}"
-                                                        data-oid="{{$unit->o_id}}" data-unid="{{$unit->un_id}}" data-category="Nameset" data-maxquan="{{$unit->un_quantity}}">Request
+                                                        data-oid="{{$unit->o_id}}" data-unid="{{$unit->un_id}}" data-category="Size" data-maxquan="{{$unit->un_quantity}}">Request
                                                   </button>
                                                   @else
                                                   <input type="checkbox" name="jobdone" value="" checked="" disabled=""> 
