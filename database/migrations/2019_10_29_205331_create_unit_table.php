@@ -23,6 +23,8 @@ class CreateUnitTable extends Migration
             $table->unsignedBigInteger('u_id_designer')->unsigned()->nullable();
             $table->unsignedBigInteger('u_id_print')->unsigned()->nullable();
             $table->unsignedBigInteger('u_id_taylor')->unsigned()->nullable();
+            $table->integer('sewed')->default('0');
+            $table->integer('delivered')->default('0');
             $table->integer('un_status')->nullable();
             $table->timestamps();
             
