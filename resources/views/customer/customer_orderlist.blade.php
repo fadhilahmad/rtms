@@ -51,7 +51,7 @@
                                                  @if($singleorderrow->o_status!=0)
                                                     <a href="/customer/viewdesign/{{$singleorderrow->o_id}}">View Design</a>
                                                  @endif  --}}
-                                                 <a href="/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a>
+                                                 <a href="{{URL::to('/')}}/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a>
                                             </td>
                                             <td>
                                                 @if($singleorderrow->o_status==1)
@@ -96,7 +96,7 @@
                                                 
 
                                             </td>
-                                            <td><a href="/customer/jobOrder/{{$singleorderrow->o_id}}">View Job Order</a></td>
+                                            <td><a href="{{URL::to('/')}}/customer/jobOrder/{{$singleorderrow->o_id}}">View Job Order</a></td>
                                         </tr>
                                         <?php $no++; ?>
                                   @endforeach
