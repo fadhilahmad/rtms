@@ -32,7 +32,7 @@ class PaymentController extends Controller
                 ->paginate(30);
         
         
-        return view('admin/payment',compact('user','invoice','receipt','orders'));
+        return view('admin/payment',compact('user','receipt','orders'));
     }
     
     public function UpdatePayment(Request $request) 
