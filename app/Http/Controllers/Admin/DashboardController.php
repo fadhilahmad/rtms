@@ -92,11 +92,11 @@ class DashboardController extends Controller
                     ->sum('quantity_total');
         
         $print = DB::table('orders')
-                    ->whereNotIn('o_status', [0, 1, 2,3])
+                    ->whereNotIn('o_status', [0, 1, 2,3,4])
                     ->sum('quantity_total');
         
         $tailor = DB::table('orders')
-                    ->whereIn('o_status', [6, 7, 8, 9, 10,11])
+                    ->whereIn('o_status', [ 7, 9, 10])
                     ->sum('quantity_total');
         
         if($total_unit==0){
