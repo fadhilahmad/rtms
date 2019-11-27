@@ -386,7 +386,7 @@ class JobListController extends Controller
         {
            DB::table('orders')
                  ->where('o_id', '=', $data['o_id'])
-                 ->update(array('o_status'=>'7','updated_at' => DB::raw('now()')));
+                 ->update(array('o_status'=>'9','updated_at' => DB::raw('now()')));
            
            return Redirect::route('job_list');           
         }
@@ -411,7 +411,49 @@ class JobListController extends Controller
                      'updated_at' => DB::raw('now()')
                     ]);
                       
-        }        
+        }
+
+        if($data['process']=="update")
+        {
+           DB::table('unit')
+                 ->where('un_id', '=', $data['un_id'])
+                 ->update(array('u_id_taylor'=>$data['u_id'], 'updated_at' => DB::raw('now()')));
+           
+           DB::table('unit')
+                 ->where('un_id', '=', $data['un_id'])
+                 ->increment('sewed',  $data['quantity']);
+           
+           $sewed = Unit::where('un_id',$data['un_id'])->pluck('sewed')->first();
+           $quantity = Unit::where('un_id',$data['un_id'])->pluck('un_quantity')->first();
+           
+           if($sewed == $quantity){
+               DB::table('unit')
+                 ->where('un_id', '=', $data['un_id'])
+                 ->update(array('un_status'=>'3',
+                     'updated_at'=>DB::raw('now()')));
+           }
+           
+           return response()->json(['success'=>'Order Updated']);           
+        }
+
+        if($data['process']=="delivery")
+        {  
+           DB::table('unit')
+                 ->where('un_id', '=', $data['un_id'])
+                 ->increment('delivered',  $data['quantity']);
+           
+           $delivered = Unit::where('un_id',$data['un_id'])->pluck('delivered')->first();
+           $quantity = Unit::where('un_id',$data['un_id'])->pluck('un_quantity')->first();
+           
+           if($delivered == $quantity){
+               DB::table('unit')
+                 ->where('un_id', '=', $data['un_id'])
+                 ->update(array('un_status'=>'4',
+                     'updated_at'=>DB::raw('now()')));
+           }
+           
+           return response()->json(['success'=>'Order Updated']);           
+        }           
         
     }
     
