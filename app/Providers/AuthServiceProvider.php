@@ -43,7 +43,7 @@ class AuthServiceProvider extends ServiceProvider
 
         //customer
         $gate->define('isCustomer', function($user){
-            return $user->u_type == 7 || $user->u_type == 6;
+            return $user->u_type == 7 || $user->u_type == 6 || $user->u_type == 8 || $user->u_type == 9;
         
         });
 
