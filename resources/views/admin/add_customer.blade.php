@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Add New End User</div>
+                <!-- <div class="card-header">Add New End User</div> -->
+                <div class="card-header"><i class="fa fa-plus-square"></i> New End User</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ url('admin/add_customer') }}">

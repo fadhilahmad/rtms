@@ -17,7 +17,7 @@ text-align: center;
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Order Setting</div>
+                <div class="card-header"><i class="fa fa-gear"></i> Order Setting</div>
 
                 <div class="card-body">
                     @if(session()->has('message'))
@@ -41,7 +41,7 @@ text-align: center;
                     @endif
                     <div class="row">
                         <div class="col-md-6">
-                            <center><h2>MATERIAL <a href="" class="popup" data-toggle="modal" data-target="#orderModal" data-tittle="Add Material" data-table="material" >+</a></h2></center><br>
+                        <div style="margin: 0px 50px 0px;"><h2>MATERIAL <a href="" class="popup btn btn-secondary float-right" data-toggle="modal" data-target="#orderModal" data-tittle="Add Material" data-table="material" ><i class="fa fa-plus"></i> New</a></h2></div><br>
                             <table class="table table-hover">
                                 <thead class="thead-dark">
                                   <tr>
@@ -57,12 +57,12 @@ text-align: center;
                                     <td>
                                         <button 
                                             class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Material" data-table="material"
-                                            data-id="{{$mat->m_id}}" data-desc="{{$mat->m_desc}}">/
+                                            data-id="{{$mat->m_id}}" data-desc="{{$mat->m_desc}}"><i class="fa fa-edit"></i>
                                         </button>                                       
                                     </td>
                                     <td>
                                      <form class="delete" action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
-                                        <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this material?')" value="X">
+                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this material?')" value="X"><i class="fa fa-trash"></i></button>
                                         <input type="hidden" name="id" value=" {{$mat->m_id}}">
                                         <input type="hidden" name="type" value="delete">
                                         <input type="hidden" name="table" value="material">                                   
@@ -75,7 +75,7 @@ text-align: center;
                         </div>
                         
                         <div class="col-md-6">
-                            <center><h2>BODY <a href="" class="popup" data-toggle="modal" data-target="#orderModal" data-tittle="Add Body Type" data-table="body">+</a></h2></center><br>
+                            <div style="margin: 0px 50px 0px;"><h2>BODY <a href="" class="popup btn btn-secondary float-right" data-toggle="modal" data-target="#orderModal" data-tittle="Add Body Type" data-table="body"><i class="fa fa-plus"></i> Body Type</a></h2></div><br>
                             <table class="table table-hover">
                                 <thead class="thead-dark">
                                   <tr>
@@ -91,12 +91,12 @@ text-align: center;
                                     <td>
                                         <button 
                                             class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Body Type" data-table="body"
-                                            data-id="{{$bod->b_id}}" data-desc="{{$bod->b_desc}}">/
+                                            data-id="{{$bod->b_id}}" data-desc="{{$bod->b_desc}}"><i class="fa fa-edit"></i>
                                         </button>                                   
                                     </td>
                                     <td>
                                      <form class="delete" action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
-                                        <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this body type?')" value="X">
+                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this body type?')" value="X"><i class="fa fa-trash"></i></button>                         
                                         <input type="hidden" name="id" value=" {{$bod->b_id}}">
                                         <input type="hidden" name="type" value="delete">
                                         <input type="hidden" name="table" value="body">                                   
@@ -131,7 +131,7 @@ text-align: center;
                                     <td>
                                         <button 
                                             class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Delivery Day" data-table="delivery" 
-                                            data-id="{{$delivery->ds_id}}" data-desc="{{$delivery->min_day}}">Edit
+                                            data-id="{{$delivery->ds_id}}" data-desc="{{$delivery->min_day}}"><i class="fa fa-edit"></i> Edit
                                         </button>                                   
                                     </td>
                                   </tr>
@@ -156,7 +156,7 @@ text-align: center;
                                     <td>
                                         <button 
                                             class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Sleeve" data-table="sleeve" 
-                                            data-id="{{$sle->sl_id}}" data-desc="{{$sle->sl_desc}}">Edit
+                                            data-id="{{$sle->sl_id}}" data-desc="{{$sle->sl_desc}}"><i class="fa fa-edit"></i> Edit
                                         </button>                                   
                                     </td>
                                   </tr>
@@ -169,7 +169,7 @@ text-align: center;
                     <hr>
                     <br><br>
                         <div class="col-md-12">
-                            <center><h2>NECK <a href="" class="popup" data-toggle="modal" data-target="#orderModal" data-tittle="Add Neck Type" data-table="neck">+</a></h2></center><br>
+                            <div style="margin: 0px 150px 0px;"><h2>NECK <a href="" class="popup btn btn-secondary float-right" data-toggle="modal" data-target="#orderModal" data-tittle="Add Neck Type" data-table="neck"><i class="fa fa-plus"></i> Neck Type</a></h2></div><br>
                             <table class="table table-hover">
                                 <thead class="thead-dark">
                                   <tr>
@@ -190,12 +190,12 @@ text-align: center;
                                     <td>
                                         <button 
                                             class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Neck" data-table="neck" 
-                                            data-id="{{$nec->n_id}}" data-necktype="{{$nec->n_type}}" data-desc="{{$nec->n_desc}}">/
+                                            data-id="{{$nec->n_id}}" data-necktype="{{$nec->n_type}}" data-desc="{{$nec->n_desc}}"><i class="fa fa-edit"></i>
                                         </button>                                   
                                     </td>
                                     <td>
                                      <form class="delete" action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
-                                        <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this neck type?')" value="X">
+                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this neck type?')" value="X"><i class="fa fa-trash"></i></button>
                                         <input type="hidden" name="id" value=" {{$nec->n_id}}">
                                         <input type="hidden" name="type" value="delete">
                                         <input type="hidden" name="table" value="neck">                                   

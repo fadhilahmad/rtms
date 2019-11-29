@@ -73,12 +73,12 @@ class CustomerController extends Controller
          $data = $request->all();
  
          if(!\Hash::check($data['old_password'], $customer->password)){
-             return back()->with('error','You have entered wrong password');              
+             return back()->with('error','Your current password is incorrect!');              
                  } else {       
                      $customer->password = Hash::make($request->input('new_password'));        
              }
          $customer->save();
-         return back()->with('success','Your password updated successfully');
+         return back()->with('success','Your new password updated successfully');
      
     }   
     // method to view new order page for customer

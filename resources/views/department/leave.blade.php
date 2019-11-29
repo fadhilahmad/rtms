@@ -10,9 +10,9 @@ td,th {
 text-align: center;
 } 
 </style>
-<div class="container">
+<div class="container col-md-12">
     <div class="row justify-content-center">
-        <div class="card-profile">
+        <div class="card-leave">
                     @if(session()->has('message'))
                         <div class="alert alert-success">
                             {{ session()->get('message') }}
@@ -54,7 +54,7 @@ text-align: center;
 </div>
 <div class="container col-md-12">
     <div class="row justify-content-center">       
-        <div class="card-profile">
+        <div class="card-leave">
             <div class="card-header d-flex align-items-center">
                 <h4><i class="fa fa-tag"></i> Leave List</h4>
             </div>
@@ -119,10 +119,10 @@ text-align: center;
         </div>
     </div>
 </div>
-<div class="container">
+<div class="container col-md-12" style="margin-bottom:10%">
     <div class="row justify-content-center">
            
-        <div class="card-profile">
+        <div class="card-leave">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
                     <p>{{ $message }}</p>

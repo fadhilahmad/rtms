@@ -68,12 +68,12 @@ class DepartmentController extends Controller
         $data = $request->all();
 
         if(!\Hash::check($data['old_password'], $staff->password)){
-            return back()->with('error','You have entered wrong password');
+            return back()->with('error','Your current password is incorrect!');
                 } else{
                     $staff->password = Hash::make($request->input('new_password'));
         }
         $staff->save();
-        return back()->with('success','Your password updated successfully');
+        return back()->with('success','Your new password updated successfully');
     }
          
     public function departmentOrderlist() 

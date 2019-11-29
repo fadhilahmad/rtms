@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Order List</div>
+                <div class="card-header"><i class="fa fa-list"></i> Order List</div>
 
                 <div class="card-body">
                     @if(!$order->isempty())

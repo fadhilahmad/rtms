@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Staff Application List</div>
+                <div class="card-header"><i class="fa fa-child"></i>  Staff Application List</div>
 
                 <div class="card-body">
                     @if(session()->has('message'))
@@ -47,8 +47,8 @@
                                         @endif                                
                                 </td>                                
                                 <td>
-                                    <a class="btn btn-primary" href="{{route('staff_approve',[$sta->u_id,'app'])}}"><i class="fa fa-ticket"></i></a> |
-                                    <a class="btn btn-danger" href="{{route('staff_approve', [$sta->u_id,'rej'])}}"><i class="fa fa-trash-o"></i></a>
+                                    <a class="btn btn-primary" href="{{route('staff_approve',[$sta->u_id,'app'])}}"><i class="fa fa-check"></i></a> |
+                                    <a class="btn btn-danger" href="{{route('staff_approve', [$sta->u_id,'rej'])}}"><i class="fa fa-times"></i></a>
                                 </td>
                               </tr>
                               <?php $no++; ?>

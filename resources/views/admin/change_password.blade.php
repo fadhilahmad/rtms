@@ -29,7 +29,7 @@
                             <label class="col-sm-4 col-form-label">Current Password</label>
                             <div class="col-sm-6">
                                 <input id="password" type="password" class="form-control"  name="old_password" required  autocomplete="current-password">
-                                @error('password')
+                                @error('old_password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -39,8 +39,8 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">New Password</label>
                             <div class="col-sm-6">
-                                <input id="password" type="password" class="form-control"  name="new_password" required autocomplete="new-password">
-                                @error('password')
+                                <input id="password" type="password" class="form-control @error('new_password') is-invalid @enderror"  name="new_password" required autocomplete="new-password">
+                                @error('new_password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -50,7 +50,12 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">New Confirm Password</label>
                             <div class="col-sm-6">
-                            <input id="password-confirm" type="password" class="form-control"  name="confirm_password" required autocomplete="new-password">                        
+                            <input id="password-confirm" type="password" class="form-control @error('confirm_password') is-invalid @enderror"  name="confirm_password" required autocomplete="new-password">                        
+                                @error('confirm_password')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                 @enderror
                             </div>
                         </div>  
                     </div>                                                          

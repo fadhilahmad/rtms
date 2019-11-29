@@ -18,7 +18,7 @@ align-content: center;
 .card-login{
 display: flex;
 flex-direction: column;
-height: 500px;
+height: 60vh;
 margin-top: 5%;
 margin-bottom: auto;
 width: 400px;

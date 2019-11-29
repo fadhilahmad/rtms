@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Sale Chart</div>
+                <div class="card-header"><i class="fa fa-line-chart"></i> Sale Chart</div>
 
                 <div class="card-body">
                     <div class="row">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     
-                       <div class="col-md-8 flex-lg-last flex-md-first align-self-baseline">
+                       <div class="col-md-12 flex-lg-last flex-md-first align-self-baseline">
                         <div class="card sales-report">
 <!--                          <h2 class="display h4">Sales Chart</h2>
                           <br><br>-->

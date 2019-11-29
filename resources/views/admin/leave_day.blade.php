@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Leave Setting</div>
+                <div class="card-header"><i class="fa fa-gear"></i>  Leave Setting</div>
 
                 <div class="card-body">
                     @if(session()->has('message'))
@@ -49,7 +49,7 @@
                                 <td>
                                     <button 
                                         class="btn btn-primary add" data-toggle="modal" data-target="#addnew" 
-                                        data-uid="{{$sta->u_id}}" data-fullname="{{$sta->u_fullname}}">Add
+                                        data-uid="{{$sta->u_id}}" data-fullname="{{$sta->u_fullname}}"><i class="fa fa-plus"></i> Add
                                     </button>
                                 </td>
                                 @else

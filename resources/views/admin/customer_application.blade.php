@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Agent Application List</div>
+                <div class="card-header"><i class="fa fa-user-circle"></i> Agent Application List</div>
 
                 <div class="card-body">
                     @if(session()->has('message'))
@@ -35,8 +35,8 @@
                                 <td>{{$agents->email}}</td>
                                 <td>{{$agents->phone}}</td>                                
                                 <td>
-                                    <a class="btn btn-primary" href="{{route('approve',[$agents->u_id,'app'])}}"><i class="fa fa-ticket"></i></a> |
-                                    <a class="btn btn-danger" href="{{route('approve', [$agents->u_id,'rej'])}}"><i class="fa fa-trash-o"></i></a>
+                                    <a class="btn btn-primary" href="{{route('approve',[$agents->u_id,'app'])}}"><i class="fa fa-check"></i></a> |
+                                    <a class="btn btn-danger" href="{{route('approve', [$agents->u_id,'rej'])}}"><i class="fa fa-times"></i></a>
                                 </td>
                               </tr>
                               <?php $no++; ?>
@@ -54,7 +54,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">End User Application List</div>
+                <div class="card-header"><i class="fa fa-user"></i> End User Application List</div>
 
                 <div class="card-body">
                         <table class="table table-hover">
@@ -78,8 +78,8 @@
                                 <td>{{$cust->email}}</td>
                                 <td>{{$cust->phone}}</td>
                                 <td>
-                                    <a class="btn btn-primary" href="{{route('approve', [$cust->u_id,'app'])}}"><i class="fa fa-ticket"></i></a> |
-                                    <a class="btn btn-danger" href="{{route('approve', [$cust->u_id,'rej'])}}"><i class="fa fa-trash-o"></i></a>
+                                    <a class="btn btn-primary" href="{{route('approve', [$cust->u_id,'app'])}}"><i class="fa fa-check"></i></a> |
+                                    <a class="btn btn-danger" href="{{route('approve', [$cust->u_id,'rej'])}}"><i class="fa fa-times"></i></a>
                                 </td>
                               </tr>
                               <?php $no++; ?>

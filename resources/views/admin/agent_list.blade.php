@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Agent List</div>
+                <!-- <div class="card-header">Agent List</div> -->
+                <div class="card-header"><i class="fa fa-user-circle"></i> Agent List<a class="btn btn-primary float-right" href="{{ url('admin/add_agent') }}"><i class="fa fa-plus"></i> New Agent</a></div>
 
                 <div class="card-body">
                     @if(session()->has('message'))
@@ -48,7 +49,7 @@
                                 <td>
                                     <button 
                                         class="btn btn-primary update" data-toggle="modal" data-target="#agentTier" data-username="{{$agents->username}}" data-tier="{{$agents->u_type}}"
-                                        data-uid="{{$agents->u_id}}" data-fullname="{{$agents->u_fullname}}">/
+                                        data-uid="{{$agents->u_id}}" data-fullname="{{$agents->u_fullname}}"><i class="fa fa-refresh"></i> 
                                     </button>                                 
                                 </td>
                                 <td>
@@ -56,7 +57,7 @@
                                         <input type="hidden" name="id" value=" {{$agents->u_id}}">
                                         <input type="hidden" name="function" value="delete">
                                         {{ csrf_field() }}
-                                    <input class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this agent?')" value="X">
+                                    <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this agent?')" value="Delete"><i class="fa fa-trash"></i> </button>
                                     </form>
                                 </td>                                
                               </tr>

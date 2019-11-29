@@ -63,8 +63,8 @@
               <ul id="manageCustomerDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.home') }}">End User List</a></li>
                 <li><a href="{{ route('admin.agentlist') }}">Agent List</a></li>
-                <li><a href="{{ route('admin.addcustomer') }}">Add End User</a></li>
-                <li><a href="{{ route('admin.addagent') }}">Add Agent</a></li>              
+                <!-- <li><a href="{{ route('admin.addcustomer') }}">Add End User</a></li>
+                <li><a href="{{ route('admin.addagent') }}">Add Agent</a></li>               -->
                 <li><a href="{{ route('admin.newapplication') }}">New Application</a></li>
               </ul>
             </li>
@@ -72,7 +72,7 @@
               <ul id="manageStaffDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.managestaff') }}">Staff List</a></li>
                 <li><a href="{{ route('admin.staffapplication') }}">New Application</a></li>
-                <li><a href="{{ route('admin.addstaff') }}">Add Staff</a></li>
+                <!-- <li><a href="{{ route('admin.addstaff') }}">Add Staff</a></li> -->
                 <li><a href="{{ route('admin.leavelist') }}">Leave List</a></li>
                 <li><a href="{{ route('admin.leaveapplication') }}">Leave Application</a></li>                
                 <li><a href="{{ route('admin.leavesetting') }}">Leave Setting</a></li>

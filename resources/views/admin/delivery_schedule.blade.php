@@ -10,7 +10,7 @@ td.fc-event-container{
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Delivery Schedule</div>
+                <div class="card-header"><i class="fa fa-calendar"></i> Delivery Schedule</div>
 
                 <div class="card-body">
                       <div id='calendar'></div>  
