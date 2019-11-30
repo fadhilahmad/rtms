@@ -22,7 +22,7 @@ class Customer
             
             if(auth()->user()->u_status == 1)
             {
-                if(auth()->user()->u_type == 6 OR auth()->user()->u_type == 7 )
+                if(auth()->user()->u_type == 6 OR auth()->user()->u_type == 7 OR auth()->user()->u_type == 8 OR auth()->user()->u_type == 9 )
                 {
                     return $next($request);
                 }

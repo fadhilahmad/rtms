@@ -102,10 +102,10 @@ Route::get('admin/dashboard','Admin\DashboardController@showDashboard')->name('a
 //page orderlist
 Route::get('department/department_orderlist', 'HomeController@departmentHome')->name('department.home')->middleware('department');
 Route::post('department/department_orderlist', 'Department\DepartmentController@updateOrder')->name('update_order')->middleware('department');
-Route::get('department/staff_profile', 'Department\departmentController@staffProfile') ->name('staff.profile')->middleware('department');
-Route::patch('department/staff_profile/update/{id}', 'Department\departmentController@updateProfile')->name('staff.update')->middleware('department');
-Route::get('department/change_password', 'Department\departmentController@staffChangePassword')->name('staff.changePassword')->middleware('department');
-Route::patch('department/change_password/update/{id}', 'Department\departmentController@updateChangePassword')->name('staff.updatePassword')->middleware('department');
+Route::get('department/staff_profile', 'Department\DepartmentController@staffProfile') ->name('staff.profile')->middleware('department');
+Route::patch('department/staff_profile/update/{id}', 'Department\DepartmentController@updateProfile')->name('staff.update')->middleware('department');
+Route::get('department/change_password', 'Department\DepartmentController@staffChangePassword')->name('staff.changePassword')->middleware('department');
+Route::patch('department/change_password/update/{id}', 'Department\DepartmentController@updateChangePassword')->name('staff.updatePassword')->middleware('department');
 //page job list
 Route::get('department/joblist', 'Department\JobListController@joblist')->name('job_list')->middleware('department');
 Route::post('department/joblist', 'Department\JobListController@updateJob')->name('update.job')->middleware('department');
@@ -124,24 +124,24 @@ Route::post('department/job_sew', 'Department\JobListController@updateSew')->nam
 //department job order
 Route::get('department/job_order/{oid}', 'Department\JobListController@viewJobOrder')->name('department.joborder')->middleware('department');
 //page performance
-Route::get('department/performance', 'Department\departmentController@performance')->name('performance')->middleware('department');
+Route::get('department/performance', 'Department\DepartmentController@performance')->name('performance')->middleware('department');
 //page leave
-Route::get('department/leave', 'Department\departmentController@leave')->name('leave')->middleware('department');
-Route::post('department/leave', 'Department\departmentController@leaveApplication')->name('department.leave')->middleware('department');
+Route::get('department/leave', 'Department\DepartmentController@leave')->name('leave')->middleware('department');
+Route::post('department/leave', 'Department\DepartmentController@leaveApplication')->name('department.leave')->middleware('department');
 //stock page
-Route::get('department/stock', 'Department\departmentController@stockList')->name('department.stock')->middleware('department');
-Route::post('department/stock', 'Department\departmentController@updateStock')->name('department.updatestock')->middleware('department');
+Route::get('department/stock', 'Department\DepartmentController@stockList')->name('department.stock')->middleware('department');
+Route::post('department/stock', 'Department\DepartmentController@updateStock')->name('department.updatestock')->middleware('department');
 //page delivery list
 Route::get('department/delivery_list', 'Department\DeliveryController@deliveryList')->name('department.delivery')->middleware('department');
 Route::get('department/job_delivery/{oid}', 'Department\DeliveryController@updateDelivery')->name('job_delivery')->middleware('department');
 Route::post('department/job_delivery', 'Department\DeliveryController@completeDelivery')->name('update_delivery')->middleware('department');
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////
 //Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
-Route::get('customer/customer_profile', 'Customer\customerController@customerProfile')->middleware('customer');
-Route::patch('customer/customer_profile/update/{id}', 'Customer\customerController@updateProfile')->name('customer.update')->middleware('customer');
-Route::get('customer/change_password', 'Customer\customerController@customerChangePassword')->name('customer.changePassword')->middleware('customer');
-Route::patch('customer/change_password/update/{id}', 'Customer\customerController@updateChangePassword')->name('customer.updatePassword')->middleware('customer');
-Route::get('customer/customer_orderlist', 'Customer\customerController@customerOrderlist')->name('customer_orderlist')->middleware('customer');
+Route::get('customer/customer_profile', 'Customer\CustomerController@customerProfile')->middleware('customer');
+Route::patch('customer/customer_profile/update/{id}', 'Customer\CustomerController@updateProfile')->name('customer.update')->middleware('customer');
+Route::get('customer/change_password', 'Customer\customerController@CustomerChangePassword')->name('customer.changePassword')->middleware('customer');
+Route::patch('customer/change_password/update/{id}', 'Customer\CustomerController@updateChangePassword')->name('customer.updatePassword')->middleware('customer');
+Route::get('customer/customer_orderlist', 'Customer\CustomerController@customerOrderlist')->name('customer_orderlist')->middleware('customer');
 // Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
 // Route::get('customer/receipt', 'Customer\customerController@receipt')->middleware('customer');
 // // write route to multiple route (store, index, create, update, show, destroy, edit)

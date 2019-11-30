@@ -71,7 +71,7 @@ class LoginController extends Controller
                 return redirect()->route('job_list');
             }
             
-            elseif(auth()->user()->u_type == 6 OR auth()->user()->u_type == 7 ) //CASE CUSTOMER 
+            elseif(auth()->user()->u_type == 6 OR auth()->user()->u_type == 7 OR auth()->user()->u_type == 8 OR auth()->user()->u_type == 9) //CASE CUSTOMER 
             {
                 return redirect()->route('customer.home');
             }
