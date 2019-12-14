@@ -533,14 +533,14 @@ class CustomerController extends Controller
         $orderidrequest = $orderid;
         $boolprice = true;
         if($orderidrequest != null){
-            //-------------------- confirm design ----------------------//
+            //-------------------- confirm design   ----------------------//
             $user_id = auth()->user()->u_id;
             $thisyear = date("Y");
             $recordedyear = Order::select('ref_num')
                 ->whereYear('created_at', $thisyear)
                 ->first();
             if($recordedyear == null){
-                $newrefnum = date("y")."/1"; 
+                $newrefnum = date("y")."/".sprintf('%04d', 1); 
                 DB::table('orders')
                     ->where('o_id', '=', $orderidrequest)
                     ->update(array('ref_num' => $newrefnum,
@@ -548,7 +548,7 @@ class CustomerController extends Controller
             }else{
                 $userrefnum = Order::where('ref_num', '!=' , null)->whereYear('created_at', $thisyear)->pluck('ref_num')->toArray();
                 $totalrefnum = count($userrefnum);
-                $newrefnum = date("y")."/".($totalrefnum + 1); 
+                $newrefnum = date("y")."/".sprintf('%04d', ($totalrefnum + 1)); 
                 // update ref num in table order
                 DB::table('orders')
                     ->where('o_id', '=', $orderidrequest)
