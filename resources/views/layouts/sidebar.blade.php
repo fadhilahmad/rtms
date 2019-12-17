@@ -13,7 +13,7 @@
     @can('isCustomer')
         <div class="customer-menu">
           <ul id="side-main-menu" class="side-menu list-unstyled">                  
-            <li><a href="{{ route('customer.home') }}"> <i class="fa fa-plus-square"></i>Add Order</a></li>
+            <li><a href="{{ route('addorder') }}"> <i class="fa fa-plus-square"></i>Add Order</a></li>
             <li><a href="{{ route('customer_orderlist') }}"> <i class="fa fa-list-ol"></i> Order List</a></li>
             <li><a href="{{ route('invoice') }}"> <i class="fa fa-file"></i> Invoice</a></li>
             <li><a href="{{ route('receipt') }}"> <i class="fa fa-file-text-o"></i>Receipt</a></li>
