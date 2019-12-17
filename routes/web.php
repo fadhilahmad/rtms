@@ -167,6 +167,8 @@ Route::post('customer/neworder', 'Customer\CustomerController@store')->name('cus
 Route::post('customer/viewinvoice','Customer\CustomerController@viewInvoice')->name('customer.viewinvoice')->middleware('customer');
 //Route::post('customer/neworder1', 'Department\PriceCheckingController@BaseOnBodyId')->middleware('customer');
 //Route::post('customer/orderlist', 'Customer\CustomerController@requestConfirm')->name('customer.orderlist');
+Route::get('customer/addorder', 'Customer\OrderController@OrderForm')->name('addorder')->middleware('customer');
+
 /////////////////////////////////////////////////////////////////REGISTRATION PAGE///////////////////////////////////////////////////
 //register agent (by link)
 Route::get('register_agent','RegisterAgent@PageRegisterAgent');
