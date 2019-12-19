@@ -164,7 +164,242 @@ text-align: center;
                                 </tbody>
                             </table>                                                                         
                         </div>                       
-                    </div> 
+                    </div>
+                    
+                    <hr>
+                    <br><br>
+                    
+                    @if($delivery)
+                    <div class="row">
+                        <div class="col-md-6">
+                            <center><h2>BLOCK DELIVERY DAY</h2></center><br>
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th scope="col">Day</th>
+                                    <th scope="col">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+
+                                  <tr>
+                                    <td>Sunday</td>
+                                    <td>
+                                        @php
+                                        $check_day = $block_day->where('day',0)->first();
+                                        @endphp
+                                        @if($check_day->bd_status == '1')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to unblock this day?')"><i class="fa fa-calendar-check-o"></i> Unblock</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="0">
+                                        </form>
+                                        @endif
+                                        @if($check_day['bd_status'] == '0')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to block this day?')" ><i class="fa fa-ban"></i> Block</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="1">
+                                        </form>
+                                        @endif
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Monday</td>
+                                    <td>
+                                        @php
+                                        $check_day = $block_day->where('day',1)->first();
+                                        @endphp
+                                        @if($check_day->bd_status == '1')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to unblock this day?')"><i class="fa fa-calendar-check-o"></i> Unblock</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="0">
+                                        </form>
+                                        @endif
+                                        @if($check_day['bd_status'] == '0')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to block this day?')" ><i class="fa fa-ban"></i> Block</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="1">
+                                        </form>
+                                        @endif
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Tuesday</td>
+                                    <td>
+                                        @php
+                                        $check_day = $block_day->where('day',2)->first();
+                                        @endphp
+                                        @if($check_day->bd_status == '1')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to unblock this day?')"><i class="fa fa-calendar-check-o"></i> Unblock</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="0">
+                                        </form>
+                                        @endif
+                                        @if($check_day['bd_status'] == '0')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to block this day?')" ><i class="fa fa-ban"></i> Block</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="1">
+                                        </form>
+                                        @endif
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Wednesday</td>
+                                    <td>
+                                        @php
+                                        $check_day = $block_day->where('day',3)->first();
+                                        @endphp
+                                        @if($check_day->bd_status == '1')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to unblock this day?')"><i class="fa fa-calendar-check-o"></i> Unblock</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="0">
+                                        </form>
+                                        @endif
+                                        @if($check_day['bd_status'] == '0')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to block this day?')" ><i class="fa fa-ban"></i> Block</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="1">
+                                        </form>
+                                        @endif
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Thursday</td>
+                                    <td>
+                                        @php
+                                        $check_day = $block_day->where('day',4)->first();
+                                        @endphp
+                                        @if($check_day->bd_status == '1')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to unblock this day?')"><i class="fa fa-calendar-check-o"></i> Unblock</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="0">
+                                        </form>
+                                        @endif
+                                        @if($check_day['bd_status'] == '0')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to block this day?')" ><i class="fa fa-ban"></i> Block</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="1">
+                                        </form>
+                                        @endif
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Friday</td>
+                                    <td>
+                                        @php
+                                        $check_day = $block_day->where('day',5)->first();
+                                        @endphp
+                                        @if($check_day->bd_status == '1')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to unblock this day?')"><i class="fa fa-calendar-check-o"></i> Unblock</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="0">
+                                        </form>
+                                        @endif
+                                        @if($check_day['bd_status'] == '0')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to block this day?')" ><i class="fa fa-ban"></i> Block</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="1">
+                                        </form>
+                                        @endif
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td>Saturday</td>
+                                    <td>
+                                        @php
+                                        $check_day = $block_day->where('day',6)->first();
+                                        @endphp
+                                        @if($check_day->bd_status == '1')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-primary" type="submit" onclick="return confirm('Are you sure to unblock this day?')"><i class="fa fa-calendar-check-o"></i> Unblock</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="0">
+                                        </form>
+                                        @endif
+                                        @if($check_day['bd_status'] == '0')
+                                        <form action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to block this day?')" ><i class="fa fa-ban"></i> Block</button>                         
+                                            <input type="hidden" name="id" value=" {{$check_day->bd_id}}">
+                                            <input type="hidden" name="type" value="update">
+                                            <input type="hidden" name="table" value="block_day">
+                                            <input type="hidden" name="status" value="1">
+                                        </form>
+                                        @endif
+                                    </td>
+                                  </tr>
+                                </tbody>
+                            </table>                                                                         
+                        </div>
+                        @endif
+                                           
+                        <div class="col-md-6">
+                        <div style="margin: 0px 50px 0px;"><h2>BLOCK DELIVERY DATE <a href="" class="blockpopup btn btn-secondary float-right" data-toggle="modal" data-target="#blockdateModal" data-tittle="Add Block Date" data-table="block_date" ><i class="fa fa-plus"></i> New</a></h2></div><br>
+                            @if(!$block_date->isempty())
+                            <table class="table table-hover">
+                                <thead class="thead-dark">
+                                  <tr>
+                                    <th scope="col" >Date</th>
+                                    <th scope="col" >Remark</th>
+                                    <th scope="col" >Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($block_date as $block)
+                                  <tr>
+                                    <td>{{$block->date}}</td>
+                                    <td>{{$block->remark}}</td>
+                                    <td>
+                                        <button 
+                                            class="btn btn-primary blockedit" data-toggle="modal" data-target="#blockdateModal" data-tittle="Update Block Date" data-table="block_date" 
+                                            data-id="{{$block->bdt_id}}" data-date="{{$block->date}}" data-remark="{{$block->remark}}"><i class="fa fa-edit"></i> Edit
+                                        </button>                                   
+                                    </td>
+                                  </tr>
+                                  @endforeach
+                                </tbody>
+                            </table>
+                            @else
+                            <center>No blocked date</center>
+                            @endif
+                        </div>                       
+                    </div>
                     
                     <hr>
                     <br><br>
@@ -261,6 +496,46 @@ text-align: center;
   </div>
 </div>
 
+<div class="modal fade" id="blockdateModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <form method="POST" id="blockform" name="blockform" action="{{ route('order_setting') }}">
+            @csrf
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">Block Form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            
+              <div class="form-group row">
+                <label for="date" class="col-sm-4 col-form-label">Date</label>
+                <div class="col-sm-8">
+                    <input type="date" class="form-control" id="date" name="date" required="required" >
+                    <input type="hidden" name="id" id="itemId">
+                    <input type="hidden" name="type" id="type">
+                    <input type="hidden" name="table" id="table">
+                </div>
+              </div> 
+
+              <div class="form-group row">
+                <label for="remark" class="col-sm-4 col-form-label">Remark</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="remark" name="remark" >
+                </div>
+              </div>         
+            
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick="submitForm()" type="submit" class="btn btn-primary">Save</button>
+      </div>
+     </form>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
 $(document).on("click", ".popup", function () {
      var name = $(this).data('tittle');
@@ -279,6 +554,17 @@ $(document).on("click", ".popup", function () {
         radiobtn = document.getElementById("n1");
         radiobtn.checked = true;
      }
+//     console.log(table);
+});
+
+$(document).on("click", ".blockpopup", function () {
+     var name = $(this).data('tittle');
+     var table = $(this).data('table');
+     $(".modal-title").text( name );
+     $(".modal-body #remark").val( "" );
+     $(".modal-body #type").val( "add" );
+     $(".modal-body #table").val( table );
+ 
 //     console.log(table);
 });
 
@@ -315,6 +601,20 @@ $(document).on("click", ".edit", function () {
      }
 //     console.log(table);
 });
+
+$(document).on("click", ".blockedit", function () {
+     var name = $(this).data('tittle');
+     var id = $(this).data('id');
+     var desc = $(this).data('remark');
+     var date = $(this).data('date');
+     var table = $(this).data('table');
+     $(".modal-title").text( name );
+     $(".modal-body #remark").val( desc );
+     $(".modal-body #date").val( date );
+     $(".modal-body #type").val( "update" );
+     $(".modal-body #itemId").val( id );
+     $(".modal-body #table").val( table );
+});
   
   function validateForm() {
     var x = document.forms["orderform"]["description"].value;
@@ -327,6 +627,24 @@ $(document).on("click", ".edit", function () {
         {
           document.getElementById("orderform").submit();  
         }       
+    }
+    
+  function submitForm() {
+    var x = document.forms["blockform"]["date"].value;
+    var y = document.forms["blockform"]["remark"].value;
+    if (x == "") 
+        {
+        alert("Date must be filled out");
+        return false;
+        }
+        if(y=="")
+        {
+        alert("Remark must be filled out");
+        return false;  
+        }
+        else{
+      document.getElementById("blockform").submit();  
+        }
     }
     
 // $.ajaxSetup({
