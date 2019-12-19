@@ -18,6 +18,9 @@ use App\Design;
 use App\Unit;
 use App\Order;
 use App\Price;
+use App\BlockDay;
+use App\BlockDate;
+use Carbon\Carbon;
 use DB;
 
 class AdminController extends Controller
@@ -164,7 +167,14 @@ class AdminController extends Controller
         $delivery = DeliverySetting::selectRaw('*')
                 ->first();
         
-        return view('admin/order_setting', compact('body','material','neck','sleeve','delivery'));
+        $block_day = BlockDay::selectRaw('*')
+                ->get();
+        
+        $block_date = BlockDate::selectRaw('*')
+                ->whereDate('date','>', Carbon::now())
+                ->get();
+        
+        return view('admin/order_setting', compact('body','material','neck','sleeve','delivery','block_day','block_date'));
     }
     
     public function orderList() 
