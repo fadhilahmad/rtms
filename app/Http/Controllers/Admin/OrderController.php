@@ -13,7 +13,7 @@ use App\Unit;
 use App\User;
 use App\Invoice;
 use App\InvoicePermanent;
-
+use App\BlockDay;
 use App\Order;
 use App\Material;
 use App\Body;
@@ -79,6 +79,16 @@ class OrderController extends Controller
                     return redirect('admin/order_setting')->with('error', 'Error!!!!Please insert image');
                 }
             }
+            elseif($data['table']=="block_date")
+            {
+                DB::table('block_date')->insert([
+                     'date' => $data['date'],
+                     'remark'=>$data['remark'],
+                     'created_at' => DB::raw('now()'),
+                     'updated_at' => DB::raw('now()')
+                    ]);
+                return redirect('admin/order_setting')->with('message', 'New block date added');                
+            }
             else
             {
                 return redirect('admin/order_setting')->with('message', 'Error to add');
@@ -127,6 +137,22 @@ class OrderController extends Controller
                     ->update(array('min_day' => $data['description']));
                 
                 return redirect('admin/order_setting')->with('message', 'Delivery day updated');
+            }
+            elseif($data['table']=="block_day")
+            {
+                DB::table('block_day')
+                    ->where('bd_id', '=', $data['id'])
+                    ->update(array('bd_status' => $data['status']));
+                
+                return redirect('admin/order_setting')->with('message', 'Block day updated');
+            }
+            elseif($data['table']=="block_date")
+            {
+                DB::table('block_date')
+                    ->where('bdt_id', '=', $data['id'])
+                    ->update(array('date' => $data['date'],'remark'=>$data['remark']));
+                
+                return redirect('admin/order_setting')->with('message', 'Block date updated');
             }
             else
             {
