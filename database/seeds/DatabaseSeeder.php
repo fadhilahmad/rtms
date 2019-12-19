@@ -17,5 +17,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CreateMaterialSeeder::class);
         $this->call(CreateBodySeeder::class);
         $this->call(CreateDeliverySettingSeeder::class);
+        $this->call(BlockDaySeeder::class);
     }
 }
