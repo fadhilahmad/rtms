@@ -20,6 +20,7 @@ use App\Order;
 use App\Price;
 use App\BlockDay;
 use App\BlockDate;
+use App\Stock;
 use Carbon\Carbon;
 use DB;
 
@@ -171,6 +172,7 @@ class AdminController extends Controller
                 ->get();
         
         $block_date = BlockDate::selectRaw('*')
+                ->where('bdt_status','=',1)
                 ->whereDate('date','>', Carbon::now())
                 ->get();
         
@@ -195,7 +197,11 @@ class AdminController extends Controller
                 ->where('m_status','=',1)                
                 ->get();
         
-        return view('admin/stock_list', compact('material'));
+        $stocks = Stock::selectRaw('*')
+                ->where('st_status','=',1)                
+                ->get();
+        
+        return view('admin/stock_list', compact('material','stocks'));
     }
     
     //invoice and receipt dropdown
