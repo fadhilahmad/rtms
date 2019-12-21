@@ -17,6 +17,7 @@ class CreateTableBlockdate extends Migration
             $table->bigIncrements('bdt_id');
             $table->date('date')->nullable();
             $table->string('remark')->nullable();
+            $table->integer('bdt_status')->nullable();
             $table->timestamps();
         });
     }
