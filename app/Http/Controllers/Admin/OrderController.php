@@ -84,6 +84,7 @@ class OrderController extends Controller
                 DB::table('block_date')->insert([
                      'date' => $data['date'],
                      'remark'=>$data['remark'],
+                     'bdt_status'=>'1',
                      'created_at' => DB::raw('now()'),
                      'updated_at' => DB::raw('now()')
                     ]);
@@ -185,6 +186,14 @@ class OrderController extends Controller
                     ->update(array('n_status' => '0'));
                 
                 return redirect('admin/order_setting')->with('message', 'Neck type deleted');
+            }
+            elseif($data['table']=="block_date")
+            {
+                DB::table('block_date')
+                    ->where('bdt_id', '=', $data['id'])
+                    ->update(array('bdt_status' => '0'));
+                
+                return redirect('admin/order_setting')->with('message', 'Block date deleted');
             }
             else
             {
