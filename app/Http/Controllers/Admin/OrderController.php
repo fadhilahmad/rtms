@@ -285,6 +285,50 @@ class OrderController extends Controller
                 return redirect('admin/stock_list')->with('message', 'Stock updated');           
             
         }
+        if($data['operator']=='newinventory'){
+            
+                DB::table('stock')->insert([
+                        'item' => $data['item'],
+                        'st_quantity' => $data['quantity'],
+                        'st_status'=>'1',
+                        'created_at' => DB::raw('now()'),
+                        'updated_at' => DB::raw('now()')
+                            ]);
+                
+                return redirect('admin/stock_list')->with('imessage', 'New inventory added');           
+            
+        }
+        if($data['operator']=='plusinventory'){
+            
+                $newstock = $data['oldvalue']+$data['value'];
+            
+                DB::table('stock')
+                    ->where('st_id', '=', $data['st_id'])
+                    ->update(array('st_quantity' => $newstock,'updated_at'=>DB::raw('now()')));
+                
+                return redirect('admin/stock_list')->with('imessage', 'Inventry stock updated');          
+            
+        }
+        if($data['operator']=='minusinventory'){
+            
+                $newstock = $data['oldvalue']-$data['value'];
+            
+                DB::table('stock')
+                    ->where('st_id', '=', $data['st_id'])
+                    ->update(array('st_quantity' => $newstock,'updated_at'=>DB::raw('now()')));
+                
+                return redirect('admin/stock_list')->with('imessage', 'Inventry stock updated');          
+            
+        }
+        if($data['operator']=='deleteinventory'){
+            
+                DB::table('stock')
+                    ->where('st_id', '=', $data['st_id'])
+                    ->update(array('st_status' => '0','updated_at'=>DB::raw('now()')));
+                
+                return redirect('admin/stock_list')->with('imessage', 'Inventry deleted');          
+            
+        }
         
     }
     
