@@ -20,6 +20,7 @@ class CreateSpecTable extends Migration
             $table->unsignedBigInteger('b_id')->unsigned();   //body id
             $table->unsignedBigInteger('sl_id')->unsigned();  //sleeve id
             $table->string('collar_color')->nullable();   //masuk color code
+            $table->string('category')->nullable();
             $table->timestamps();
             
             $table->foreign('o_id')
