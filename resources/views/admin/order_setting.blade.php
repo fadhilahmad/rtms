@@ -377,7 +377,8 @@ text-align: center;
                                   <tr>
                                     <th scope="col" >Date</th>
                                     <th scope="col" >Remark</th>
-                                    <th scope="col" >Action</th>
+                                    <th scope="col" >Edit</th>
+                                    <th scope="col" >Delete</th>
                                   </tr>
                                 </thead>
                                 <tbody>
@@ -388,8 +389,16 @@ text-align: center;
                                     <td>
                                         <button 
                                             class="btn btn-primary blockedit" data-toggle="modal" data-target="#blockdateModal" data-tittle="Update Block Date" data-table="block_date" 
-                                            data-id="{{$block->bdt_id}}" data-date="{{$block->date}}" data-remark="{{$block->remark}}"><i class="fa fa-edit"></i> Edit
+                                            data-id="{{$block->bdt_id}}" data-date="{{$block->date}}" data-remark="{{$block->remark}}"><i class="fa fa-edit"></i>
                                         </button>                                   
+                                    </td>
+                                    <td>
+                                        <form class="delete" action="{{route('order_setting')}}" method="POST">{{ csrf_field() }}
+                                            <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this date?')" ><i class="fa fa-trash"></i></button>                         
+                                            <input type="hidden" name="id" value=" {{$block->bdt_id}}">
+                                            <input type="hidden" name="type" value="delete">
+                                            <input type="hidden" name="table" value="block_date">                                   
+                                        </form>
                                     </td>
                                   </tr>
                                   @endforeach
