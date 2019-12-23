@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Response;
 use App\Order;
 use App\Material;
 use App\DeliverySetting;
+use App\BlockDay;
+use App\BlockDate;
 use App\Body;
 use App\Sleeve;
 use App\Neck;
@@ -90,7 +92,9 @@ class CustomerController extends Controller
         }
         // get data from tables
         $materials = Material::where('m_status', 1)->get();
-        $deliverysettings = DeliverySetting::all();
+        $deliverysettings = DeliverySetting::select('min_day')->first();
+        $blockdays = BlockDay::select('day')->where('bd_status', 1)->get();
+        $blockdates = BlockDate::select('date')->get();
         $bodies = Body::where('b_status', 1)->get();
         $sleeves = Sleeve::where('sl_status', 1)->get();
         $necks = Neck::where('n_status', 1)->get();
@@ -99,6 +103,8 @@ class CustomerController extends Controller
         return view('customer/neworder')
         ->with('materials', $materials)
         ->with('deliverysettings', $deliverysettings)
+        ->with('blockdays', $blockdays)
+        ->with('blockdates', $blockdates)
         ->with('bodies', $bodies)
         ->with('sleeves', $sleeves)
         ->with('necks', $necks)
@@ -247,12 +253,11 @@ class CustomerController extends Controller
         $this->validate($request, [
             'somedate' => 'required',
             'cloth_name' => 'required',
-            'category' => 'required',
             'cover_image' => 'image|required'
         ]); 
         // ------------------ insert data into table order ---------------------------------- //
         $clothname = $request->input('cloth_name');
-        $category = $request->input('category');
+        // $category = $request->input('category');
         $material = $request->input('material');
         $totalquantity = $request->input('total_quantity');
         $note = $request->input('note');
@@ -272,10 +277,6 @@ class CustomerController extends Controller
         $image;                 
         $destinationPath; 
         $profileImage;
-
-        // $errbody;
-        // $errsleeve;
-        // $errneck;
 
         // assign order design to designer
         $userdesigner = User::where('u_type', 3)->where('u_status', 1)->pluck('u_id')->toArray();   // get all designer id
@@ -298,7 +299,7 @@ class CustomerController extends Controller
         }
         $order = new Order;
         $order->file_name = $clothname;
-        $order->category = $category;
+        //$order->category = "will del";
         $order->material_id = $material;
         $order->quantity_total = $totalquantity;
         $order->note = $note;
@@ -312,6 +313,7 @@ class CustomerController extends Controller
         $order->u_id_taylor = $taylorid;
         $order->save();
         // ------------------ insert data into table spec ---------------------------------- //
+        
         $orderid = $order->o_id;
         $neckid; 
         $bodyid;
@@ -325,15 +327,19 @@ class CustomerController extends Controller
         }
         $num = 0;
         for($i = 0; $i < $totalset; $i++){
+
+
             $spec = new Spec;
             $spec->n_id = $request->input('necktype'.$i);
             $bodyid = $request->input('type'.$i);
             $sleeveid = $request->input('sleeve'.$i);
             $collarcolor = $request->input('collar_color'.$i);
+            $category = $request->input('category'.$i);
             $spec->o_id = $orderid;
             $spec->b_id = $bodyid;
             $spec->sl_id = $sleeveid;
             $spec->collar_color = $collarcolor;
+            $spec->category = $category;
             $spec->save();
             // ------------------ insert data into table unit and design ---------------------------------- //
             $idspec = DB::getPdo()->lastInsertId();
@@ -493,9 +499,6 @@ class CustomerController extends Controller
                 ->pluck('b_desc')->toArray();
             $errsleevedesc = Sleeve::where('sl_id', $this->errsleeve)
                 ->pluck('sl_desc')->toArray();
-            // $errneckdesc = Neck::select('n_desc')
-            //     ->where('n_id', $this->errneck)
-            //     ->get();
             return redirect('/customer/neworder')->with('message', 'Error! Price for set "'.$errbodydesc[0].'" and "'.$errsleevedesc[0].'" that you\'ve selected is not placed by admin. Please contact admin');
         }
     }

@@ -110,7 +110,7 @@ text-align: center;
                                 @php $no=0; @endphp
                                 @foreach ($necks as $neck)
                                   <div class="col-sm-4">
-                                    <div class="custom-control custom-radio custom-control-inline">
+                                    <div class="custom-control custom-radio custom-control-inline necktype">
                                         <input type="radio" id="neckRadioInline{{$no}}" name="neck" value="{{$neck->n_id}}" class="custom-control-input">
                                         <label class="custom-control-label" for="neckRadioInline{{$no}}"><img src="{{URL::to('/')}}/uploads/{{$neck->n_url}}" width="70" height="70">{{ $neck->n_desc }}</label>
                                     </div>
@@ -294,53 +294,57 @@ text-align: center;
 </div>
 
 <script type="text/javascript">
-    //put file name beside browse button
-document.querySelector('.custom-file-input').addEventListener('change',function(e){
-  var fileName = document.getElementById("customFile").files[0].name;
-  var nextSibling = e.target.nextElementSibling
-  nextSibling.innerText = fileName
-})
-
-  //display upload file
-function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
+        //put file name beside browse button
+    document.querySelector('.custom-file-input').addEventListener('change',function(e){
+    var fileName = document.getElementById("customFile").files[0].name;
+        console.log("custom-file-input");
     
-    reader.onload = function(e) {
-      $('#blah').attr('src', e.target.result);
-      document.getElementById("blah").height = "500";
-      document.getElementById("blah").width = "500";
+    var nextSibling = e.target.nextElementSibling
+    nextSibling.innerText = fileName
+    })
+
+    //display upload file
+    function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        console.log("readURL");
+        reader.onload = function(e) {
+        $('#blah').attr('src', e.target.result);
+        document.getElementById("blah").height = "500";
+        document.getElementById("blah").width = "500";
+        }
+        
+        reader.readAsDataURL(input.files[0]);
     }
-    
-    reader.readAsDataURL(input.files[0]);
-  }
-}
+    }
 
-  //initiate display upload file function
-$("#customFile").change(function() {
-  readURL(this);
-});
+    //initiate display upload file function
+    $("#customFile").change(function() {
+        console.log("customFile");
+    readURL(this);
+    });
 
-  //show nameset category
-$(document).on("click", "#category1", function () {
-     $(".card #sizeDiv").hide();
-     $(".card #namesetDiv").show();
-});
+    //show nameset category
+    $(document).on("click", "#category1", function () {
+        $(".card #sizeDiv").hide();
+        $(".card #namesetDiv").show();
+    });
 
-  //show size category
-$(document).on("click", "#category2", function () {
-     $(".card #sizeDiv").show();
-     $(".card #namesetDiv").hide();
-});
+    //show size category
+    $(document).on("click", "#category2", function () {
+        $(".card #sizeDiv").show();
+        $(".card #namesetDiv").hide();
+    });
 
-var i = 0;
-var original = document.getElementById('sets');
+    var i = 0;
+    var original = document.getElementById('sets');
 
-function duplicate() {
-    var clone = original.cloneNode(true); // "deep" clone
-    clone.id = "sets" + ++i;
-    // or clone.id = ""; if the divs don't need an ID
-    original.parentNode.appendChild(clone);
-}
+    function duplicate() {
+        var clone = original.cloneNode(true); // "deep" clone
+        clone.id = "sets" + ++i;
+        // or clone.id = ""; if the divs don't need an ID
+        original.parentNode.appendChild(clone);
+    }
 </script>
 @endsection
