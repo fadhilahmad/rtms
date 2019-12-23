@@ -98,6 +98,12 @@ Route::get('admin/job_order/{oid}','Admin\OrderController@orderInfo')->name('ord
 //admin dashboard
 Route::get('admin/dashboard','Admin\DashboardController@showDashboard')->name('admin.dashboard')->middleware('admin');
 
+//page company profile
+Route::get('admin/system_setting','Admin\SystemSettingController@CompanyProfile')->name('admin.company_profile')->middleware('admin');
+
+//page tier setting
+Route::get('admin/tier_setting','Admin\TierController@TierSetting')->name('admin.tier_setting')->middleware('admin');
+
 //////////////////////////////////////////////////////////////DEPARTMENT PAGE///////////////////////////////////////////////////////////////
 //page orderlist
 Route::get('department/department_orderlist', 'HomeController@departmentHome')->name('department.home')->middleware('department');
