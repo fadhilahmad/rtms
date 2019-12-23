@@ -45,9 +45,9 @@
               <ul id="orderDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.delivery') }}">Delivery Schedule</a></li>
                 <li><a href="{{ route('admin.orderlist') }}">Job Order</a></li>
+<!--                <li><a href="{{-- route('admin.neworder') --}}">Add Order</a></li>-->
                 <li><a href="{{ route('admin.ordersetting') }}">Order Setting</a></li>
-                <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>
-                {{-- <li><a href="{{ route('admin.neworder') }}">New order</a></li> --}}
+                <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>                 
               </ul>
             </li> 
             <li><a href="#paymentDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-file"></i>Payment </a>
@@ -58,7 +58,7 @@
               </ul>
             </li>
             <li> <a href="{{ route('admin.sale') }}"> <i class="fa fa-money"> </i>Sale</a></li>
-            <li> <a href="{{ route('admin.stocklist') }}"> <i class="icon-screen"> </i>Manage Stock </a></li>
+            <li> <a href="{{ route('admin.stocklist') }}"> <i class="fa fa-book"> </i>Manage Stock </a></li>
             <li><a href="#manageCustomerDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-user"></i>Customer </a>
               <ul id="manageCustomerDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.home') }}">End User List</a></li>
@@ -77,6 +77,12 @@
                 <li><a href="{{ route('admin.leaveapplication') }}">Leave Application</a></li>                
                 <li><a href="{{ route('admin.leavesetting') }}">Leave Setting</a></li>
                 <li><a href="{{ route('admin.staffperformance') }}">Performance</a></li>
+              </ul>
+            </li>
+            <li><a href="#SystemSettingDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-desktop"></i>System Setting </a>
+              <ul id="SystemSettingDropdown" class="collapse list-unstyled ">
+                <li><a href="{{ route('admin.company_profile') }}">Company Profile</a></li>
+                <li><a href="{{ route('admin.tier_setting') }}">Tier Setting</a></li>
               </ul>
             </li>            
           </ul>
