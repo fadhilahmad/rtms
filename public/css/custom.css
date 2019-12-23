@@ -63,7 +63,7 @@ float: none;
   border: 1px solid #000000;
 }
 .text-big-red{
-  position: absolute;
+  position: relative;
   margin-top: 100px;
   margin-left:30px;
   text-align: center;

@@ -3,7 +3,7 @@
 @section('content')
 <div  class="container-scroll">
     <div class ="card">
-        <div class="card-header" id="cardheader">REZEAL TEXTILE ORDER FORM<img src="{{URL::to('/')}}/img/logo.jpeg" id="imglogo"></div>  
+        <div class="card-header" id="cardheader"><img src="{{URL::to('/')}}/img/order_form.png" id="imglogo"></div>  
             <div class="card-body">   
                 <form class="form-horizontal">
                     <div class="scroll_page" id="allcolumn">
@@ -91,12 +91,12 @@
                                 </div>
                             </div>
                             <!-- jpeg mockup field -->                                                            
-                            <div class="form-group row" name="rowformdiv">
+                            <!-- <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">JPEG Mockup </label>
                                 <div class="col-sm-10">
                                     <img class="imgmockup" src="{{url('orders/mockup/'.$design->d_url)}}" width="70%">
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- remarks field -->        
                             <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Remarks</label> :
@@ -105,6 +105,44 @@
                                     </textarea>
                                 </div>
                             </div>
+                            <div class="form-group row" name="rowformdiv">
+                                <label class="col-sm-2" name="colsm1lbl"></label>
+                                <div class="col-sm-8">
+                                    <table class="table table-bordered" id="tbldate">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Notes</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        
+                                        </tbody>
+                                    </table>
+                                    <div class="row offset-sm-4" style="margin-top:50px;">
+                                        <input class="col-4" type="text" value="Total" name="col4inputtot" id="totquan" disabled/>
+                                        <input class="col-3" type="text" name="col3inputquan" id="totval"  value="{{ $orders->quantity_total }}" disabled/> <p>PCS</p>
+                                    </div>
+                                 </div>
+                            </div>
+                           
                         
                         </div>
                         <!-- Second column -->
@@ -114,118 +152,23 @@
                                     <img class="imgcollar" src="{{url('img/collar-type.jpeg')}}">
                                 </div>
                                 <div class="col">
-                                    <table class="table table-bordered" id="tbldate">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Notes</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
-                                            
-                                            </tbody>
-                                        </table>
-                                        <div class="row offset-sm-4" style="margin-top:50px;">
-                                            <input class="col-4" type="text" value="Total" name="col4inputtot" id="totquan" disabled/>
-                                            <input class="col-3" type="text" name="col3inputquan" id="totval"  value="{{ $orders->quantity_total }}" disabled/> <p>PCS</p>
-                                        </div>
                                         <div class="text-big-red">
                                             <h1 class="h1class">{{ $orders->m_desc }}</h1>
                                         </div>
-                                    
-                        
+                                       
                                 </div>
                             </div>
                             <br>
                             <br>
-                            <div class="form-group col-3" name="rowformdiv">
-                                @if($orders->category=="Size")
-                                @foreach($specs as $spec)
-                                <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
-                                <div style="display:flex;">
-                                    <table class="table table-bordered" id="tblsize">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Size</th>
-                                                <th scope="col">Qty</th>
-                                                <th scope="col">Designed</th>
-                                                <th scope="col">Printed</th>
-                                                <th scope="col">Sewed</th>
-                                                <th scope="col">Delivered</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id) as $unit)
-                                            <tr>                                     
-                                                <td scope="row" style="text-transform: uppercase;">{{$unit->size}}</td>
-                                                <td>{{$unit->un_quantity}}</td>
-                                                <td>                                                                                                         
-                                                    @if($unit->un_status != 0)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif 
-                                                </td>
-                                                <td>
-                                                    @if($unit->un_status != 0 && $unit->un_status != 1)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif
-                                                </td>
-                                                <td>                                                                                                         
-                                                    @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 5)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif 
-                                                </td> 
-                                                <td>                                                                                                         
-                                                    @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 3 && $unit->un_status != 5)
-                                                    <input type="checkbox" name="jobdone" value="" checked="" disabled="">
-                                                    @else
-                                                    <input type="checkbox" name="jobdone" value="" disabled="">
-                                                    @endif 
-                                                </td>                                            
-                                            </tr>
-                                            @endforeach 
-                                            <tr>
-                                                <th scope="row">Total</th>
-                                                <td style="background-color:#0051ff; color:white">{{$units->where('s_id',$spec->s_id)->where('o_id',$spec->o_id)->sum('un_quantity')}}</td>
-                                                
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <BR><BR>
-                                @endforeach
-                                @elseif($orders->category="Nameset")
-                                
-                                <div class="form-group col-3" name="rowformdiv">
+                            <div class="row">
+                                <div class="form-group col" name="rowformdiv">
+                                    @if($orders->category=="Size")
                                     @foreach($specs as $spec)
                                     <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
-                                    <div class="row">
-                                        <table class="table table-bordered" id="tblnameset">
-                                            <thead  style="background-color:yellow; color:black">
+                                    <div style="display:flex;">
+                                        <table class="table table-bordered" id="tblsize">
+                                            <thead>
                                                 <tr>
-                                                    <th scope="col">Name</th>
                                                     <th scope="col">Size</th>
                                                     <th scope="col">Qty</th>
                                                     <th scope="col">Designed</th>
@@ -236,8 +179,7 @@
                                             </thead>
                                             <tbody>
                                                 @foreach($units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id) as $unit)
-                                                <tr>                                              
-                                                    <td>{{$unit->name}}</td>
+                                                <tr>                                     
                                                     <td scope="row" style="text-transform: uppercase;">{{$unit->size}}</td>
                                                     <td>{{$unit->un_quantity}}</td>
                                                     <td>                                                                                                         
@@ -253,7 +195,7 @@
                                                         @else
                                                         <input type="checkbox" name="jobdone" value="" disabled="">
                                                         @endif
-                                                    </td>   
+                                                    </td>
                                                     <td>                                                                                                         
                                                         @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 5)
                                                         <input type="checkbox" name="jobdone" value="" checked="" disabled="">
@@ -267,11 +209,10 @@
                                                         @else
                                                         <input type="checkbox" name="jobdone" value="" disabled="">
                                                         @endif 
-                                                    </td>                                          
+                                                    </td>                                            
                                                 </tr>
                                                 @endforeach 
                                                 <tr>
-                                                    <td></td>
                                                     <th scope="row">Total</th>
                                                     <td style="background-color:#0051ff; color:white">{{$units->where('s_id',$spec->s_id)->where('o_id',$spec->o_id)->sum('un_quantity')}}</td>
                                                     
@@ -281,11 +222,82 @@
                                     </div>
                                     <BR><BR>
                                     @endforeach
+                                    @elseif($orders->category="Nameset")
+                                    
+                                    <div class="form-group col-3" name="rowformdiv">
+                                        @foreach($specs as $spec)
+                                        <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
+                                        <div class="row">
+                                            <table class="table table-bordered" id="tblnameset">
+                                                <thead  style="background-color:yellow; color:black">
+                                                    <tr>
+                                                        <th scope="col">Name</th>
+                                                        <th scope="col">Size</th>
+                                                        <th scope="col">Qty</th>
+                                                        <th scope="col">Designed</th>
+                                                        <th scope="col">Printed</th>
+                                                        <th scope="col">Sewed</th>
+                                                        <th scope="col">Delivered</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($units->where('o_id',$spec->o_id)->where('s_id',$spec->s_id) as $unit)
+                                                    <tr>                                              
+                                                        <td>{{$unit->name}}</td>
+                                                        <td scope="row" style="text-transform: uppercase;">{{$unit->size}}</td>
+                                                        <td>{{$unit->un_quantity}}</td>
+                                                        <td>                                                                                                         
+                                                            @if($unit->un_status != 0)
+                                                            <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                            @else
+                                                            <input type="checkbox" name="jobdone" value="" disabled="">
+                                                            @endif 
+                                                        </td>
+                                                        <td>
+                                                            @if($unit->un_status != 0 && $unit->un_status != 1)
+                                                            <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                            @else
+                                                            <input type="checkbox" name="jobdone" value="" disabled="">
+                                                            @endif
+                                                        </td>   
+                                                        <td>                                                                                                         
+                                                            @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 5)
+                                                            <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                            @else
+                                                            <input type="checkbox" name="jobdone" value="" disabled="">
+                                                            @endif 
+                                                        </td> 
+                                                        <td>                                                                                                         
+                                                            @if($unit->un_status != 0 && $unit->un_status != 1 && $unit->un_status != 2 && $unit->un_status != 3 && $unit->un_status != 5)
+                                                            <input type="checkbox" name="jobdone" value="" checked="" disabled="">
+                                                            @else
+                                                            <input type="checkbox" name="jobdone" value="" disabled="">
+                                                            @endif 
+                                                        </td>                                          
+                                                    </tr>
+                                                    @endforeach 
+                                                    <tr>
+                                                        <td></td>
+                                                        <th scope="row">Total</th>
+                                                        <td style="background-color:#0051ff; color:white">{{$units->where('s_id',$spec->s_id)->where('o_id',$spec->o_id)->sum('un_quantity')}}</td>
+                                                        
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <BR><BR>
+                                        @endforeach
+                                    </div>
+                                    
+                                    @endif
                                 </div>
-                                
-                                @endif
+                                <div  class="form-group col" name="rowformdiv" style="position:relative;margin-top:-20%">
+                                    <label class="labelimgmockup" name="colsm1lbl">JPEG Mockup :</label>
+                                    <div>
+                                        <img class="imgmockup" src="{{url('orders/mockup/'.$design->d_url)}}" width="100%">
+                                    </div>
+                                </div>
                             </div>
-                            
                             <div class="form-group row">       
                                 <div class="col-sm-8 offset-sm-3">
                                     <div class="col-md-2"><button class="print" onclick="printFunction()"><i class="fa fa-print"></i></button></div>                                                         
@@ -341,12 +353,13 @@
         color:white
     } */
     #cardheader {
-        color: white;
-        background-color: black;
+        /* color: white; */
+        background-color: white;
+        padding:0px;
     }
     #imglogo {
-        width:7%; 
-        float:right;
+        width:100%; 
+        /* float:right; */
     }
     #tbldate {
         margin: 0px auto; 
@@ -386,6 +399,7 @@
 
     #allcolumn {
         position:relative;
+        height:100vh;
     } 
     /* #firstcolumn {
         position: relative;
@@ -421,13 +435,18 @@
             font-size: 6pt;
             /* column-gap: 1rem; */
         }
+        .labelimgmockup {
+            padding-left:30%;
+        }
         .imgmockup {
-            /* width: 130px;
-            height: 130px; */
-            width: 50%;
+            width: 400px;
+            height: 330px;
+            /* width: 100%; */
+            padding-left:20%;
+            position:relative:
         }
         .imgcollar {
-            width:15vw; 
+            width:25vw; 
             margin: 0px auto; 
             margin-bottom:20px;
         }
@@ -437,6 +456,8 @@
         .h1class {
             padding-left: 45px;
             font-size: 38pt;
+            margin-top:-20%;
+            position:absolute;
         }
         input[type="checkbox"]{
             width: 7px; /*Desired width*/
@@ -473,6 +494,7 @@
         } */
         #allcolumn {
             position:initial;
+            height:80vh;
         } 
         #firstcolumn {
             position:relative;
@@ -481,13 +503,17 @@
             position:absolute;
         } 
         #cardheader {
-            color: white;
-            background-color: black;
+            /* color: white; */
+            background-color: white;
             -webkit-print-color-adjust: exact;
+            padding:0px;
+            margin-bottom:10px;
+
         }
         #imglogo {
-            width:4%; 
-            float:right;
+            width:100%; 
+            height:7vh;
+            /* float:right; */
         }
         #tbldate {
             margin: 0px auto; 
