@@ -100,6 +100,7 @@ Route::get('admin/dashboard','Admin\DashboardController@showDashboard')->name('a
 
 //page company profile
 Route::get('admin/system_setting','Admin\SystemSettingController@CompanyProfile')->name('admin.company_profile')->middleware('admin');
+Route::post('admin/system_setting','Admin\SystemSettingController@UpdateCompanyProfile')->middleware('admin')->name('admin.update_company_profile');
 
 //page tier setting
 Route::get('admin/tier_setting','Admin\TierController@TierSetting')->name('admin.tier_setting')->middleware('admin');
