@@ -184,6 +184,7 @@ class AdminController extends Controller
         $order = DB::table('orders')
                     ->Join('user', 'orders.u_id_customer', '=', 'user.u_id')
                     ->where('orders.o_status','<>','9')
+                    ->where('orders.active','=','1')
                     ->orderBy('orders.delivery_date', 'asc')
                     ->paginate(30);
         
@@ -319,6 +320,12 @@ class AdminController extends Controller
         ->with('sleeves', $sleeves)
         ->with('necks', $necks)
         ->with('prices', $prices);
+    }
+    
+    public function updateOrder($oid) 
+    {
+        
+      return view('admin/update_order');  
     }
     
    
