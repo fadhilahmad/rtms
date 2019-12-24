@@ -61,8 +61,8 @@ Route::get('admin/order_list', 'Admin\AdminController@orderList')->name('admin.o
 Route::get('admin/pricing', 'Admin\AdminController@pricing')->name('admin.pricing')->middleware('admin');
 Route::post('admin/pricing', 'Admin\OrderController@editPrice')->middleware('admin')->name('admin_pricing');
 // //page new order
-// Route::get('admin/neworder', 'Admin\AdminController@neworder')->name('admin.neworder')->middleware('admin');
-// Route::post('admin/neworder', 'Admin\OrderController@addneworder')->middleware('admin')->name('admin_new_order');
+ Route::get('admin/neworder', 'Admin\AdminController@neworder')->name('admin.neworder')->middleware('admin');
+ Route::post('admin/neworder', 'Admin\OrderController@addneworder')->middleware('admin')->name('admin_new_order');
 //page stock_list
 Route::get('admin/stock_list', 'Admin\AdminController@stockList')->name('admin.stocklist')->middleware('admin');
 Route::post('admin/stock_list', 'Admin\OrderController@updateStock')->middleware('admin')->name('manage_stock');
