@@ -28,9 +28,9 @@
                                             <table class="table table-hover" style="text-align: center; border: 0.5px solid #aaa; border-collapse: collapse; padding: 10px;">
                                                 <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col-md-2">Settings</th>
-                                                        <th scope="col-md-8">Details</th>
-                                                        <th scope="col-md-2">Action</th>
+                                                        <th style="width: 15%">Settings</th>
+                                                        <th style="width: 70%">Details</th>
+                                                        <th style="width: 15%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -80,16 +80,20 @@
                                     </div>
                                 </div>
 
+                                @if(count($bankdetails) > 0)
                                 <div class="card">
-                                    <div class="card-header">Bank Details</div>
+                                    <div class="card-header">
+                                        Bank Details <input type="button" style="float:right;" onclick="appendBank2()" class="btn btn-primary" name="add_bank" id="addBank" value="Add">
+                                        <button type="button" style="display:none; float:right;" id="removebank" onclick="removeBank(0);" class="btn btn-danger btnremove">Remove</button>
+                                    </div>
                                     <div class="card-body">
                                         @foreach ($bankdetails as $bankdetail)
                                             <table class="table table-hover" style="text-align: center; border: 0.5px solid #aaa; border-collapse: collapse; padding: 10px;">
                                                 <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col-md-2">Settings</th>
-                                                        <th scope="col-md-8">Details</th>
-                                                        <th scope="col-md-2">Action</th>
+                                                        <th style="width: 15%">Settings</th>
+                                                        <th style="width: 70%">Details</th>
+                                                        <th style="width: 15%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -123,22 +127,56 @@
                                                             </button>                                   
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>
+                                                            <form action="{{route('admin.update_company_profile')}}" method="POST" onsubmit="return confirm('Are you sure to delete this bank details?');" enctype="multipart/form-data">{{ csrf_field() }}
+                                                                <input type="hidden" value="{{$bankdetail->bd_id}}" name="deletebank" />
+                                                                <button class="btn btn-danger" type="submit" value="X"><i class="fa fa-trash"></i> Delete</button>
+                                                            </form>
+                                                        </td>
+                                                        <td>
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table> 
                                         @endforeach     
                                     </div>
+                                    <form action="{{route('admin.update_company_profile')}}" method="POST" enctype="multipart/form-data">{{ csrf_field() }}
+                                        <div id="appbk"></div>
+                                        <div style="text-align:center;">
+                                            <input type="Submit" class="btn btn-primary" id="sbmtbtnbank" style="display:none;">
+                                        </div>
+                                    </form>
                                 </div>
 
+                                
+
+                                @else
+                                    <p>No bank details recorded</p>
+                                    <input type="button" onclick="appendBank2()" class="btn btn-primary" name="add_bank" id="addBank" value="Add">
+                                    <form action="{{route('admin.update_company_profile')}}" method="POST" enctype="multipart/form-data">{{ csrf_field() }}
+                                        <div id="appbk"></div>
+                                        <div style="text-align:center;">
+                                            <input type="Submit" class="btn btn-primary" id="sbmtbtnbank" style="display:none;">
+                                        </div>
+                                    </form>
+                                @endif
+
+                                @if(count($contactdetails) > 0)
                                 <div class="card">
-                                    <div class="card-header">Contact Details</div>
+                                    <div class="card-header">Contact Details  <input type="button" style="float:right;" onclick="appendContact2()" class="btn btn-primary" name="add_contact" id="addContact" value="Add"></div>
+                                    <button type="button" style="display:none; float:right;" id="removecontact" onclick="removeContact(0);" class="btn btn-danger btnremove">Remove</button>
+
+                                    </div>
                                     <div class="card-body">
                                         @foreach ($contactdetails as $contactdetail)
                                             <table class="table table-hover" style="text-align: center; border: 0.5px solid #aaa; border-collapse: collapse; padding: 10px;">
                                                 <thead class="thead-dark">
                                                     <tr>
-                                                        <th scope="col-md-2">Settings</th>
-                                                        <th scope="col-md-8">Details</th>
-                                                        <th scope="col-md-2">Action</th>
+                                                        <th style="width: 15%">Settings</th>
+                                                        <th style="width: 70%">Details</th>
+                                                        <th style="width: 15%">Action</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -162,11 +200,38 @@
                                                             </button>                                   
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td>
+                                                            <form action="{{route('admin.update_company_profile')}}" method="POST" onsubmit="return confirm('Are you sure to delete this contact details?');" enctype="multipart/form-data">{{ csrf_field() }}
+                                                                <input type="hidden" value="{{$contactdetail->cn_id}}" name="deletecontact" />
+                                                                <button class="btn btn-danger" type="submit" value="X"><i class="fa fa-trash"></i> Delete</button>
+                                                            </form>
+                                                        </td>
+                                                        <td>
+                                                        </td>
+                                                    </tr>
                                                 </tbody>
                                             </table> 
                                         @endforeach     
                                     </div>
+                                    <form action="{{route('admin.update_company_profile')}}" method="POST" enctype="multipart/form-data">{{ csrf_field() }}
+                                        <div id="appct"></div>
+                                        <div style="text-align:center;">
+                                            <input type="Submit" class="btn btn-primary" id="sbmtbtncontact" style="display:none;">
+                                        </div>
+                                    </form>
                                 </div>
+                                @else
+                                    <p>No contact details recorded</p>
+                                    <input type="button" onclick="appendContact2()" class="btn btn-primary" name="add_bank" id="addBank" value="Add">
+                                    <form action="{{route('admin.update_company_profile')}}" method="POST" enctype="multipart/form-data">{{ csrf_field() }}
+                                        <div id="appct"></div>
+                                        <div style="text-align:center;">
+                                            <input type="Submit" class="btn btn-primary" id="sbmtbtncontact" style="display:none;">
+                                        </div>
+                                    </form>
+                                @endif
 
                             @else
                                 <form action="{{route('admin.update_company_profile')}}" method="POST" enctype="multipart/form-data">{{ csrf_field() }}
@@ -222,9 +287,12 @@
                                             
                                         </div>
                                     </div>
-
-                                    <div class="card">
-                                        <div class="card-header">Bank Details</div>
+                                    
+                                    <div class="card" id="bankid0">
+                                        <div class="card-header">
+                                            Bank Details <input type="button" style="float:right;" onclick="appendBank()" class="btn btn-primary" name="add_bank" id="addBank" value="Add">
+                                            <button type="button" style="display:none; float:right;" id="removebank" onclick="removeBank(0);" class="btn btn-danger btnremove">Remove</button>
+                                        </div>
                                         <div class="card-body">
                                     
                                             {{-- bank name --}}  
@@ -233,7 +301,7 @@
                                                     Bank Name
                                                 </label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" name="bankname" class="form-control" required>
+                                                    <input type="text" name="bankname[]" class="form-control" required>
                                                 </div>
                                             </div>
                                             {{-- account name --}}  
@@ -242,7 +310,7 @@
                                                     Account Name
                                                 </label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" name="accountname" class="form-control" required>
+                                                    <input type="text" name="accountname[]" class="form-control" required>
                                                 </div>
                                             </div>
                                             {{-- account number --}}  
@@ -251,15 +319,17 @@
                                                     Account Number
                                                 </label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" name="accountnumber" class="form-control" required>
+                                                    <input type="text" name="accountnumber[]" class="form-control" required>
                                                 </div>
                                             </div>
                                             
                                         </div>
                                     </div>
+                                    <div id="appb"></div>
 
-                                    <div class="card">
-                                        <div class="card-header">Contact Details</div>
+                                    <div class="card" id="contactid0">
+                                        <div class="card-header">Contact Details <input type="button" style="float:right;" onclick="appendContact()" class="btn btn-primary" name="add_contact" id="addContact" value="Add"></div>
+                                        <button type="button" style="display:none; float:right;" id="removecontact" onclick="removeContact(0);" class="btn btn-danger btnremove">Remove</button>
                                         <div class="card-body">
                                     
                                             {{-- telco name --}}  
@@ -268,7 +338,7 @@
                                                     Telco Name
                                                 </label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" name="telconame" class="form-control" required>
+                                                    <input type="text" name="telconame[]" class="form-control" required>
                                                 </div>
                                             </div>
                                             {{-- contact number --}}  
@@ -277,12 +347,13 @@
                                                     Contact Number
                                                 </label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" name="contactnumber" class="form-control" required>
+                                                    <input type="text" name="contactnumber[]" class="form-control" required>
                                                 </div>
                                             </div>
                                             
                                         </div>
                                     </div>
+                                    <div id="appc"></div>
                                     <br>
                                     <br>
                                     {{-- Submit button --}}
@@ -304,38 +375,37 @@
         <div class="modal-content">
             <form enctype="multipart/form-data" method="POST" id="updateform" name="updateform" action="{{ route('admin.update_company_profile') }}">
                 @csrf
-        <div class="modal-header">
-            <h5 class="modal-title" id="modalTitle">Order Setting</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-                
-            <div class="form-group row" id="description">
-                <label for="description" class="col-sm-4 col-form-label">Details</label>
-                <div class="col-sm-8">
-                    <input type="text" min="0" class="form-control" id="description" name="description" required>
-                    <input type="hidden" name="id" id="itemId">
-                    <input type="hidden" name="type" id="type">
-                    <input type="hidden" name="table" id="table">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Order Setting</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-            </div> 
+                <div class="modal-body">
+                    
+                    <div class="form-group row" id="description">
+                        <label for="description" class="col-sm-4 col-form-label">Details</label>
+                        <div class="col-sm-8">
+                            <input type="text" min="0" class="form-control" id="description" name="description" required>
+                            <input type="hidden" name="id" id="itemId">
+                            <input type="hidden" name="type" id="type">
+                            <input type="hidden" name="table" id="table">
+                        </div>
+                    </div> 
 
-            <div class="form-group row" id="complogo">
-                <label for="complogo" class="col-sm-4 col-form-label">Company Logo</label>
-                <div class="col-sm-8" id="complogo">
-                    <input id="neck_image" type="file" class="form-control" name="complogo" required>
-                </div>
-            </div> 
-                   
+                    <div class="form-group row" id="complogo">
+                        <label for="complogo" class="col-sm-4 col-form-label">Company Logo</label>
+                        <div class="col-sm-8" id="complogo">
+                            <input id="neck_image" type="file" class="form-control" id="complogo" name="complogo" required/>
+                        </div>
+                    </div> 
                 
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" onclick="validateForm()" type="submit" class="btn btn-primary">Save</button>
-        </div>
-        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="validateForm()" type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
     </div>
     </div>
@@ -387,27 +457,21 @@
         $(".modal-body #complogo").hide();
         
         if(table=="complogo"){
-            var neck = $(this).data('complogo');
             $(".modal-body #complogo").show();
             $(".modal-body #description").hide();
-            
-            if(neck==1){
-                radiobtn = document.getElementById("n1");
-                radiobtn.checked = true;
-            }
-            if(neck==2){
-                radiobtn = document.getElementById("n2");
-                radiobtn.checked = true;
-            }
-        }
-    
-        if(table=="delivery"){
-            document.getElementById('description').type = 'number';
         }
     });
     
-    function validateForm() {
-        document.getElementById("updateform").submit();      
+    function validateForm() { 
+        
+        var x = document.forms["updateform"]["description"].value;
+        if(x == ""){
+            alert("Description must be filled out");
+            return false;
+        }else{
+            document.getElementById("updateform").submit();  
+        }  
+        
     }
     
     function submitForm() {
@@ -427,6 +491,202 @@
             document.getElementById("blockform").submit();  
         }
     }
+
+    var b = 1;
+    function appendBank(){
+        $("#appb").append('<div class="card" id="bankid'+b.toString()+'">'+
+                                '<div class="card-header">'+
+                                    'Bank Details <input type="button" style="float:right;" onclick="appendBank()" class="btn btn-primary" name="add_bank" id="addBank" value="Add">'+
+                                    '<button type="button" style="float:right;" id="removebank" onclick="removeBank('+b.toString()+');" class="btn btn-danger btnremove">Remove</button>'+
+                                '</div>'+
+                                '<div class="card-body">'+
+                                    '<div class="form-group row">'+
+                                        '<label class="col-sm-2 col-form-label">'+
+                                            'Bank Name'+
+                                        '</label>'+
+                                        '<div class="col-sm-10">'+
+                                            '<input type="text" name="bankname[]" class="form-control" required>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="form-group row">'+
+                                        '<label class="col-sm-2 col-form-label">'+
+                                            'Account Name'+
+                                        '</label>'+
+                                        '<div class="col-sm-10">'+
+                                            '<input type="text" name="accountname[]" class="form-control" required>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="form-group row">'+
+                                        '<label class="col-sm-2 col-form-label">'+
+                                            'Account Number'+
+                                        '</label>'+
+                                        '<div class="col-sm-10">'+
+                                            '<input type="text" name="accountnumber[]" class="form-control" required>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div id="appb'+b.toString()+'"></div>');
+        b++;
+    }
+
+    function removeBank(banknum){
+        $("#bankid"+banknum).remove();
+    }
+
+    var c = 1;
+    function appendContact(){
+        $("#appc").append('<div class="card" id="contactid'+c.toString()+'">'+
+                            '<div class="card-header">Contact Details <input type="button" style="float:right;" onclick="appendContact()" class="btn btn-primary" name="add_contact" id="addContact" value="Add">'+
+                                '<button type="button" style="float:right;" id="removecontact" onclick="removeContact('+c.toString()+');" class="btn btn-danger btnremove">Remove</button>'+
+                            '</div>'+
+                            '<div class="card-body">'+
+                                '<div class="form-group row">'+
+                                    '<label class="col-sm-2 col-form-label">'+
+                                        'Telco Name'+
+                                    '</label>'+
+                                    '<div class="col-sm-10">'+
+                                        '<input type="text" name="telconame[]" class="form-control" required>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="form-group row">'+
+                                    '<label class="col-sm-2 col-form-label">'+
+                                        'Contact Number'+
+                                    '</label>'+
+                                    '<div class="col-sm-10">'+
+                                        '<input type="text" name="contactnumber[]" class="form-control" required>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                        '<div id="appc'+c.toString()+'"></div>');
+        c++;
+    }
+
+    function removeContact(contactnum){
+        $("#contactid"+contactnum).remove();
+    }
+
+
+    var b2 = 1;
+    function appendBank2(){
+        document.getElementById("sbmtbtnbank").style.display = "inline-block";
+        $("#appbk").append('<div class="card" id="bankid'+b2.toString()+'">'+
+                                '<div class="card-header">'+
+                                    'Bank Details <input type="button" style="float:right;" onclick="appendBank2()" class="btn btn-primary" name="add_bank" id="addBank" value="Add">'+
+                                    '<button type="button" style="float:right;" id="removebank" onclick="removeBank2('+b2.toString()+');" class="btn btn-danger btnremove">Remove</button>'+
+                                '</div>'+
+                                '<div class="card-body">'+
+                                    '<div class="form-group row">'+
+                                        '<label class="col-sm-2 col-form-label">'+
+                                            'Bank Name'+
+                                        '</label>'+
+                                        '<div class="col-sm-10">'+
+                                            '<input type="text" name="banknameadd[]" class="form-control" required>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="form-group row">'+
+                                        '<label class="col-sm-2 col-form-label">'+
+                                            'Account Name'+
+                                        '</label>'+
+                                        '<div class="col-sm-10">'+
+                                            '<input type="text" name="accountnameadd[]" class="form-control" required>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="form-group row">'+
+                                        '<label class="col-sm-2 col-form-label">'+
+                                            'Account Number'+
+                                        '</label>'+
+                                        '<div class="col-sm-10">'+
+                                            '<input type="text" name="accountnumberadd[]" class="form-control" required>'+
+                                        '</div>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div id="appb'+b2.toString()+'"></div>');
+        b2++;
+    }
+
+    function removeBank2(banknum){
+        $("#bankid"+banknum).remove();
+        b2--;
+        if(b2 == 1){
+            document.getElementById("sbmtbtnbank").style.display = "none";
+        }
+    }
+
+var c2 = 1;
+function appendContact2(){
+    document.getElementById("sbmtbtncontact").style.display = "inline-block";
+    $("#appct").append('<div class="card" id="contactid'+c2.toString()+'">'+
+                        '<div class="card-header">Contact Details <input type="button" style="float:right;" onclick="appendContact2()" class="btn btn-primary" name="add_contact" id="addContact" value="Add">'+
+                            '<button type="button" style="float:right;" id="removecontact" onclick="removeContact2('+c2.toString()+');" class="btn btn-danger btnremove">Remove</button>'+
+                        '</div>'+
+                        '<div class="card-body">'+
+                            '<div class="form-group row">'+
+                                '<label class="col-sm-2 col-form-label">'+
+                                    'Telco Name'+
+                                '</label>'+
+                                '<div class="col-sm-10">'+
+                                    '<input type="text" name="telconameadd[]" class="form-control" required>'+
+                                '</div>'+
+                            '</div>'+
+                            '<div class="form-group row">'+
+                                '<label class="col-sm-2 col-form-label">'+
+                                    'Contact Number'+
+                                '</label>'+
+                                '<div class="col-sm-10">'+
+                                    '<input type="text" name="contactnumberadd[]" class="form-control" required>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div id="appc'+c2.toString()+'"></div>');
+    c2++;
+}
+
+function removeContact2(contactnum){
+    $("#contactid"+contactnum).remove();
+    c2--;
+    if(c2 == 1){
+        document.getElementById("sbmtbtncontact").style.display = "none";
+    }
+}
+
+
+
+
+
+
+    // var i = 0;
+    // var oribank = document.getElementById("bankid");
+    // function duplicateBank() {
+    //     //document.getElementById("removebank").style.display = "inline-block";
+    //     var newbank = oribank.cloneNode(true);
+    //     //newbank.id = "bankid" + ++i;
+    //     oribank.appendChild(newbank);
+    //     oribank.id = "bankid" + ++i;
+    //     // oribank.parentNode.appendChild(newbank);
+        
+    //     // var hid = document.getElementById("hiddenbank").value;
+    //     // console.log(i);
+    //     // if(hid == 1){
+    //     //     document.getElementById("hiddenbank").value = '2';
+    //     //     document.getElementById("bankid").appendChild(newbank);
+    //     // }else{
+    //     //     newbank.id = "bankid" + ++i;  
+    //     //     document.getElementById("bankid").appendChild(newbank);
+    //     // }
+          
+    // }
+
+    // var j = 0;
+    // function duplicateContact() {
+    //     var oricontact = document.getElementById("contactid");
+    //     var newcontact = oricontact.cloneNode(true);
+    //     document.getElementById("contactid").appendChild(newcontact);
+    //     oricontact.id = "contactid" + ++j;
+    // }
     
 </script>
 

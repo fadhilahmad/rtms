@@ -25,7 +25,6 @@
                                     <th scope="col">Cloth Name</th>
                                     <th scope="col">Material</th>
                                     <th scope="col">Quantity</th>
-                                    <th scope="col">Category</th>
                                     <th scope="col">Order Date</th>
                                     <th scope="col">Action</th>
                                     </tr>
@@ -42,7 +41,6 @@
                                                 @endif
                                             @endforeach
                                             <td>{{$order->quantity_total}}</td>
-                                            <td>{{$order->category}}</td>
                                             @foreach($invoices as $invoice)
                                                 @if($invoice->o_id == $order->o_id)
                                                     <td>{{date('d/m/Y', strtotime($invoice->created_at))}}</td>
@@ -53,7 +51,6 @@
                                                     <input type="hidden" name="orderid" value="{{$order->o_id}}">
                                                     <input type="submit" style="display: inline-block;" name="actionbutton" value="View" class="btn btn-primary">
                                                 {!!Form::close()!!}
-
                                             </td>
                                             
                                         </tr>
@@ -62,10 +59,6 @@
                                     
                                 </tbody>
                             </table>
-                        {{-- @else
-                            <p>Invoice still pending</p>
-                        @endif --}}
-
                     @else
                         <p>No order created</p>
                     @endif

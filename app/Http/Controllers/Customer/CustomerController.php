@@ -22,6 +22,9 @@ use App\User;
 use App\Price;
 use App\Invoice;
 use App\InvoicePermanent;
+use App\SystemSetting;
+use App\BankDetail;
+use App\ContactNumber;
 use Gate;
 use DB;
 class CustomerController extends Controller
@@ -195,6 +198,9 @@ class CustomerController extends Controller
     // method to view or print invoice details
     public function viewInvoice(Request $request){
         $o_id = $request->input('orderid');
+        $systemsettings = SystemSetting::all();
+        $bankdetails = BankDetail::all();
+        $contactdetails = ContactNumber::all();
         $orders =  DB::table('orders')
                 ->where('o_id','=',$o_id)
                 ->first();
@@ -216,7 +222,10 @@ class CustomerController extends Controller
         ->where('o_id','=',$o_id)
         ->first();
         $invoice_p = InvoicePermanent::all();
-        return view('customer/view_invoice',compact('orders','specs','user','units','invoice','invoice_p','charges'));
+        return view('customer/view_invoice',compact('orders','specs','user','units','invoice','invoice_p','charges'))
+        ->with('systemsettings', $systemsettings)
+        ->with('bankdetails', $bankdetails)
+        ->with('contactdetails', $contactdetails);
     }
     // method to view receipt page for customer
     public function receipt()
