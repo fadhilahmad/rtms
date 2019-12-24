@@ -57,6 +57,7 @@ Route::get('admin/order_setting','Admin\AdminController@OrderSetting')->name('ad
 Route::post('admin/order_setting','Admin\OrderController@updateOrderSetting')->middleware('admin')->name('order_setting');
 //page order_list
 Route::get('admin/order_list', 'Admin\AdminController@orderList')->name('admin.orderlist')->middleware('admin');
+Route::post('admin/order_list', 'Admin\OrderController@deleteOrder')->name('admin.deleteorder')->middleware('admin');
 //page pricing
 Route::get('admin/pricing', 'Admin\AdminController@pricing')->name('admin.pricing')->middleware('admin');
 Route::post('admin/pricing', 'Admin\OrderController@editPrice')->middleware('admin')->name('admin_pricing');
@@ -101,7 +102,8 @@ Route::get('admin/dashboard','Admin\DashboardController@showDashboard')->name('a
 //page company profile
 Route::get('admin/system_setting','Admin\SystemSettingController@CompanyProfile')->name('admin.company_profile')->middleware('admin');
 Route::post('admin/system_setting','Admin\SystemSettingController@UpdateCompanyProfile')->middleware('admin')->name('admin.update_company_profile');
-
+//page update order
+Route::get('admin/update_order/{oid}','Admin\AdminController@updateOrder')->name('admin.updateorder')->middleware('admin');
 //page tier setting
 Route::get('admin/tier_setting','Admin\TierController@TierSetting')->name('admin.tier_setting')->middleware('admin');
 
