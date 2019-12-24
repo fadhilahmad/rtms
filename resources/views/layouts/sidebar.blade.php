@@ -45,7 +45,7 @@
               <ul id="orderDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.delivery') }}">Delivery Schedule</a></li>
                 <li><a href="{{ route('admin.orderlist') }}">Job Order</a></li>
-<!--                <li><a href="{{-- route('admin.neworder') --}}">Add Order</a></li>-->
+                <li><a href="{{ route('admin.neworder') }}">Add Order</a></li>
                 <li><a href="{{ route('admin.ordersetting') }}">Order Setting</a></li>
                 <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>                 
               </ul>
@@ -82,7 +82,7 @@
             <li><a href="#SystemSettingDropdown" aria-expanded="false" data-toggle="collapse"> <i class="fa fa-desktop"></i>System Setting </a>
               <ul id="SystemSettingDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.company_profile') }}">Company Profile</a></li>
-                <li><a href="{{ route('admin.tier_setting') }}">Tier Setting</a></li>
+<!--                <li><a href="{{-- route('admin.tier_setting') --}}">Tier Setting</a></li>-->
               </ul>
             </li>            
           </ul>
