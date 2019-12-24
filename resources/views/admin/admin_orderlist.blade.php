@@ -8,6 +8,12 @@
                 <div class="card-header"><i class="fa fa-list"></i> Order List</div>
 
                 <div class="card-body">
+                    @if(session()->has('message'))
+                        <div class="alert alert-success">
+                            {{ session()->get('message') }}
+                        </div>
+                    @endif
+                    <br>
                     @if(!$order->isempty())
                         <table class="table table-hover">
                             <thead class="thead-dark">
@@ -18,6 +24,8 @@
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Delivery Date</th>
                                 <th scope="col">Status</th>
+                                <th scope="col">Update</th>
+                                <th scope="col">Delete</th>
                                 <th scope="col">Details</th>
                               </tr>
                             </thead>
@@ -64,6 +72,13 @@
                                         @if($ord->o_status==0)
                                            Draft
                                         @endif
+                                </td>
+                                <td><a href="{{route('admin.updateorder',$ord->o_id)}}"><button class="btn btn-primary"><i class="fa fa-edit"></i></button></a></td>
+                                <td>
+                                    <form action="{{route('admin.deleteorder')}}" method="POST">{{ csrf_field() }}
+                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this order?')" ><i class="fa fa-trash"></i></button>
+                                        <input type="hidden" name="o_id" value=" {{$ord->o_id}}">                                 
+                                    </form>
                                 </td>
                                 <td><a href="{{route('order_info',$ord->o_id)}}"><button class="btn btn-primary">View</button></a></td>
                               </tr>
