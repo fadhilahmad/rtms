@@ -16,7 +16,7 @@ class CreateOrderTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('o_id');           
             $table->string('file_name')->nullable();
-            $table->string('category')->nullable();
+//            $table->string('category')->nullable();
             $table->unsignedBigInteger('material_id')->unsigned()->nullable();       //baca dari table material
             $table->integer('quantity_total');
             $table->text('note')->nullable();
@@ -31,6 +31,7 @@ class CreateOrderTable extends Migration
             $table->unsignedBigInteger('u_id_print')->unsigned()->nullable();
             $table->unsignedBigInteger('u_id_taylor')->unsigned()->nullable();
             $table->integer('balance')->nullable();
+            $table->integer('active')->nullable();
             $table->timestamps();
             
 //            $table->foreign('material_id')->references('m_id')->on('material')->onDelete('cascade');
