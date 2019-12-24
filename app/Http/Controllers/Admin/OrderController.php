@@ -404,4 +404,14 @@ class OrderController extends Controller
         return view('admin/invoice_info',compact('orders','specs','user','units','invoice','invoice_p','charges'));
     }
 
+    public function deleteOrder(Request $request) 
+    {
+        $data = $request->all();
+        
+        DB::table('orders')
+                    ->where('o_id', '=', $data['o_id'])
+                    ->update(array('active' => '0','updated_at'=>DB::raw('now()')));
+        
+        return redirect('admin/orderlist')->with('message','Order deleted');
+    }
 }                
