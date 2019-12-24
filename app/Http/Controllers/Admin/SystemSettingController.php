@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\SystemSetting;
+use App\BankDetail;
+use App\ContactNumber;
 use DB;
 use Illuminate\Support\Facades\File;
 
@@ -14,19 +16,28 @@ class SystemSettingController extends Controller
     public function CompanyProfile()
     {
         $systemsettings = SystemSetting::all();
+        $bankdetails = BankDetail::all();
+        $contactdetails = ContactNumber::all();
         return view('admin/system_setting')
-        ->with('systemsettings', $systemsettings);
+        ->with('systemsettings', $systemsettings)
+        ->with('bankdetails', $bankdetails)
+        ->with('contactdetails', $contactdetails);
     }
 
     public function UpdateCompanyProfile(Request $request)
     {
         if($request->input('companyname')){
+            // company details
             $companyname = $request->input('companyname');
             $systemname = $request->input('systemname');
             $companyaddress = $request->input('companyaddress');
-            var_dump($companyname);
-            var_dump($systemname);
-            var_dump($companyaddress);
+            // bank details
+            $bankname = $request->input('bankname');
+            $accountname = $request->input('accountname');
+            $accountnumber = $request->input('accountnumber');
+            // contact details
+            $telconame = $request->input('telconame');
+            $contactnumber = $request->input('contactnumber');
             if($request->hasFile('companylogo')){
                 $filenameWithExt = $request->file('companylogo')->getClientOriginalName();
                 $originalname = $request->file('companylogo')->getClientOriginalName();
@@ -40,41 +51,45 @@ class SystemSettingController extends Controller
             }else{
                 $companylogo = 'nologo.jpg';
             }
+            // system setting db
             $systemsetting = new SystemSetting;
             $systemsetting->company_name = $companyname;
             $systemsetting->system_name = $systemname;
             $systemsetting->company_logo = $companylogo;
             $systemsetting->company_address = $companyaddress;
             $systemsetting->save();
+            // bank detail db
+            $bankdetail = new BankDetail;
+            $bankdetail->bank_name = $bankname;
+            $bankdetail->account_name = $accountname;
+            $bankdetail->account_number = $accountnumber;
+            $bankdetail->save();
+            // contact number db
+            $contactnumberdb = new ContactNumber;
+            $contactnumberdb->telco_name = $telconame;
+            $contactnumberdb->contact_number = $contactnumber;
+            $contactnumberdb->save();
             return redirect('admin/system_setting')->with('message', 'Company Profile Added!');
         }else{
             $data = $request->all();
-            if($data['type']=="update")
-            {
-                if($data['table']=="compname")
-                {
+            if($data['type']=="update"){
+                if($data['table']=="compname"){
                     DB::table('system_setting')
                         ->where('ss_id', '=', $data['id'])
                         ->update(array('company_name' => $data['description']));
                     return redirect('admin/system_setting')->with('message', 'Company Name Updated!');
-                }
-                elseif($data['table']=="sysname")
-                {
+                }else if($data['table']=="sysname"){
                     DB::table('system_setting')
                         ->where('ss_id', '=', $data['id'])
                         ->update(array('system_name' => $data['description']));
                     return redirect('admin/system_setting')->with('message', 'System Name Updated!');
-                }
-                elseif($data['table']=="compaddress")
-                {
+                }else if($data['table']=="compaddress"){
                     DB::table('system_setting')
                         ->where('ss_id', '=', $data['id'])
                         ->update(array('company_address' => $data['description']));
                     
                     return redirect('admin/system_setting')->with('message', 'Company Address Updated!');
-                }
-                elseif($data['table']=="complogo")
-                {
+                }else if($data['table']=="complogo"){
                     if ($request->has('complogo')) {
                         // Folder path to be flushed 
                         $folder_path = "img/logo"; 
@@ -96,9 +111,37 @@ class SystemSettingController extends Controller
                             ->update(array('company_logo' => $profileImage));
                         return redirect('admin/system_setting')->with('message', 'Company Logo Updated!');
                     } 
-                }
-                else
-                {
+                }else if($data['table']=="bankname"){
+                    DB::table('bank_detail')
+                        ->where('bd_id', '=', $data['id'])
+                        ->update(array('bank_name' => $data['description']));
+                    
+                    return redirect('admin/system_setting')->with('message', 'Bank Name Updated!');
+                }else if($data['table']=="accname"){
+                    DB::table('bank_detail')
+                        ->where('bd_id', '=', $data['id'])
+                        ->update(array('account_name' => $data['description']));
+                    
+                    return redirect('admin/system_setting')->with('message', 'Account Name Updated!');
+                }else if($data['table']=="accnum"){
+                    DB::table('bank_detail')
+                        ->where('bd_id', '=', $data['id'])
+                        ->update(array('account_number' => $data['description']));
+                    
+                    return redirect('admin/system_setting')->with('message', 'Account Number Updated!');
+                }else if($data['table']=="telconame"){
+                    DB::table('contact_number')
+                        ->where('cn_id', '=', $data['id'])
+                        ->update(array('telco_name' => $data['description']));
+                    
+                    return redirect('admin/system_setting')->with('message', 'Telco Name Updated!');
+                }else if($data['table']=="contactnum"){
+                    DB::table('contact_number')
+                        ->where('cn_id', '=', $data['id'])
+                        ->update(array('contact_number' => $data['description']));
+                    
+                    return redirect('admin/system_setting')->with('message', 'Contact Number Updated!');
+                }else{
                     return redirect('admin/order_setting')->with('message', 'Update Error');
                 }
             }

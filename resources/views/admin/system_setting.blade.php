@@ -20,104 +20,268 @@
                     <div class="row">
                         <div class="col-md-12">
                             @if(count($systemsettings) > 0)
-                                @foreach ($systemsettings as $systemsetting)
-                                    <table class="table table-hover" style="text-align: center; border: 0.5px solid #aaa; border-collapse: collapse; padding: 10px;">
-                                        <thead class="thead-dark">
-                                            <tr>
-                                                <th scope="col-md-2">Settings</th>
-                                                <th scope="col-md-8">Details</th>
-                                                <th scope="col-md-2">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td style="padding-top: 2%"><b>Company Name</b></td>
-                                                <td style="padding-top: 2%">{{$systemsetting->company_name}}</td>
-                                                <td>
-                                                    <button 
-                                                        class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Company Name" data-table="compname" 
-                                                        data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->company_name}}"><i class="fa fa-edit"></i> Edit
-                                                    </button>                                   
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 2%"><b>System Name</b></td>
-                                                <td style="padding-top: 2%">{{$systemsetting->system_name}}</td>
-                                                <td>
-                                                    <button 
-                                                        class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update System Name" data-table="sysname" 
-                                                        data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->system_name}}"><i class="fa fa-edit"></i> Edit
-                                                    </button>                                   
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 2%"><b>Company Address</b></td>
-                                                <td style="padding-top: 2%">{{$systemsetting->company_address}}</td>
-                                                <td>
-                                                    <button 
-                                                        class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Company Address" data-table="compaddress" 
-                                                        data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->company_address}}"><i class="fa fa-edit"></i> Edit
-                                                    </button>                                   
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding-top: 2%"><b>Company Logo</b></td>
-                                                <td style="padding-top: 2%"><img class="" src="{{url('img/logo/'.$systemsetting->company_logo)}}" width="80%" id="logo"></td>
-                                                <td>
-                                                    <button 
-                                                        class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Company Logo" data-table="complogo" 
-                                                        data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->company_logo}}"><i class="fa fa-edit"></i> Edit
-                                                    </button>                                   
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table> 
-                                @endforeach     
+
+                                <div class="card">
+                                    <div class="card-header">Company Details</div>
+                                    <div class="card-body">
+                                        @foreach ($systemsettings as $systemsetting)
+                                            <table class="table table-hover" style="text-align: center; border: 0.5px solid #aaa; border-collapse: collapse; padding: 10px;">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col-md-2">Settings</th>
+                                                        <th scope="col-md-8">Details</th>
+                                                        <th scope="col-md-2">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>Company Name</b></td>
+                                                        <td style="padding-top: 2%">{{$systemsetting->company_name}}</td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Company Name" data-table="compname" 
+                                                                data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->company_name}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>System Name</b></td>
+                                                        <td style="padding-top: 2%">{{$systemsetting->system_name}}</td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update System Name" data-table="sysname" 
+                                                                data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->system_name}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>Company Address</b></td>
+                                                        <td style="padding-top: 2%">{{$systemsetting->company_address}}</td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Company Address" data-table="compaddress" 
+                                                                data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->company_address}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>Company Logo</b></td>
+                                                        <td style="padding-top: 2%"><img class="" src="{{url('img/logo/'.$systemsetting->company_logo)}}" width="80%" id="logo"></td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Company Logo" data-table="complogo" 
+                                                                data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->company_logo}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table> 
+                                        @endforeach     
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">Bank Details</div>
+                                    <div class="card-body">
+                                        @foreach ($bankdetails as $bankdetail)
+                                            <table class="table table-hover" style="text-align: center; border: 0.5px solid #aaa; border-collapse: collapse; padding: 10px;">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col-md-2">Settings</th>
+                                                        <th scope="col-md-8">Details</th>
+                                                        <th scope="col-md-2">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>Bank Name</b></td>
+                                                        <td style="padding-top: 2%">{{$bankdetail->bank_name}}</td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Bank Name" data-table="bankname" 
+                                                                data-id="{{$bankdetail->bd_id}}" data-desc="{{$bankdetail->bank_name}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>Account Name</b></td>
+                                                        <td style="padding-top: 2%">{{$bankdetail->account_name}}</td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Account Name" data-table="accname" 
+                                                                data-id="{{$bankdetail->bd_id}}" data-desc="{{$bankdetail->account_name}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>Account Number</b></td>
+                                                        <td style="padding-top: 2%">{{$bankdetail->account_number}}</td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Account Number" data-table="accnum" 
+                                                                data-id="{{$bankdetail->bd_id}}" data-desc="{{$bankdetail->account_number}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table> 
+                                        @endforeach     
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">Contact Details</div>
+                                    <div class="card-body">
+                                        @foreach ($contactdetails as $contactdetail)
+                                            <table class="table table-hover" style="text-align: center; border: 0.5px solid #aaa; border-collapse: collapse; padding: 10px;">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col-md-2">Settings</th>
+                                                        <th scope="col-md-8">Details</th>
+                                                        <th scope="col-md-2">Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>Telco Name</b></td>
+                                                        <td style="padding-top: 2%">{{$contactdetail->telco_name}}</td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Telco Name" data-table="telconame" 
+                                                                data-id="{{$contactdetail->cn_id}}" data-desc="{{$contactdetail->telco_name}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="padding-top: 2%"><b>Contact Number</b></td>
+                                                        <td style="padding-top: 2%">{{$contactdetail->contact_number}}</td>
+                                                        <td>
+                                                            <button 
+                                                                class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Contact Number" data-table="contactnum" 
+                                                                data-id="{{$contactdetail->cn_id}}" data-desc="{{$contactdetail->contact_number}}"><i class="fa fa-edit"></i> Edit
+                                                            </button>                                   
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table> 
+                                        @endforeach     
+                                    </div>
+                                </div>
+
                             @else
                                 <form action="{{route('admin.update_company_profile')}}" method="POST" enctype="multipart/form-data">{{ csrf_field() }}
-                                    {{-- company name --}}  
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label"> 
-                                            Company Name
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="companyname" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    {{-- system name --}}  
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label"> 
-                                            System Name
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="systemname" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    {{-- company address --}}  
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label"> 
-                                            Company Address
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <input type="text" name="companyaddress" class="form-control" required>
-                                        </div>
-                                    </div>
-                                    <br>
-                                    {{-- company logo --}}  
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label"> 
-                                            Company Logo
-                                        </label>
-                                        <div class="col-sm-10">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="customFile" name="companylogo" required>
-                                                <label class="custom-file-label" for="customFile">Choose file</label>                               
+                                    
+                                    <div class="card">
+                                        <div class="card-header">Company Details</div>
+                                        <div class="card-body">
+                                    
+                                            {{-- company name --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    Company Name
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="companyname" class="form-control" required>
+                                                </div>
                                             </div>
+                                            {{-- system name --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    System Name
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="systemname" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            {{-- company address --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    Company Address
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="companyaddress" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            {{-- company logo --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    Company Logo
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" id="customFile" name="companylogo" required>
+                                                        <label class="custom-file-label" for="customFile">Choose file</label>                               
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                {{-- display company logo --}}
+                                                <center><img id="blah" /></center>
+                                            </div>
+                                            
                                         </div>
                                     </div>
-                                    <div class="col-sm-12">
-                                        {{-- display company logo --}}
-                                        <center><img id="blah" /></center>
+
+                                    <div class="card">
+                                        <div class="card-header">Bank Details</div>
+                                        <div class="card-body">
+                                    
+                                            {{-- bank name --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    Bank Name
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="bankname" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            {{-- account name --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    Account Name
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="accountname" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            {{-- account number --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    Account Number
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="accountnumber" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+
+                                    <div class="card">
+                                        <div class="card-header">Contact Details</div>
+                                        <div class="card-body">
+                                    
+                                            {{-- telco name --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    Telco Name
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="telconame" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            {{-- contact number --}}  
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                    Contact Number
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="contactnumber" class="form-control" required>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
                                     </div>
                                     <br>
                                     <br>
