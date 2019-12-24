@@ -18,7 +18,12 @@ class CreateSystemSetting extends Migration
             $table->string('company_name');
             $table->string('system_name');
             $table->string('company_logo');
-            $table->string('company_address');
+            $table->string('address_first');
+            $table->string('address_second');
+            $table->string('poscode');
+            $table->string('city');
+            $table->string('state');
+            $table->string('country');
             $table->timestamps();
         });
     }
