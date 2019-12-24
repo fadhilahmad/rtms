@@ -7,16 +7,16 @@
    width: 100% !important; 
 }
 td,th {
-text-align: center;
+text-align: left;
 } 
 
 .table .thead-dark th {
     color: black;
-    background-color:yellow;
-    border-color: #32383e;
+    background-color:white;
+    border-color: #0ace9e;
 }
 .table-bordered td {
-    border:1px solid black;
+    border:1px #0ace9e;
 
 }
 .table-bordered td.no-border {
@@ -42,9 +42,11 @@ text-align: center;
 }
 
 .card-header.invoice{
-    background-color: black;
-    color: yellow;
-    font-size: 25px;
+    background-color: #0ace9e;
+    color: white;
+    height:8vh;
+    margin-bottom:40px;
+   
 }
 .card-body {
     padding-top:5px;
@@ -52,37 +54,38 @@ text-align: center;
 </style>
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-10">
             <div class="card">
                 <div class="card-header invoice">
-                    <strong>INVOICE</strong>
-                    <img src="{{URL::to('/')}}/img/logo.jpeg" style="width:18%; float:right">
+                    <h1 style="font-size:60px">INVOICE  <img src="{{URL::to('/')}}/img/logo_inv.png" style="width:110px; float:right; margin-top:-17px"></h1>
+                  
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-10">16, Jalan Meru Bistari A12</div>
-                        <div class="col-md-2" >{{$orders->ref_num}}</div>
+                        <div class="col-md-10"><strong>REZEAL TEXTILE</strong></div>
+                        <div class="col-md-10">16, Jalan Meru Bistari A12<br>Medan Meru Bistari<br>30020 Ipoh, Perak</div>
+                        <!-- <div class="col-md-2" >{{$orders->ref_num}}</div> -->
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-6">Medan Meru Bistari<br>30020 Ipoh, Perak</div>
                         <div class="col-md-6">+60176350023/+60195556577</div>
-                    </div>
+                    </div> -->
                     <br><br>
                     
-                    <div class="row">
-                        <div class="col-md-9">Bil Kepada : {{$user->u_fullname}}</div>
+                    <div>
+                        <!-- <div class="col-md-9">Bil Kepada : {{$user->u_fullname}}</div> -->
                         <!-- <div class="col-md-8">{{$user->u_fullname}}</div> -->
-                        <div class="col-md-2">{{date('d/m/Y', strtotime($invoice->created_at))}}</div>
+                        <div style=" float:right">{{date('d/m/Y', strtotime($invoice->created_at))}}</div>
                     </div>
 
-                    <table class="table table-bordered">
+                    <table class="table">
                         <thead class="thead-dark">
                             <tr>
                             <th scope="col"></th>
-                            <th scope="col">Perkara</th>
-                            <th scope="col">Kuantiti</th>
-                            <th scope="col">Harga Seunit(RM)</th>
-                            <th scope="col">Jumlah(RM)</th>
+                            <th scope="col"><strong>Item</strong></th>
+                            <th scope="col"><strong>Qty</strong></th>
+                            <th scope="col"><strong>Prize</strong>(RM)</th>
+                            <th scope="col"><strong>Total</strong>(RM)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -159,17 +162,18 @@ text-align: center;
                     </table><br><br>
                     
                     <div class="row">
-                        <div class="col-md-12"><center>Bayaran Boleh Dibuat Melalui Akaun</center></div>
+                        <div class="col-md-12"><strong>Payment</strong></div>
                     </div>
+                    <br>
                     <div class="row">
-                        <div class="col-md-2"></div>
+                        <!-- <div class="col-md-2"></div>
                         <div class="col-md-4" style="border:1px solid">Maybank<br>Mohd Fazrul Hafiz Bin Ahmad Azhar<br>MBB 158172962998</div>
-                        <div class="col-md-1"><center>@</center></div>
-                        <div class="col-md-3" style="border:1px solid">CIMB<br>Rizqi Eryna<br>8602849419</div>
+                        <div class="col-md-1"><center>@</center></div> -->
+                        <div class="col-md-3" ><img src="{{URL::to('/')}}/img/CIMB_Bank.png" style="width:60%"><br><strong>Rizqi Eryna</strong><br><strong>8602849419</strong></div>
                     </div><br><br>
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-12"><center>Terima Kasih Atas Sokongan Anda</center></div>
-                    </div><br><br>
+                    </div><br><br> -->
                     <div class="row">
                         <div class="col-md-10"></div>
                         <div class="col-md-2"><button class="print" onclick="printFunction()"><i class="fa fa-print"></i></button></div>
