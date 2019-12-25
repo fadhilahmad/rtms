@@ -276,6 +276,7 @@ class CustomerController extends Controller
         $orderstatus = 2; // set to drafted
         $customerid = auth()->user()->u_id;
         $customername = auth()->user()->username;
+        $active = 1;
         $designerid; 
         $printid = null;
         $taylorid = null; 
@@ -320,6 +321,7 @@ class CustomerController extends Controller
         $order->u_id_designer = $designerid;
         $order->u_id_print = $printid;
         $order->u_id_taylor = $taylorid;
+        $order->active = $active;
         $order->save();
         // ------------------ insert data into table spec ---------------------------------- //
         
@@ -595,7 +597,7 @@ class CustomerController extends Controller
                     InvoicePermanent::where('o_id', '=', $orderidrequest)->delete();
                     break;
                 }
-                $category = Order::where('o_id', '=', $orderidrequest)->pluck('category');
+                $category = Spec::where('s_id', '=', $specid[$i])->pluck('category');
                 $size = Unit::where('o_id', '=', $orderidrequest)->pluck('size');
                 $totsize = count($size);
                 $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
