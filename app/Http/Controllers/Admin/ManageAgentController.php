@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use App\Order;
 use DB;
 
 class ManageAgentController extends Controller
@@ -41,5 +42,17 @@ class ManageAgentController extends Controller
 
         return redirect()->back()->with('message', 'Updated');
         }
+    }
+    
+    public function agentPerformance()
+    {
+        $agent = User::selectRaw('*')
+                    ->whereIn('u_type', [6,8,9])
+                    ->where('u_status','=',1)
+                    ->paginate(30);
+        
+        $orders = Order::all();
+        
+        return view('admin/agent_performance',compact('agent','orders'));
     }
 }
