@@ -73,14 +73,14 @@
                                            Draft
                                         @endif
                                 </td>
-                                <td><a href="{{route('admin.updateorder',$ord->o_id)}}"><button class="btn btn-primary"><i class="fa fa-edit"></i></button></a></td>
+                                <td><a href="{{route('admin.updateorder',$ord->o_id)}}"><button ><i class="fa fa-edit"></i></button></a></td>
                                 <td>
                                     <form action="{{route('admin.deleteorder')}}" method="POST">{{ csrf_field() }}
-                                        <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure to delete this order?')" ><i class="fa fa-trash"></i></button>
+                                        <button  type="submit" onclick="return confirm('Are you sure to delete this order?')" ><i class="fa fa-trash"></i></button>
                                         <input type="hidden" name="o_id" value=" {{$ord->o_id}}">                                 
                                     </form>
                                 </td>
-                                <td><a href="{{route('order_info',$ord->o_id)}}"><button class="btn btn-primary">View</button></a></td>
+                                <td><a href="{{route('order_info',$ord->o_id)}}"><button >View</button></a></td>
                               </tr>
                          
                               @endforeach
