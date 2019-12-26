@@ -115,7 +115,7 @@ text-align: left;
                                 @php $display = $invoice_p->where('s_id',$spec->s_id)->first();  @endphp
                                 <td>{{$total_unit[] = $display->spec_total_quantity}}</td>
                                 @php 
-                                if($orders->category=="Nameset"){
+                                if($spec->category=="Nameset"){
                                 $harga = $display->one_unit_price + 4 ;}else{$harga=$display->one_unit_price;}
                                 @endphp
                                 <td>{{$harga}}</td>                                                               
