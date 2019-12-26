@@ -412,6 +412,6 @@ class OrderController extends Controller
                     ->where('o_id', '=', $data['o_id'])
                     ->update(array('active' => '0','updated_at'=>DB::raw('now()')));
         
-        return redirect('admin/orderlist')->with('message','Order deleted');
+        return redirect('admin/order_list')->with('message','Order deleted');
     }
 }                
