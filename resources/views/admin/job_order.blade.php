@@ -162,8 +162,9 @@
                             <br>
                             <div class="row">
                                 <div class="form-group col" name="rowformdiv">
-                                    @if($orders->category=="Size")
+                                    
                                     @foreach($specs as $spec)
+                                    @if($spec->category=="Size")
                                     <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
                                     <div style="display:flex;">
                                         <table class="table table-bordered" id="tblsize">
@@ -221,11 +222,9 @@
                                         </table>
                                     </div>
                                     <BR><BR>
-                                    @endforeach
-                                    @elseif($orders->category="Nameset")
+                                    @elseif($spec->category="Nameset")
                                     
                                     <div class="form-group col-3" name="rowformdiv">
-                                        @foreach($specs as $spec)
                                         <strong>{{$spec->b_desc}} {{$spec->sl_desc}} <span id="idspan">{{$spec->n_desc}}</span></strong>
                                         <div class="row">
                                             <table class="table table-bordered" id="tblnameset">
@@ -286,10 +285,10 @@
                                             </table>
                                         </div>
                                         <BR><BR>
-                                        @endforeach
-                                    </div>
-                                    
+                                    </div>                                  
                                     @endif
+                                    @endforeach
+                                    
                                 </div>
                                 <div  class="form-group col" name="rowformdiv" style="position:relative;margin-top:-20%">
                                     <label class="labelimgmockup" name="colsm1lbl">JPEG Mockup :</label>
