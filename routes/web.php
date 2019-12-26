@@ -32,6 +32,9 @@ Route::post('admin/add_agent','Admin\RegisterAgentController@register')->middlew
 //page customer_application
 Route::get('admin/customer_application', 'Admin\AdminController@customerApplication')->name('admin.newapplication')->middleware('admin');
 Route::get('admin/customer_application/{id}/type/{type}','Admin\ManageCustomerController@approve')->name('approve')->middleware('admin');
+//agent performance
+Route::get('admin/agent_performance', 'Admin\ManageAgentController@agentPerformance')->name('admin.agentperformance')->middleware('admin');
+
 //manage manage_staff
 Route::get('admin/manage_staff', 'Admin\AdminController@manageStaff')->name('admin.managestaff')->middleware('admin');
 Route::post('admin/manage_staff','Admin\ManageStaffController@edit')->name('edit_staff')->middleware('admin');
