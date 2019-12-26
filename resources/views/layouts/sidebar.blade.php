@@ -65,6 +65,7 @@
                 <li><a href="{{ route('admin.agentlist') }}">Agent List</a></li>
                 <!-- <li><a href="{{ route('admin.addcustomer') }}">Add End User</a></li>
                 <li><a href="{{ route('admin.addagent') }}">Add Agent</a></li>               -->
+                <li><a href="{{ route('admin.agentperformance') }}">Agent Performance</a></li>
                 <li><a href="{{ route('admin.newapplication') }}">New Application</a></li>
               </ul>
             </li>
