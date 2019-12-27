@@ -79,6 +79,7 @@ Route::get('admin/invoice_pending', 'Admin\AdminController@invoicePending')->nam
 //page receipt_list
 Route::get('admin/receipt_list', 'Admin\PaymentController@ReceiptList')->name('admin.receiptlist')->middleware('admin');
 Route::get('admin/receipt_info/{id}', 'Admin\PaymentController@receiptInfo')->name('admin.receiptinfo')->middleware('admin');
+Route::post('admin/receipt_list', 'Admin\PaymentController@filterReceiptList')->name('admin.filterreceiptlist')->middleware('admin');
 //page receipt_pending
 Route::get('admin/receipt_pending', 'Admin\AdminController@receiptPending')->name('admin.receiptpending')->middleware('admin');
 //page sale
