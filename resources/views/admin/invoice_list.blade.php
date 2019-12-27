@@ -45,11 +45,12 @@ text-align: center;
                                 <td>{{$inv->quantity_total}}</td>
                                 <td>{{$inv->total_price}}</td>
                                 <td>{{date('d/m/Y', strtotime($inv->created_at))}}</td>
-                                @if($inv->delivery_type=="Delivery")
+                                <td><button class="btn btn-default addCharges" data-toggle="modal" data-target="#Modal" data-oid="{{$inv->o_id}}">Add</button></td>
+<!--                                @if($inv->delivery_type=="Delivery")
                                 <td><button class="btn btn-default addCharges" data-toggle="modal" data-target="#Modal" data-oid="{{$inv->o_id}}">Add</button></td>
                                 @else
                                 <td>-</td>
-                                @endif
+                                @endif-->
                                 <td><a href="{{route('admin.invoiceinfo',$inv->o_id)}}"><button class="btn btn-primary">View</button></a></td>
                               </tr>
                               @endforeach
