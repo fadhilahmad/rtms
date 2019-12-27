@@ -169,9 +169,9 @@
 
                                 @if(count($contactdetails) > 0)
                                 <div class="card">
-                                    <div class="card-header">Contact Details  <input type="button" style="float:right;" onclick="appendContact2()" class="btn btn-primary" name="add_contact" id="addContact" value="Add"></div>
-                                    <button type="button" style="display:none; float:right;" id="removecontact" onclick="removeContact(0);" class="btn btn-danger btnremove">Remove</button>
-
+                                    <div class="card-header">
+                                        Contact Details  <input type="button" style="float:right;" onclick="appendContact2()" class="btn btn-primary" name="add_contact" id="addContact" value="Add">
+                                        <button type="button" style="display:none; float:right;" id="removecontact" onclick="removeContact(0);" class="btn btn-danger btnremove">Remove</button>
                                     </div>
                                     <div class="card-body">
                                         @foreach ($contactdetails as $contactdetail)
