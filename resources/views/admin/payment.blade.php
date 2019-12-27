@@ -9,7 +9,10 @@
 td,th {
 text-align: center;
 }
-
+.pending{
+    background-color: #ff6961;
+    color: white;
+}
 </style>
 <div class="container">
     <div class="row justify-content-center">
@@ -35,8 +38,12 @@ text-align: center;
                             </thead>
                             <tbody>
               
-                                @foreach($orders as $ord)
-                              <tr>
+                            @foreach($orders as $ord)
+                                @php                                  
+                                    if($ord->o_status =='9'){$css = 'pending';}
+                                    else{$css = '';}                               
+                                @endphp
+                                <tr class="{{$css}}">
                                 <th scope="row">{{$ord->ref_num}}</th>
                                 <td>{{$ord->u_fullname}}</td>
                                 <td>{{$ord->phone}}</td>
