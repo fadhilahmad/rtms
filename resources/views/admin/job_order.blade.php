@@ -145,23 +145,28 @@
                            
                         
                         </div>
-                        <!-- Second column -->
+                        <!-- Second column  name="col10div2" -->
                         <div class="col-10 scroll_page--box" id="secondcolumn" name="col10div2">
                             <div class="row">
                                 <div class="col">
                                     <img class="imgcollar" src="{{url('img/collar-type.jpeg')}}">
                                 </div>
                                 <div class="col">
-                                        <div class="text-big-red">
-                                            <h1 class="h1class">{{ $orders->m_desc }}</h1>
-                                        </div>
-                                       
+                                    <div class="text-big-red">
+                                        <h1 class="h1class">{{ $orders->m_desc }}</h1>
+                                    </div>
+                                </div>
+                                <div class="form-group col-5" name="mockupimg" id="rowimgmockup">
+                                    <label class="labelimgmockup">JPEG Mockup :</label>
+                                    <div>
+                                        <img class="imgmockup" src="{{url('orders/mockup/'.$design->d_url)}}" width="100%">
+                                    </div>
                                 </div>
                             </div>
                             <br>
                             <br>
                             <div class="row">
-                                <div class="form-group col" name="rowformdiv">
+                                <div class="form-group col-3" name="rowformdiv">
                                     
                                     @foreach($specs as $spec)
                                     @if($spec->category=="Size")
@@ -290,12 +295,6 @@
                                     @endforeach
                                     
                                 </div>
-                                <div  class="form-group col" name="rowformdiv" style="position:relative;margin-top:-20%">
-                                    <label class="labelimgmockup" name="colsm1lbl">JPEG Mockup :</label>
-                                    <div>
-                                        <img class="imgmockup" src="{{url('orders/mockup/'.$design->d_url)}}" width="100%">
-                                    </div>
-                                </div>
                             </div>
                             <div class="form-group row">       
                                 <div class="col-sm-8 offset-sm-3">
@@ -319,6 +318,17 @@
 
     .h1class {
         font-size: 70px;
+        padding-left: 0px;
+        /* font-size: 38pt; */
+        /* margin-top:-60%; */
+        position:absolute;
+    }
+    #rowimgmockup {
+        /* width: 400px;
+        height: 330px; */
+        /* width: 100%; */
+        position:relative;
+        margin-top:20%;
     }
     .imgcollar {
         width:30vw; 
@@ -434,15 +444,22 @@
             font-size: 6pt;
             /* column-gap: 1rem; */
         }
+        #rowimgmockup {
+            /* width: 400px;
+            height: 330px; */
+            /* width: 100%; */
+            position: fixed;
+            margin-top:10%;
+        }
         .labelimgmockup {
-            padding-left:30%;
+            padding-left:40%;
         }
         .imgmockup {
-            width: 400px;
-            height: 330px;
+            /* width: 400px;
+            height: 330px; */
             /* width: 100%; */
-            padding-left:20%;
-            position:relative:
+            padding-left:40%;
+            position: fixed:
         }
         .imgcollar {
             width:25vw; 
@@ -453,9 +470,9 @@
             display: none;
         }
         .h1class {
-            padding-left: 45px;
+            padding-left: 0px;
             font-size: 38pt;
-            margin-top:-20%;
+            margin-top:-60%;
             position:absolute;
         }
         input[type="checkbox"]{
@@ -565,10 +582,11 @@ function printFunction() {
     $('#firstcolumn div[name="colsm2divdate"]').removeClass('col-sm-4').addClass('col-sm-1');
     $('#firstcolumn label[name="colsm1lblref"]').removeClass('col-sm-1').addClass('col-sm-1');
     $('#firstcolumn div[name="colsm2divref"]').removeClass('col-sm-5').addClass('col-sm-1');
+    $('#secondcolumn div[name="mockupimg"]').removeClass('col-5').addClass('col-8');
 
     $('#allcolumn div[name="col10div2"]').removeClass('col-10').addClass('col-6');
     
-    // $('#allcolumn div[name="rowformdiv"]').removeClass('form-group');
+    //$('#allcolumn div[name="rowformdiv"]').removeClass('form-group');
 
     window.print(); 
 }       
