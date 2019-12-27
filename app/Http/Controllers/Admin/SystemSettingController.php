@@ -70,7 +70,12 @@ class SystemSettingController extends Controller
             // company details
             $companyname = $request->input('companyname');
             $systemname = $request->input('systemname');
-            $companyaddress = $request->input('companyaddress');
+            $street1 = $request->input('street1');
+            $street2 = $request->input('street2');
+            $city = $request->input('city');
+            $state = $request->input('state');
+            $poscode = $request->input('poscode');
+            $country = $request->input('country');
             // bank details
             $bankname = $request->input('bankname');
             $accountname = $request->input('accountname');
@@ -97,7 +102,12 @@ class SystemSettingController extends Controller
             $systemsetting->company_name = $companyname;
             $systemsetting->system_name = $systemname;
             $systemsetting->company_logo = $companylogo;
-            $systemsetting->company_address = $companyaddress;
+            $systemsetting->address_first = $street1;
+            $systemsetting->address_second = $street2;
+            $systemsetting->city = $city;
+            $systemsetting->state = $state;
+            $systemsetting->poscode = $poscode;
+            $systemsetting->country = $country;
             $systemsetting->save();
 
             // bank detail db
@@ -133,9 +143,18 @@ class SystemSettingController extends Controller
                     ->update(array('system_name' => $data['description']));
                 return redirect('admin/system_setting')->with('message', 'System Name Updated!');
             }else if($data['table']=="compaddress"){
+
+                $street1 = $request->input('street1');
+                $street2 = $request->input('street2');
+                $city = $request->input('city');
+                $state = $request->input('state');
+                $poscode = $request->input('poscode');
+                $country = $request->input('country');
+
                 DB::table('system_setting')
                     ->where('ss_id', '=', $data['id'])
-                    ->update(array('company_address' => $data['description']));
+                    ->update(array('address_first' => $street1, 'address_second' => $street2, 'city' => $city, 
+                    'state' => $state, 'poscode' => $poscode, 'country' => $country));
                 
                 return redirect('admin/system_setting')->with('message', 'Company Address Updated!');
             }else if($data['table']=="complogo"){

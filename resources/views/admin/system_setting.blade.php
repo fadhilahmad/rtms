@@ -56,11 +56,15 @@
                                                     </tr>
                                                     <tr>
                                                         <td style="padding-top: 2%"><b>Company Address</b></td>
-                                                        <td style="padding-top: 2%">{{$systemsetting->company_address}}</td>
+                                                        <td style="padding-top: 2%">
+                                                            {{$systemsetting->address_first}}<br>
+                                                            {{$systemsetting->address_second}}<br>
+                                                            {{$systemsetting->poscode}} {{$systemsetting->city}}, {{$systemsetting->state}}
+                                                        </td>
                                                         <td>
                                                             <button 
                                                                 class="btn btn-primary edit" data-toggle="modal" data-target="#orderModal" data-tittle="Update Company Address" data-table="compaddress" 
-                                                                data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->company_address}}"><i class="fa fa-edit"></i> Edit
+                                                                data-id="{{$systemsetting->ss_id}}" data-desc="{{$systemsetting->address_first}}"><i class="fa fa-edit"></i> Edit
                                                             </button>                                   
                                                         </td>
                                                     </tr>
@@ -264,10 +268,42 @@
                                                     Company Address
                                                 </label>
                                                 <div class="col-sm-10">
-                                                    <input type="text" name="companyaddress" class="form-control" required>
+                                                    <input type="text" name="street1" class="form-control" required>
+                                                    <small style="color:gray">Street address</small>
                                                 </div>
                                             </div>
-                                            <br>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                </label>
+                                                <div class="col-sm-10">
+                                                    <input type="text" name="street2" class="form-control" required>
+                                                    <small style="color:gray">Street address line 2</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                </label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="city" class="form-control" required>
+                                                    <small style="color:gray">City</small>
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="state" class="form-control" required>
+                                                    <small style="color:gray">State</small>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label"> 
+                                                </label>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="poscode" class="form-control" required>
+                                                    <small style="color:gray">Postal code</small>
+                                                </div>
+                                                <div class="col-sm-5">
+                                                    <input type="text" name="country" value="Malaysia" class="form-control" required>
+                                                    <small style="color:gray">Country</small>
+                                                </div>
+                                            </div>
                                             {{-- company logo --}}  
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label"> 
@@ -396,7 +432,22 @@
                     <div class="form-group row" id="complogo">
                         <label for="complogo" class="col-sm-4 col-form-label">Company Logo</label>
                         <div class="col-sm-8" id="complogo">
-                            <input id="neck_image" type="file" class="form-control" id="complogo" name="complogo" required/>
+                            <input id="neck_image" type="file" class="form-control" name="complogo" required/>
+                        </div>
+                    </div> 
+                    
+                    <div class="form-group row" id="compaddress">
+                        <label for="compaddress" class="col-sm-4 col-form-label">Company Address</label>
+                        <div class="col-sm-8">
+                            <input type="text" min="0" class="form-control" id="street1" name="street1" placeholder="Street line 1" required>
+                            <input type="text" min="0" class="form-control" id="street2" name="street2" placeholder="Street line 2" required>
+                            <input type="text" min="0" class="form-control" id="poscode" name="poscode" placeholder="Postal code" required>
+                            <input type="text" min="0" class="form-control" id="city" name="city" placeholder="City" required>
+                            <input type="text" min="0" class="form-control" id="state" name="state" placeholder="State" required>
+                            <input type="text" min="0" class="form-control" id="country" name="country" placeholder="Country" required>
+                            <input type="hidden" name="id" id="itemId">
+                            <input type="hidden" name="type" id="type">
+                            <input type="hidden" name="table" id="table">
                         </div>
                     </div> 
                 
@@ -442,7 +493,9 @@
 
 <script type="text/javascript">
 
+    var typechose = '';
     $(document).on("click", ".edit", function () {
+        typechose = 'desc';
         document.getElementById('description').type = 'text';
         var name = $(this).data('tittle');
         var id = $(this).data('id');
@@ -455,22 +508,71 @@
         $(".modal-body #table").val( table );
         $(".modal-body #neckdiv").hide();
         $(".modal-body #complogo").hide();
+        $(".modal-body #compaddress").hide();
         
         if(table=="complogo"){
+            typechose = 'logo';
+            
+            var sysset = {!! json_encode($systemsettings, JSON_HEX_TAG) !!};
+
+            //$(".modal-body #neck_image").val( sysset[0].company_logo );
+
             $(".modal-body #complogo").show();
             $(".modal-body #description").hide();
+            $(".modal-body #compaddress").hide();
+        }
+        if(table=="compaddress"){
+            typechose = 'addr';
+
+            var sysset = {!! json_encode($systemsettings, JSON_HEX_TAG) !!};
+            
+            $(".modal-body #street1").val( sysset[0].address_first );
+            $(".modal-body #street2").val( sysset[0].address_second );
+            $(".modal-body #poscode").val( sysset[0].poscode );
+            $(".modal-body #city").val( sysset[0].city );
+            $(".modal-body #state").val( sysset[0].state );
+            $(".modal-body #country").val( sysset[0].country );
+
+            $(".modal-body #compaddress").show();
+            $(".modal-body #description").hide();
+            $(".modal-body #complogo").hide();
         }
     });
     
     function validateForm() { 
-        
-        var x = document.forms["updateform"]["description"].value;
-        if(x == ""){
-            alert("Description must be filled out");
-            return false;
-        }else{
-            document.getElementById("updateform").submit();  
-        }  
+
+        if(typechose == 'desc'){
+            var desc = document.forms["updateform"]["description"].value;
+            if(desc == ""){
+                alert("Details must be filled out");
+                return false;
+            }else{
+                document.getElementById("updateform").submit();  
+            }  
+        }
+        if(typechose == 'logo'){
+            var complogo = document.forms["updateform"]["neck_image"].value;
+            if(document.getElementById("neck_image").files.length == 0){
+                alert("You must select file for logo");
+                return false;
+            }else{
+                document.getElementById("updateform").submit();  
+            }  
+        }
+        if(typechose == 'addr'){
+            var street1 = document.forms["updateform"]["street1"].value;
+            var street2 = document.forms["updateform"]["street2"].value;
+            var poscode = document.forms["updateform"]["poscode"].value;
+            var city = document.forms["updateform"]["city"].value;
+            var state = document.forms["updateform"]["state"].value;
+            var country = document.forms["updateform"]["country"].value;
+            if(street1 == "" || street2 == "" || poscode == "" || city == "" || state == "" || country == ""){
+                alert("Addres must be filled out");
+                return false;
+            }else{
+                document.getElementById("updateform").submit();  
+            }  
+        }
         
     }
     
