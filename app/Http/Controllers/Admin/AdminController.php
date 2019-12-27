@@ -306,20 +306,33 @@ class AdminController extends Controller
     // method to view new order page
     public function neworder() 
     {
+
         // get data from tables
         $materials = Material::where('m_status', 1)->get();
-        $deliverysettings = DeliverySetting::all();
+        $deliverysettings = DeliverySetting::select('min_day')->first();
+        $blockdays = BlockDay::select('day')->where('bd_status', 1)->get();
+        $blockdates = BlockDate::select('date')->get();
         $bodies = Body::where('b_status', 1)->get();
         $sleeves = Sleeve::where('sl_status', 1)->get();
         $necks = Neck::where('n_status', 1)->get();
         $prices = Price::all();
+        $users = User::where('u_status', 1)->where(function($query) {
+            $query->where('u_type', 6)->orWhere('u_type', 7)->orWhere('u_type', 8)->orWhere('u_type', 9);
+        })->get();
+        $designers = User::where('u_status', 1)->where('u_type', 3)->get();
+        // return view with all the data from the tables
         return view('admin/neworder')
         ->with('materials', $materials)
         ->with('deliverysettings', $deliverysettings)
+        ->with('blockdays', $blockdays)
+        ->with('blockdates', $blockdates)
         ->with('bodies', $bodies)
         ->with('sleeves', $sleeves)
         ->with('necks', $necks)
-        ->with('prices', $prices);
+        ->with('prices', $prices)
+        ->with('users', $users)
+        ->with('designers', $designers);
+
     }
     
     public function updateOrder($oid) 

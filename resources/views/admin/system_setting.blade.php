@@ -522,7 +522,7 @@
             
             var sysset = {!! json_encode($systemsettings, JSON_HEX_TAG) !!};
 
-            //$(".modal-body #neck_image").val( sysset[0].company_logo );
+            //$(".modal-body #neck_image").val( sysset[0].company_logo );   
 
             $(".modal-body #complogo").show();
             $(".modal-body #description").hide();
