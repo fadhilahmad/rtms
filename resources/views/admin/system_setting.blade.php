@@ -512,6 +512,7 @@
         $(".modal-body #type").val( "update" );
         $(".modal-body #itemId").val( id );
         $(".modal-body #table").val( table );
+        $(".modal-body #description").show();
         $(".modal-body #neckdiv").hide();
         $(".modal-body #complogo").hide();
         $(".modal-body #compaddress").hide();
