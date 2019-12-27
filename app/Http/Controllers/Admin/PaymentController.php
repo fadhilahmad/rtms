@@ -60,15 +60,48 @@ class PaymentController extends Controller
     
     public function ReceiptList()
     {
+        $y = date('Y');
+        $m = date('m');
+        
+        $years = [];
+        for ($year=2017; $year <= $y; $year++) $years[] = $year;
+        
         $receipts = DB::table('receipt')
                 ->leftJoin('orders','receipt.o_id','=','orders.o_id')
                 ->leftJoin('user','orders.u_id_customer','=','user.u_id')
+                ->where('orders.active','=','1')
                 ->where('receipt.re_status','=','1')
                 ->paginate(30);
         
         $user = User::all();
         
-        return view('admin/receipt_list',compact('receipts','user'));
+        return view('admin/receipt_list',compact('receipts','user','years','m','y'));
+    }
+    
+    public function filterReceiptList(Request $request)
+    {
+        $data = $request->all();
+        
+        $m = $data['month'];
+        $y = $data['years'];
+        
+        $ye = date('Y');
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) { $years[] = $year ;}
+        
+        $receipts = DB::table('receipt')
+                ->leftJoin('orders','receipt.o_id','=','orders.o_id')
+                ->leftJoin('user','orders.u_id_customer','=','user.u_id')
+                ->where('orders.active','=','1')
+                ->where('receipt.re_status','=','1')
+                ->whereMonth('receipt.created_at', $m)
+                ->whereYear('receipt.created_at', $y)
+                ->paginate(30);
+        
+        $user = User::all();
+        
+        return view('admin/receipt_list',compact('receipts','user','years','m','y'));
     }
     
     public function receiptInfo($id)
