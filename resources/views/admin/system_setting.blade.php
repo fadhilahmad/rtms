@@ -440,11 +440,17 @@
                         <label for="compaddress" class="col-sm-4 col-form-label">Company Address</label>
                         <div class="col-sm-8">
                             <input type="text" min="0" class="form-control" id="street1" name="street1" placeholder="Street line 1" required>
+                            <small style="color:gray">Street address</small>
                             <input type="text" min="0" class="form-control" id="street2" name="street2" placeholder="Street line 2" required>
+                            <small style="color:gray">Street address line 2</small>
                             <input type="text" min="0" class="form-control" id="poscode" name="poscode" placeholder="Postal code" required>
+                            <small style="color:gray">Postal code</small>
                             <input type="text" min="0" class="form-control" id="city" name="city" placeholder="City" required>
+                            <small style="color:gray">City</small>
                             <input type="text" min="0" class="form-control" id="state" name="state" placeholder="State" required>
+                            <small style="color:gray">State</small>
                             <input type="text" min="0" class="form-control" id="country" name="country" placeholder="Country" required>
+                            <small style="color:gray">Country</small>
                             <input type="hidden" name="id" id="itemId">
                             <input type="hidden" name="type" id="type">
                             <input type="hidden" name="table" id="table">
