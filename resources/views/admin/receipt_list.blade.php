@@ -17,7 +17,44 @@ text-align: center;
                 <div class="card-header">Payment Receipt</div>
 
                 <div class="card-body">
-                    @if(!$receipts->isempty())
+                    <form action="{{ route('admin.filterreceiptlist') }}" method="post">
+                        {{ csrf_field() }}
+                    <div class="row">
+                        <div class="col-md-1">
+                            Month
+                        </div>
+                        <div class="col-md-3 bulan">
+                            <select name="month" class="form-control" id="bulan">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            Year
+                        </div>
+                        <div class="col-md-3 tahun">
+                            <select name="years" id="tahun" class="form-control">
+                                @foreach($years as $year)
+                                <option value="{{$year}}">{{$year}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" >Filter</button>
+                        </div>
+                    </div>
+                    </form><br>
+                    @if(!$receipts->isempty())                    
                    <table class="table table-hover">
                             <thead class="thead-dark">
                               <tr>
@@ -56,4 +93,13 @@ text-align: center;
         </div>
     </div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+    $(".bulan #bulan").val( '{{$m}}' );
+    $(".tahun #tahun").val( '{{$y}}' );
+
+});    
+</script>
 @endsection
