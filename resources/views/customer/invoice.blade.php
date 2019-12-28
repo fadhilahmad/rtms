@@ -14,54 +14,39 @@
                         </div>
                     @endif 
 
-                    @if(count($orders) > 0)
-
-                        {{-- @if(count($invoiceconfirm) > 0) --}}
-
-                            <table class="table table-hover">
-                                <thead class="thead-dark">
-                                    <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Cloth Name</th>
-                                    <th scope="col">Material</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Order Date</th>
-                                    <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $no=1; ?>
-                                    @foreach($orders as $order)
-                                        <tr>
-                                            <th scope="row"><?php echo $no; ?></th>
-                                            <td>{{$order->file_name}}</td>
-                                            @foreach($materials as $material)
-                                                @if($material->m_id == $order->material_id)
-                                                    <td>{{$material->m_desc}}</td>
-                                                @endif
-                                            @endforeach
-                                            <td>{{$order->quantity_total}}</td>
-                                            @foreach($invoices as $invoice)
-                                                @if($invoice->o_id == $order->o_id)
-                                                    <td>{{date('d/m/Y', strtotime($invoice->created_at))}}</td>
-                                                @endif
-                                            @endforeach
-                                            <td>
-                                                {!! Form::open(array( 'route'=>'customer.viewinvoice', 'method' => 'POST')) !!}
-                                                    <input type="hidden" name="orderid" value="{{$order->o_id}}">
-                                                    <input type="submit" style="display: inline-block;" name="actionbutton" value="View" class="btn btn-primary">
-                                                {!!Form::close()!!}
-                                            </td>
-                                            
-                                        </tr>
-                                        <?php $no++; ?>
-                                    @endforeach
-                                    
-                                </tbody>
-                            </table>
+                    @if(!$invoice->isempty())
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">Ref Num</th>
+                                <th scope="col">File Name</th>
+                                <th scope="col">Delivery</th>
+                                <th scope="col">Total Quantity</th>
+                                <th scope="col">Total Price</th>
+                                <th scope="col">Created Date</th>
+                                <th scope="col">View</th>
+                              </tr>
+                            </thead>
+                            <tbody>                                
+                                @foreach($invoice as $inv)
+                              <tr>
+                                <td>{{$inv->ref_num}}</td>
+                                <td>{{$inv->file_name}}</td>
+                                <td>{{$inv->delivery_type}}</td>
+                                <td>{{$inv->quantity_total}}</td>
+                                <td>{{$inv->total_price}}</td>
+                                <td>{{date('d/m/Y', strtotime($inv->created_at))}}</td>
+                                <td><a href="{{route('general.invoice',$inv->o_id)}}"><button class="btn btn-primary">View</button></a></td>
+                              </tr>
+                              @endforeach
+                              {{ $invoice->links() }}
+                            </tbody>
+                          </table>                    
+                    
+                    
                     @else
-                        <p>No order created</p>
-                    @endif
+                    No invoice
+                    @endif 
                     
                 </div>
             </div>
