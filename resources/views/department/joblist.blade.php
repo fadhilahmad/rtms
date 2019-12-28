@@ -18,7 +18,6 @@
                                   <tr>
                                     <th scope="col">Ref No</th>
                                     <th scope="col">File Name</th>
-                                    <th scope="col">Category</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Delivery Date</th>
                                     <th scope="col">Design Link</th>
@@ -34,10 +33,15 @@
                                   <tr>
                                     <td>{{$order->ref_num}}</td>
                                     <td>{{$order->file_name}}</td>
-                                    <td>{{$order->category}}</td>
                                     <td>{{$order->quantity_total}}</td>
                                     <td>{{ date('d/m/Y', strtotime($order->delivery_date)) }}</td>
-                                    <td><a href="{{$order->design_link}}" target="_blank">Google Drive Link</a></td>
+                                    <td>
+                                        @if($order->design_link !== null)
+                                        <a href="{{$order->design_link}}" target="_blank">Google Drive Link</a>
+                                        @else
+                                        No link
+                                        @endif
+                                    </td>
                                     <td><a href="{{ route('department.joborder',$order->o_id) }}" target="_blank">Job Order {{$order->ref_num}}</a></td>
                                     
                                       
@@ -82,7 +86,6 @@
                                   <tr>
                                     <th scope="col">Ref No</th>
                                     <th scope="col">File Name</th>
-                                    <th scope="col">Category</th>
                                     <th scope="col">Delivery Date</th>
                                     <th scope="col">Design Link</th>
                                     <th scope="col">Job Order</th>
@@ -97,7 +100,6 @@
                                   <tr>
                                     <td>{{$re->ref_num}}</td>
                                     <td>{{$re->file_name}}</td>
-                                    <td>{{$re->category}}</td>
                                     <td>{{ date('d/m/Y', strtotime($re->delivery_date)) }}</td>
                                     <td><a href="{{$re->design_link}}" target="_blank">Google Drive Link</a></td>
                                     <td><a href="{{ route('department.joborder',$re->o_id) }}" target="_blank">Job Order {{$re->ref_num}}</a></td>
@@ -110,11 +112,9 @@
                                            Ready to sew
                                            @endif
                                        </td>
-                                       @if($re->o_status==11)
+                                       
                                     <td><a href="{{route('job_sew',$re->o_id)}}"><button class="btn btn-primary">Sew</button></a></td>
-                                       @else
-                                       <td>-</td>
-                                       @endif
+                                       
                                        @endif
                                        @if($department==5)
                                     <td><a href="{{route('job_print_reprint',$re->o_id)}}"><button class="btn btn-primary">Print</button></a></td>
