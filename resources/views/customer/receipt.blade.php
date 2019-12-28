@@ -22,7 +22,6 @@ text-align: center;
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col">Ref No</th>
-                                <th scope="col">Customer Name</th>
                                 <th scope="col">File name</th>
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Payment</th>
@@ -35,12 +34,11 @@ text-align: center;
                                 @foreach($receipts as $receipt)
                               <tr>
                                 <th scope="row">{{$receipt->ref_num}}</th>
-                                <td>{{$receipt->u_fullname}}</td>
                                 <td>{{$receipt->file_name}}</td>
                                 <td>{{$receipt->quantity_total}}</td>
                                 <td>{{$receipt->total_paid}}</td>
                                 <td>{{date('d/m/Y', strtotime($receipt->created_at))}}</td>
-                                <td><a href="{{route('customer.customerreceiptinfo',$receipt->re_id)}}"><button class="btn btn-primary">View</button></td>
+                                <td><a href="{{route('general.receipt',$receipt->re_id)}}"><button class="btn btn-primary">View</button></td>
                               </tr>
                          
                               @endforeach
