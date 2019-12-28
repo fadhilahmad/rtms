@@ -364,8 +364,14 @@ class OrderController extends Controller
                        ->leftJoin('unit','design.o_id','=','unit.o_id')
                        ->where('design.o_id','=',$o_id)
                        ->get();
+             
+             $notes = DB::table('notes')
+                     ->where('status','=','1')
+                     ->where('active','=','1')
+                     ->where('o_id','=',$o_id)
+                     ->get();
             //dd($orders);
-            return view('admin/job_order',compact('orders','specs','pic','units','design','designs')); 
+            return view('admin/job_order',compact('orders','specs','pic','units','design','designs','notes')); 
     }
     
     public function invoiceInfo($o_id){
