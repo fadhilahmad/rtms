@@ -80,7 +80,7 @@
                                         <input type="hidden" name="o_id" value=" {{$ord->o_id}}">                                 
                                     </form>
                                 </td>
-                                <td><a href="{{route('general.joborder',$ord->o_id)}}"><button >View</button></a></td>
+                                <td><a href="{{route('general.joborder',$ord->o_id)}}" target="_blank"><button >View</button></a></td>
                               </tr>
                          
                               @endforeach
