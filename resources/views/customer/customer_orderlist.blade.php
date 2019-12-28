@@ -26,7 +26,7 @@
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Note</th>
                                     <th scope="col">Delivery Date</th>
-                                    <th scope="col">Design</th>
+                                    <th scope="col">Payment Balance</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                   </tr>
@@ -42,9 +42,7 @@
                                             <td>{{$singleorderrow->quantity_total}}</td>
                                             <td>{{$singleorderrow->note}}</td>
                                             <td>{{$singleorderrow->delivery_date}}</td>
-                                            <td>
-                                                 <a href="{{URL::to('/')}}/customer/vieworder/{{$singleorderrow->o_id}}">View Design</a>
-                                            </td>
+                                            <td>RM {{$singleorderrow->balance}}</td>
                                             <td>
                                                 @if($singleorderrow->o_status==1)
                                                     Waiting for design
@@ -81,7 +79,7 @@
                                                  @endif    
                                                  
                                             </td>
-                                            <td><a href="{{URL::to('/')}}/customer/jobOrder/{{$singleorderrow->o_id}}">View Job Order</a></td>
+                                            <td><a href="{{route('general.joborder',$singleorderrow->o_id)}}" target="_blank">View Job Order</a></td>
                                         </tr>
                                         <?php $no++; ?>
                                   @endforeach
