@@ -32,11 +32,6 @@ text-align: center;
                                         <div class="col-sm-3">File name</div>
                                         <div class="col-sm-1">:</div>
                                         <div class="col-sm-8">{{$order->file_name}}</div>
-                                    </div><br>
-                                    <div class="row">
-                                        <div class="col-sm-3">Category</div>
-                                        <div class="col-sm-1">:</div>
-                                        <div class="col-sm-8">{{$order->category}}</div>
                                     </div><br> 
                                     <div class="row">
                                         <div class="col-sm-3">Quantity</div>
@@ -105,12 +100,6 @@ text-align: center;
                                   </tr>
                                   <tr>
                                     <thead class="thead-light">
-                                    <th scope="col">Category</th>
-                                    <td>{{$order->category}}</td>
-                                    </thead>
-                                  </tr>
-                                  <tr>
-                                    <thead class="thead-light">
                                     <th scope="col">Quantity</th>
                                     <td>{{$order->quantity_total}}</td>
                                     </thead>
@@ -160,11 +149,6 @@ text-align: center;
                                         <div class="col-sm-3">File name</div>
                                         <div class="col-sm-1">:</div>
                                         <div class="col-sm-8">{{$order->file_name}}</div>
-                                    </div><br>
-                                    <div class="row">
-                                        <div class="col-sm-3">Category</div>
-                                        <div class="col-sm-1">:</div>
-                                        <div class="col-sm-8">{{$order->category}}</div>
                                     </div><br> 
                                     <div class="row">
                                         <div class="col-sm-3">Quantity</div>
