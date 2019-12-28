@@ -41,9 +41,10 @@ text-align: center;
                                         <div class="col-sm-1">:</div>
                                         <div class="col-sm-8"><a href="{{$re->design_link}}" target="_blank">Google Drive Link</a></div>
                                     </div><br>
-                            @if($re->category=="Size")
+                            
                             @php $no=0; @endphp
                             @foreach($specs as $spec)
+                            @if($spec->category=="Size")
                             <div class="panel panel-primary">
                                 <br><br><div class="panel-heading"><center><h2 style="text-transform: uppercase;">{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}</h2></center></div><br><br>                                                                  
                                 <div class="panel-body">
@@ -52,6 +53,7 @@ text-align: center;
                                           <tr>
                                             <th scope="col">Size</th>
                                             <th scope="col">Reprint Quantity</th>
+                                            <th scope="col">Note</th>
                                             <th scope="col">Printed</th>
                                           </tr>
                                         </thead>
@@ -62,6 +64,7 @@ text-align: center;
                                               <td style="text-transform: uppercase;">{{$unit->size}}</td>
                                               @php $quan = $print->where('o_id',$spec->o_id)->where('un_id',$unit->un_id)->last()   @endphp
                                               <td>{{$quan['r_quantity']}}</td>
+                                              <td>{{$notes->where('o_id',$spec->o_id)->where('un_id',$unit->un_id)->pluck('note')->first()}}</td>
                                               <td>                                                  
                                                   @if($units->where('o_id',$spec->o_id)->where('un_id',$unit->un_id)->where('un_status','5')->count()>0)
                                                   <button 
@@ -80,15 +83,7 @@ text-align: center;
                                 </div>                                   
                             </div>
                             
-                            @php
-                            $completed =  $units->where('o_id',$spec->o_id)->where('un_status','<>','5')->count()
-                            @endphp
-                            @endforeach       
-                            @endif
-                            
-                            @if($re->category=="Nameset")
-                            @php $no=0; @endphp
-                            @foreach($specs as $spec)
+                            @elseif($spec->category=="Nameset")
                             <div class="panel panel-primary">
                                 <br><br><div class="panel-heading"><center><h2 style="text-transform: uppercase;">{{$spec->b_desc}} {{$spec->sl_desc}} {{$spec->n_desc}}</h2></center></div><br><br>                                                                  
                                 <div class="panel-body">
@@ -127,13 +122,12 @@ text-align: center;
                                     </table>                                                                        
                                 </div>                                   
                             </div>
-                            
+                            @endif
                             @php
                             $completed =  $units->where('o_id',$spec->o_id)->where('un_status','<>','5')->count()
                             @endphp
-                            @endforeach
-                            
-                            @endif
+                            @endforeach       
+                                                                                 
                              <br><br>
                             @if($no==$completed)
                             
