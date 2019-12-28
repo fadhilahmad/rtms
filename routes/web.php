@@ -15,6 +15,8 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('job_order/{oid}', 'GeneralController@ViewJobOrder')->name('general.joborder');
+Route::get('invoice/{id}', 'GeneralController@ViewInvoice')->name('general.invoice');
+Route::get('receipt/{id}', 'GeneralController@ViewReceipt')->name('general.receipt');
 //////////////////////////////////////////////////////////////ADMIN PAGE///////////////////////////////////////////////////////////////////////
 //page manage_customer dropdown
 Route::get('admin/manage_customer', 'HomeController@adminHome')->name('admin.home')->middleware('admin');
@@ -150,8 +152,10 @@ Route::post('department/stock', 'Department\DepartmentController@updateStock')->
 Route::get('department/delivery_list', 'Department\DeliveryController@deliveryList')->name('department.delivery')->middleware('department');
 Route::get('department/job_delivery/{oid}', 'Department\DeliveryController@updateDelivery')->name('job_delivery')->middleware('department');
 Route::post('department/job_delivery', 'Department\DeliveryController@completeDelivery')->name('update_delivery')->middleware('department');
+
+
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////
-//Route::get('customer/neworder', 'HomeController@customerHome')->name('customer.home')->middleware('customer');
+
 Route::get('customer/customer_profile', 'Customer\CustomerController@customerProfile')->middleware('customer');
 Route::patch('customer/customer_profile/update/{id}', 'Customer\CustomerController@updateProfile')->name('customer.update')->middleware('customer');
 Route::get('customer/change_password', 'Customer\customerController@CustomerChangePassword')->name('customer.changePassword')->middleware('customer');
