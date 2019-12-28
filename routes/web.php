@@ -14,6 +14,7 @@ Route::get('/', function () {
 });
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('job_order/{oid}', 'GeneralController@ViewJobOrder')->name('general.joborder');
 //////////////////////////////////////////////////////////////ADMIN PAGE///////////////////////////////////////////////////////////////////////
 //page manage_customer dropdown
 Route::get('admin/manage_customer', 'HomeController@adminHome')->name('admin.home')->middleware('admin');
@@ -128,6 +129,7 @@ Route::post('department/job_design', 'Department\JobListController@updateDesign'
 //page job print
 Route::get('department/job_print/{oid}', 'Department\JobListController@casePrinter')->name('job_print')->middleware('department');
 Route::post('department/job_print', 'Department\JobListController@updatePrint')->name('update.print')->middleware('department');
+Route::post('department/job_print/{oid}', 'Department\JobListController@updatePrint')->middleware('department');
 Route::get('department/job_reprint_print/{oid}', 'Department\JobListController@casePrinterReprint')->name('job_print_reprint')->middleware('department');
 Route::post('department/job_reprint_print', 'Department\JobListController@PrinterReprint')->name('print_reprint')->middleware('department');
 //page job sew
