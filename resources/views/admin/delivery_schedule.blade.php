@@ -55,6 +55,8 @@ td.fc-event-container{
                 {
                     title : '{{$order->ref_num}}: {{$order->quantity_total}}',
                     start : '{{$order->delivery_date}}',
+                    color : 'green',
+                    url: '{{route("general.joborder",$order->o_id)}}',
                 },
                 @endforeach
                 
@@ -62,6 +64,24 @@ td.fc-event-container{
                 {
                     title : 'Total: {{$tot->sum}}',
                     start : '{{$tot->delivery_date}}',
+                    color : 'black',
+                },
+                @endforeach 
+                
+                @foreach($lates as $late)               
+                {
+                    title : '{{$late->ref_num}}: {{$late->quantity_total}}',
+                    start : '{{$late->delivery_date}}',
+                    color : 'red',
+                    url: '{{route("general.joborder",$order->o_id)}}',
+                },
+                @endforeach
+                
+                @foreach($tot_lates as $tot_late)               
+                {
+                    title : 'Total: {{$tot_late->sum}}',
+                    start : '{{$tot_late->delivery_date}}',
+                    color : 'black',
                 },
                 @endforeach 
             ],
@@ -76,6 +96,13 @@ td.fc-event-container{
 //                }
 //            }
 
+eventClick: function(info) {
+    info.jsEvent.preventDefault(); // don't let the browser navigate
+
+    if (info.event.url) {
+      window.open(info.event.url);
+    }
+  }
         })
     });
 </script>
