@@ -51,7 +51,7 @@ text-align: center;
                                 @else
                                 <td>-</td>
                                 @endif-->
-                                <td><a href="{{route('admin.invoiceinfo',$inv->o_id)}}"><button class="btn btn-primary">View</button></a></td>
+                                <td><a href="{{route('general.invoice',$inv->o_id)}}"><button class="btn btn-primary">View</button></a></td>
                               </tr>
                               @endforeach
                               {{ $invoice->links() }}
