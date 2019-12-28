@@ -57,7 +57,7 @@ text-align: left;
         <div class="col-md-10">
             <div class="card">
                 <div class="card-header invoice">
-                    <h1 style="font-size:60px">INVOICE  <img src="{{URL::to('/')}}/img/logo_inv.png" style="width:110px; float:right; margin-top:-17px"></h1>
+                    <h1 style="font-size:40px">INVOICE  <img src="{{URL::to('/')}}/img/logo_inv.png" style="width:110px; float:right; margin-top:-17px"></h1>
                   
                 </div>
                 <div class="card-body">
