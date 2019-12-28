@@ -22,7 +22,7 @@ text-align: center;
 
                 <div class="card-body">
                    @if(!$orders->isempty())
-                   <table class="table table-hover">
+                   <table class="table">
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col">Ref No</th>
