@@ -108,6 +108,7 @@
                             <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl"></label>
                                 <div class="col-sm-8">
+                                    @if(!$notes->isempty())
                                     <table class="table table-bordered" id="tbldate">
                                         <thead>
                                             <tr>
@@ -116,26 +117,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                           @foreach($notes as $note)
                                             <tr>
-                                                <td></td>
-                                                <td></td>
+                                                <td>{{ $note->created_at }}</td>
+                                                <td>{{ $note->note }}</td>
                                             </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                            
-                                            </tr>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        
+                                           @endforeach
                                         </tbody>
                                     </table>
+                                    @endif
                                     <div class="row offset-sm-4" style="margin-top:50px;">
                                         <input class="col-4" type="text" value="Total" name="col4inputtot" id="totquan" disabled/>
                                         <input class="col-3" type="text" name="col3inputquan" id="totval"  value="{{ $orders->quantity_total }}" disabled/> <p>PCS</p>
