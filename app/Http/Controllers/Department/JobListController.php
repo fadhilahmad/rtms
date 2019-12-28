@@ -16,6 +16,7 @@ use App\LeaveDay;
 use App\Unit;
 use App\Design;
 use App\Reprint;
+use App\Notes;
 use DB;
 
 class JobListController extends Controller
@@ -37,6 +38,7 @@ class JobListController extends Controller
             $orders =  DB::table('orders')
                         ->where('u_id_designer','=',$u_id)
                         ->where('o_status','=','2')
+                        ->where('active','=','1')
                         ->orderBy('delivery_date', 'asc')
                         ->get();
            // dd($orders); 
@@ -44,6 +46,7 @@ class JobListController extends Controller
                         ->join('orders','reprint.o_id','=','orders.o_id')
                         ->join('material', 'orders.material_id', '=', 'material.m_id')
                         ->where('orders.o_status','=','8')
+                        ->where('orders.active','=','1')
                         ->where('orders.u_id_designer','=',$u_id)
                         ->orderBy('orders.delivery_date', 'asc')
                         ->get();
@@ -56,12 +59,14 @@ class JobListController extends Controller
                        ->join('material', 'orders.material_id', '=', 'material.m_id')
                         ->where('orders.o_status','=','4')
                         ->where('orders.u_id_print','=',$u_id)
+                        ->where('orders.active','=','1')
                         ->orderBy('delivery_date', 'asc')
                         ->get();
             $reprint =  DB::table('orders')
                        ->join('material', 'orders.material_id', '=', 'material.m_id')
                         ->where('orders.o_status','=','8')
                         ->where('orders.u_id_print','=',$u_id)
+                        ->where('orders.active','=','1')
                         ->orderBy('delivery_date', 'asc')
                         ->get();
             //dd($orders);
@@ -73,6 +78,7 @@ class JobListController extends Controller
                        ->join('material', 'orders.material_id', '=', 'material.m_id')
                         ->where('orders.o_status','=','6')
                         ->where('orders.u_id_taylor','=',$u_id)
+                        ->where('orders.active','=','1')
                         ->orderBy('delivery_date', 'asc')
                         ->get();
             //dd($orders);
@@ -80,6 +86,7 @@ class JobListController extends Controller
                        ->join('material', 'orders.material_id', '=', 'material.m_id')
                         ->whereIn('orders.o_status',[8,11])
                         ->where('orders.u_id_taylor','=',$u_id)
+                        ->where('orders.active','=','1')
                         ->orderBy('delivery_date', 'asc')
                         ->get();
             //dd($reprint);
@@ -204,9 +211,16 @@ class JobListController extends Controller
        $units = Unit::all();
              
        $design = Design::all();
-             
+       
+       $notes = DB::table('notes')
+                     ->where('status','=','1')
+                     ->where('active','=','1')
+                     ->where('o_id','=',$o_id)
+                     ->get();
+       
+       $user = User::all();
 
-       return view('department/job_design',compact('orders','specs','units','design'));
+       return view('department/job_design',compact('orders','specs','units','design','notes','user'));
        //return view('department/job_design');
        
        /*  job order form     */
@@ -269,9 +283,17 @@ class JobListController extends Controller
                         ->where('u_type','=',4)
                         ->where('u_status','=',1)
                         ->get();
+       
+       $notes = DB::table('notes')
+                     ->where('status','=','1')
+                     ->where('active','=','1')
+                     ->where('o_id','=',$o_id)
+                     ->get();
+       
+       $user = User::all();
              
        //dd($orders);
-       return view('department/job_print',compact('orders','specs','units','design','tailors'));     
+       return view('department/job_print',compact('orders','specs','units','design','tailors','notes','user'));     
     }
     
     public function caseTailor($o_id){
@@ -293,9 +315,16 @@ class JobListController extends Controller
        $reprint = Reprint::all();
              
        $units = Unit::all();
-             
+       
+       $notes = DB::table('notes')
+                     ->where('status','=','1')
+                     ->where('active','=','1')
+                     ->where('o_id','=',$o_id)
+                     ->get();
+       
+       $user = User::all();
        //dd($orders);
-       return view('department/job_sew',compact('orders','specs','units','reprint'));       
+       return view('department/job_sew',compact('orders','specs','units','reprint','notes','user'));       
     }
 
     public function updateDesign(Request $request){
@@ -337,6 +366,35 @@ class JobListController extends Controller
            
            return Redirect::route('job_list');           
         }
+        if($data['process']=="addnote")
+        {
+           DB::table('notes')->insert([
+                     'o_id' => $data['oid'],
+                     'u_id'=> $data['uid'],
+                     'note'=> $data['note'],
+                     'status'=> '1',
+                     'active'=> '1',
+                     'created_at'=> DB::raw('now()'),
+                     'updated_at'=> DB::raw('now()')
+                    ]);
+        return Redirect::back()->with('message', 'Note added');          
+        }
+        if($data['process']=="updatenote")
+        {
+           DB::table('notes')
+                 ->where('note_id', '=', $data['note_id'])
+                 ->update(array('note'=>$data['note'] ,'updated_at'=> DB::raw('now()')));
+           
+        return Redirect::back()->with('message', 'Note update');          
+        }
+        if($data['process']=="deletenote")
+        {
+           DB::table('notes')
+                 ->where('note_id', '=', $data['note_id'])
+                 ->update(array('active'=>'0','updated_at' => DB::raw('now()')));
+           
+           return Redirect::back()->with('message', 'Note deleted');           
+        }
         
     }
     
@@ -362,7 +420,9 @@ class JobListController extends Controller
                  ->where('o_id', '=', $data['oid'])
                  ->update(array('o_status'=>'6','u_id_taylor'=>$data['tailor'],'updated_at' => DB::raw('now()')));
            
-           return response()->json(['success'=>'Order Updated']);           
+          // dd($data);
+           //return response()->json(['success'=>'Order Updated']);
+            return Redirect::route('job_list');           
         }        
         
     } 
@@ -409,6 +469,17 @@ class JobListController extends Controller
                      'r_status'=> '1',
                      'created_at' => DB::raw('now()'),
                      'updated_at' => DB::raw('now()')
+                    ]);
+          
+           DB::table('notes')->insert([
+                     'o_id' => $data['o_id'],
+                     'u_id'=> $data['uid'],
+                     'un_id'=> $data['un_id'],
+                     'note'=> $data['reprint_note'],
+                     'status'=> '2',
+                     'active'=> '1',
+                     'created_at'=> DB::raw('now()'),
+                     'updated_at'=> DB::raw('now()')
                     ]);
                       
         }
@@ -529,9 +600,10 @@ class JobListController extends Controller
        
        $print = Reprint::all();
        $units = Unit::all();
+       $notes = Notes::all();
              
        //dd($orders);
-       return view('department/job_print_reprint',compact('reprint','specs','units','print'));  
+       return view('department/job_print_reprint',compact('reprint','specs','units','print','notes'));  
     }
     
         public function PrinterReprint(Request $request){
