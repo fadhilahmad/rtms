@@ -42,7 +42,7 @@
                                         No link
                                         @endif
                                     </td>
-                                    <td><a href="{{ route('department.joborder',$order->o_id) }}" target="_blank">Job Order {{$order->ref_num}}</a></td>
+                                    <td><a href="{{route('general.joborder',$order->o_id)}}" target="_blank">Job Order {{$order->ref_num}}</a></td>
                                     
                                       
                                        @if($department==3)
@@ -102,7 +102,7 @@
                                     <td>{{$re->file_name}}</td>
                                     <td>{{ date('d/m/Y', strtotime($re->delivery_date)) }}</td>
                                     <td><a href="{{$re->design_link}}" target="_blank">Google Drive Link</a></td>
-                                    <td><a href="{{ route('department.joborder',$re->o_id) }}" target="_blank">Job Order {{$re->ref_num}}</a></td>
+                                    <td><a href="{{route('job_print',$re->o_id)}}" target="_blank">Job Order {{$re->ref_num}}</a></td>
                                                                            
                                        @if($department==4)
                                        <td>
