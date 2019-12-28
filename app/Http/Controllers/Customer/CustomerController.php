@@ -184,16 +184,15 @@ class CustomerController extends Controller
     public function invoice()
     {
         $user_id = auth()->user()->u_id;
-        $orderconfirm = Order::where('u_id_customer', '=' , $user_id)
-        ->where('o_status', '!=' , 0)
-        ->where('o_status', '!=' , 1)
-        ->get();
-        $materials = Material::all();
-        $invoices = Invoice::all();
-        return view('customer/invoice')
-        ->with('orders', $orderconfirm)
-        ->with('materials', $materials)
-        ->with('invoices', $invoices);
+        
+        $invoice = DB::table('invoice')
+                    ->leftJoin('orders', 'invoice.o_id', '=', 'orders.o_id')
+                    ->leftJoin('user', 'orders.u_id_customer', '=', 'user.u_id')
+                ->where('orders.active','=','1')
+                ->where('orders.u_id_customer','=',$user_id)
+                    ->paginate(30);
+        
+        return view('customer/invoice', compact('invoice'));
     }
     // method to view or print invoice details
     public function viewInvoice(Request $request){
@@ -230,10 +229,13 @@ class CustomerController extends Controller
     // method to view receipt page for customer
     public function receipt()
     {
+        $user_id = auth()->user()->u_id;
+        
         $receipts = DB::table('receipt')
                 ->leftJoin('orders','receipt.o_id','=','orders.o_id')
                 ->leftJoin('user','orders.u_id_customer','=','user.u_id')
                 ->where('receipt.re_status','=','1')
+                ->where('orders.u_id_customer','=',$user_id)
                 ->paginate(30);
         $user = User::all();
         return view('customer/receipt',compact('receipts','user'));
