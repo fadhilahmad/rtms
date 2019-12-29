@@ -717,18 +717,18 @@
         var newRow = $('<tr><td id="namesetdata"><input type="text" placeholder="Your Name / Number" class="form-control" id="name'+ numRow.toString() +'-'+ namesetnumamount.toString() +'" name="name'+ numRow.toString() +'-'+ namesetnumamount.toString() +'"/></td>'+
             '<td id="namesetdata"><select name="size'+ numRow.toString() +'-'+ namesetnumamount.toString() +'" id="size'+ numRow.toString() +'-'+ namesetnumamount.toString() +'" class="form-control">'+
                 '<option value="" selected disabled>Select Size</option>'+
-                '<option value="xxs">XXS</option>'+
-                '<option value="xs">XS</option>'+
-                '<option value="s">S</option>'+
-                '<option value="m">M</option>'+
-                '<option value="l">L</option>'+
-                '<option value="xl">XL</option>'+
-                '<option value="2xl">2XL</option>'+
-                '<option value="3xl">3XL</option>'+
-                '<option value="4xl">4XL</option>'+
-                '<option value="5xl">5XL</option>'+
-                '<option value="6xl">6XL</option>'+
-                '<option value="7xl">7XL</option>'+
+                '<option value="XXS">XXS</option>'+
+                '<option value="XS">XS</option>'+
+                '<option value="S">S</option>'+
+                '<option value="M">M</option>'+
+                '<option value="L">L</option>'+
+                '<option value="XL">XL</option>'+
+                '<option value="2XL">2XL</option>'+
+                '<option value="3XL">3XL</option>'+
+                '<option value="4XL">4XL</option>'+
+                '<option value="5XL">5XL</option>'+
+                '<option value="6XL">6XL</option>'+
+                '<option value="7XL">7XL</option>'+
             '</select></td></tr>');
         $('#namesettable'+ numRow.toString() +' tr:last').after(newRow);
         totnameset += 1;

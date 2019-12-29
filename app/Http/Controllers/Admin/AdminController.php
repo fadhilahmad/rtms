@@ -17,6 +17,7 @@ use App\DeliverySetting;
 use App\Design;
 use App\Unit;
 use App\Order;
+use App\Spec;
 use App\Price;
 use App\BlockDay;
 use App\BlockDate;
@@ -337,8 +338,48 @@ class AdminController extends Controller
     
     public function updateOrder($oid) 
     {
+        $materials = Material::where('m_status', 1)->get();
+        $deliverysettings = DeliverySetting::select('min_day')->first();
+        $blockdays = BlockDay::select('day')->where('bd_status', 1)->get();
+        $blockdates = BlockDate::select('date')->get();
+        $bodies = Body::where('b_status', 1)->get();
+        $sleeves = Sleeve::where('sl_status', 1)->get();
+        $necks = Neck::where('n_status', 1)->get();
+        $prices = Price::all();
+        $users = User::where('u_status', 1)->where(function($query) {
+            $query->where('u_type', 6)->orWhere('u_type', 7)->orWhere('u_type', 8)->orWhere('u_type', 9);
+        })->get();
+        $designers = User::where('u_status', 1)->where('u_type', 3)->get();
+
+        $custorders = Order::find($oid);
+        $custunames = User::where('u_id', $custorders->u_id_customer)->get();
+        $designs = Design::where('o_id', $oid)->get();
+
+        $specorders = Spec::where('o_id', $oid)->get();
+        $unitorders = Unit::where('o_id', $oid)->get();
+        $custorderid = $oid;
         
-      return view('admin/update_order');  
+
+        //var_dump($unitorders->size);
+
+        return view('admin/update_order')    
+            ->with('materials', $materials)
+            ->with('deliverysettings', $deliverysettings)
+            ->with('blockdays', $blockdays)
+            ->with('blockdates', $blockdates)
+            ->with('bodies', $bodies)
+            ->with('sleeves', $sleeves)
+            ->with('necks', $necks)
+            ->with('prices', $prices)
+            ->with('users', $users)
+            ->with('designers', $designers)
+            ->with('custunames', $custunames)
+            ->with('custorders', $custorders)
+            ->with('designs', $designs)
+            ->with('specorders', $specorders)
+            ->with('unitorders', $unitorders)
+            ->with('custorderid', $custorderid);  
+
     }
     
    

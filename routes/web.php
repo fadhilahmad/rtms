@@ -112,6 +112,7 @@ Route::get('admin/system_setting','Admin\SystemSettingController@CompanyProfile'
 Route::post('admin/system_setting','Admin\SystemSettingController@UpdateCompanyProfile')->middleware('admin')->name('admin.update_company_profile');
 //page update order
 Route::get('admin/update_order/{oid}','Admin\AdminController@updateOrder')->name('admin.updateorder')->middleware('admin');
+Route::post('admin/update_order', 'Admin\OrderController@updateorder')->name('admin_update_order')->middleware('admin');
 //page tier setting
 Route::get('admin/tier_setting','Admin\TierController@TierSetting')->name('admin.tier_setting')->middleware('admin');
 

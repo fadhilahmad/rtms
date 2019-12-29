@@ -876,4 +876,436 @@ class OrderController extends Controller
         return $pricecalc;
     }
 
+    // ----------------------------------------------------- update -------------------------------------------------//
+
+    public function updateorder(Request $request) 
+    {
+        
+        $orderid = $request->input('custorderid');
+        $designerid = $request->input('designer'); 
+        $updatedate = $request->input('current_date'); 
+        $totalquantity = $request->input('total_quantity');
+        $clothname = $request->input('cloth_name');
+        $deliverydate = $request->input('somedate');
+        $material = $request->input('material');
+        $deliverytype = $request->input('dealtype');
+        $note = $request->input('note');
+        $currentmockupdesign = $request->input('namemockupimg');
+        $refnum = null; 
+        $orderstatus = 2; // set to drafted 
+        $customerid = $request->input('usertype');
+        $customername = $request->input('custuname');
+        $active = 1;
+        $printid = null;
+        $taylorid = null; 
+
+        $usertypename;
+        if($customerid == '6'){
+            $usertypename = 'Agent Tier One';
+        }else if($customerid == '7'){
+            $usertypename = 'End User';
+        }else if($customerid == '8'){
+            $usertypename = 'Agent Tier Two';
+        }else{
+            $usertypename = 'Agent Tier Three';
+        }
+
+        $filenameWithExt;
+        $originalname;
+        $filename;
+        $image;                 
+        $destinationPath; 
+        $profileImage;
+
+        DB::table('orders')
+            ->where('o_id', '=', $orderid)
+            ->update(array('file_name' => $clothname, 'material_id' => $material, 'quantity_total' => $totalquantity, 'note' => $note,
+            'delivery_type' => $deliverytype, 'delivery_date' => $deliverydate, 'u_id_designer' => $designerid));
+
+        // ------------------ insert data into table spec ---------------------------------- //
+        
+        if(number_format($request->input('setamount')) == 0){
+            $totalset = 1;
+        }else{
+            $totalset = number_format($request->input('setamount'));
+        }
+        $num = 0;
+
+        $arrset = [];
+        for($i = 0; $i < $totalset; $i++){
+
+            $specid = $request->input('specid'.$i);
+            $neckid = $request->input('necktype'.$i); 
+            $bodyid = $request->input('type'.$i);
+            $sleeveid = $request->input('sleeve'.$i);
+            $collarcolor = $request->input('collar_color'.$i);
+            $category = $request->input('category'.$i);
+
+            if($specid == 'newset'){
+                $lastsetid = DB::table('spec')->insertGetId(array('o_id' => $orderid, 'n_id' => $neckid, 'b_id' => $bodyid, 'sl_id' => $sleeveid,
+                    'collar_color' => $collarcolor, 'category' => $category));
+                array_push($arrset, $lastsetid);
+                $specid = $lastsetid;
+            }else{
+                DB::table('spec')
+                    ->where('s_id', '=', $specid)
+                    ->update(array('n_id' => $neckid, 'b_id' => $bodyid, 'sl_id' => $sleeveid, 'collar_color' => $collarcolor,
+                    'category' => $category));
+                array_push($arrset, $specid);
+            }
+            
+            // ------------------ insert data into table unit and design ---------------------------------- //
+            $idspec = $specid;
+            $name; // if user choose nameset, assign name. Else assign null
+            $size;
+            $unitquantity;
+            $unitstatus = 0; // assign 0, (uncomplete)
+            if($category == "Nameset"){
+                if(number_format($request->input('namesetnum'.$i)) == 0){
+                    $namesetnum = 1;
+                }else{
+                    $namesetnum = number_format($request->input('namesetnum'.$i));
+                }
+
+                $arrns = [];
+                for($j = 0; $j < $namesetnum; $j++){
+
+                    $unitidns = $request->input('unitidns'.$i.'-'.$j);
+                    $name = $request->input('name'.$i.'-'.$j);
+                    $size = $request->input('size'.$i.'-'.$j);
+                    $unitquantity = 1; // one quantity per unit
+
+                    if($unitidns == 'newns'){
+                        $lastid = DB::table('unit')->insertGetId(array('o_id' => $orderid, 's_id' => $idspec, 'name' => $name, 'size' => $size,
+                            'un_quantity' => $unitquantity, 'u_id_designer' => $designerid, 'un_status' => $unitstatus));
+                        array_push($arrns, $lastid);
+                    }else{
+                        DB::table('unit')
+                            ->where('un_id', '=', $unitidns)
+                            ->update(array('name' => $name, 'size' => $size, 'un_quantity' => $unitquantity, 'u_id_designer' => $designerid));
+                        array_push($arrns, $unitidns);
+                    }
+                    if($request->hasFile('cover_image')){
+                        // get the file name with the extension
+                        $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                        $originalname = $request->file('cover_image')->getClientOriginalName();
+                        // get just file name
+                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $image = $request->file('cover_image');                    
+                        $destinationPath = 'orders/mockup/'; 
+                        $profileImage = $customername.'-mockup-'.$filename.'-'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+                        $url = $destinationPath.$profileImage;
+                        $mockupdesign = $profileImage;
+                    }else{
+                        $image = null;                    
+                        $destinationPath = null; 
+                        $profileImage = null;
+                        $mockupdesign = $currentmockupdesign;
+                    }
+                }
+                Unit::where('s_id', $idspec)->whereNotIn('un_id', $arrns)->delete();
+                $idunit = null;
+            }else{
+
+                global $arrsz;
+                $arrsz = array();
+
+                // case size
+                $xxs = $request->input('quantitysinglexxs'.$i);
+                $xs = $request->input('quantitysinglexs'.$i);
+                $s = $request->input('quantitysingles'.$i);
+                $m = $request->input('quantitysinglem'.$i);
+                $l = $request->input('quantitysinglel'.$i);
+                $xl = $request->input('quantitysinglexl'.$i);
+                $xl2 = $request->input('quantitysingle2xl'.$i);
+                $xl3 = $request->input('quantitysingle3xl'.$i);
+                $xl4 = $request->input('quantitysingle4xl'.$i);
+                $xl5 = $request->input('quantitysingle5xl'.$i);
+                $xl6 = $request->input('quantitysingle6xl'.$i);
+                $xl7 = $request->input('quantitysingle7xl'.$i);
+
+                
+                if($request->hasFile('cover_image')){
+                    $filenameWithExt = $request->file('cover_image')->getClientOriginalName();
+                    $originalname = $request->file('cover_image')->getClientOriginalName();
+                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $image = $request->file('cover_image');                    
+                    $destinationPath = 'orders/mockup/'; 
+                    $profileImage = $customername.'-mockup-'.$filename.'-'.date('YmdHis') . "." . $image->getClientOriginalExtension();
+                    $url = $destinationPath.$profileImage;
+                    $mockupdesign = $profileImage;
+                }else{
+                    $image = null;                    
+                    $destinationPath = null; 
+                    $profileImage = null;
+                    $mockupdesign = $currentmockupdesign;
+                }
+                if($xxs != 0){
+                    $name = null;
+                    $size = "XXS";
+                    $unitquantity = $xxs; 
+                    $unitidxxs = $request->input('unitidxxs'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxxs, $arrsz); 
+                }
+                if($xs != 0){
+                    $name = null;
+                    $size = "XS";
+                    $unitquantity = $xs; $unitidxxs = $request->input('unitidxxs'.$i);
+                    $unitidxs = $request->input('unitidxs'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxs, $arrsz); 
+                }
+                if($s != 0){
+                    $name = null;
+                    $size = "S";
+                    $unitquantity = $s; $unitidxxs = $request->input('unitidxxs'.$i);
+                    $unitids = $request->input('unitids'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitids, $arrsz); 
+                }
+                if($m != 0){
+                    $name = null;
+                    $size = "M";
+                    $unitquantity = $m; $unitidxxs = $request->input('unitidxxs'.$i);
+                    $unitidm = $request->input('unitidm'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidm, $arrsz); 
+                }
+                if($l != 0){
+                    $name = null;
+                    $size = "L";
+                    $unitquantity = $l; 
+                    $unitidl = $request->input('unitidl'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidl, $arrsz); 
+                }
+                if($xl != 0){
+                    $name = null;
+                    $size = "XL";
+                    $unitquantity = $xl; 
+                    $unitidxl = $request->input('unitidxl'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxl, $arrsz); 
+                }
+                if($xl2 != 0){
+                    $name = null;
+                    $size = "2XL";
+                    $unitquantity = $xl2; 
+                    $unitidxl2 = $request->input('unitid2xl'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxl2, $arrsz); 
+                }
+                if($xl3 != 0){
+                    $name = null;
+                    $size = "3XL";
+                    $unitquantity = $xl3; 
+                    $unitidxl3 = $request->input('unitid3xl'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxl3, $arrsz); 
+                }
+                if($xl4 != 0){
+                    $name = null;
+                    $size = "4XL";
+                    $unitquantity = $xl4; 
+                    $unitidxl4 = $request->input('unitid4xl'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxl4, $arrsz); 
+                }
+                if($xl5 != 0){
+                    $name = null;
+                    $size = "5XL";
+                    $unitquantity = $xl5; 
+                    $unitidxl5 = $request->input('unitid5xl'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxl5, $arrsz); 
+                }
+                if($xl6 != 0){
+                    $name = null;
+                    $size = "6XL";
+                    $unitquantity = $xl6;
+                    $unitidxl6 = $request->input('unitid6xl'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxl6, $arrsz); 
+                }
+                if($xl7 != 0){
+                    $name = null;
+                    $size = "7XL";
+                    $unitquantity = $xl7;
+                    $unitidxl7 = $request->input('unitid7xl'.$i);
+                    $idunit = $this->storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitidxl7, $arrsz); 
+                }
+                Unit::where('s_id', $idspec)->whereNotIn('un_id', $arrsz)->delete();
+                $idunit = null;
+            }
+        }
+        Spec::where('o_id', $orderid)->whereNotIn('s_id', $arrset)->delete();
+        $boolprice = $this->requestConfirmUpdate($orderid, $customerid);
+        if($boolprice != false){
+            $curmkpimg = $request->input('namemockupimg');
+            $designid = $request->input('idmockupimg');
+            $this->storeDesignUpdate($idunit, $mockupdesign, $orderid, $designerid, $image, $destinationPath, $profileImage, $curmkpimg, $designid); 
+            return redirect('/admin/order_list')->with('message', 'Order Updated');
+        }else{
+            $errbodydesc = Body::where('b_id', $this->errbody)
+                ->pluck('b_desc')->toArray();
+            $errsleevedesc = Sleeve::where('sl_id', $this->errsleeve)
+                ->pluck('sl_desc')->toArray();
+            return redirect('/admin/order_list')->with('message', 'Error! Price for body type "'.$errbodydesc[0].'" and sleeve type "'.$errsleevedesc[0].'", for customer type "'.$usertypename.'" that you\'ve selected is not placed. Please enter price in "Pricing" page to have this order!!!');
+        }
+
+    }
+
+    public function storeUnitUpdate($orderid, $idspec, $name, $size, $unitquantity, $designerid, $printid, $taylorid, $unitstatus, $unitid, &$arrsz){
+        
+        if($unitid == ''){
+            $lastid = DB::table('unit')->insertGetId(array('o_id' => $orderid, 's_id' => $idspec, 'name' => $name, 'size' => $size,
+                'un_quantity' => $unitquantity, 'u_id_designer' => $designerid, 'un_status' => $unitstatus));
+            array_push($arrsz, $lastid);
+            return $unitid;
+        }else{
+            if($unitquantity != 0){
+                DB::table('unit')
+                    ->where('un_id', '=', $unitid)
+                    ->update(array('name' => $name, 'size' => $size, 'un_quantity' => $unitquantity, 'u_id_designer' => $designerid));
+                array_push($arrsz, $unitid);
+                return $unitid;
+            }
+        }
+    } 
+
+    // function to store data to table design
+    public function storeDesignUpdate($unitid, $mockupdesign, $orderid, $designerid, $image, $destinationPath, $profileImage, $curmkpimg, $designid){
+        if($mockupdesign != $curmkpimg){
+            $image->move($destinationPath, $profileImage);
+        }
+        DB::table('design')
+            ->where('id', '=', $designid)
+            ->update(array('u_id_designer' => $designerid, 'd_url' => $mockupdesign));
+    } 
+
+    public function requestConfirmUpdate($orderid, $usertype){
+        $orderidrequest = $orderid;
+        $boolprice = true;
+        if($orderidrequest != null){
+            $user_id = auth()->user()->u_id;
+            $thisyear = date("Y");
+            $orderid = $orderidrequest;
+            $neckid = Spec::where('o_id', '=' , $orderidrequest)->pluck('n_id')->toArray();
+            $bodyid = Spec::where('o_id', '=' , $orderidrequest)->pluck('b_id')->toArray();
+            $sleeveid = Spec::where('o_id', '=' , $orderidrequest)->pluck('sl_id')->toArray();
+            $specid = Spec::where('o_id', '=' , $orderidrequest)->pluck('s_id')->toArray();
+            $category;
+            $size;
+            $price;
+            $totprice = 0;
+            $totorderrow = count($neckid);
+            for($i = 0; $i < $totorderrow; $i++){
+                $necktype = Neck::find($neckid[$i]);
+                $price = Price::where('n_type', '=', $necktype->n_type)
+                    ->where('b_id', '=' , $bodyid[$i])
+                    ->where('sl_id', '=' , $sleeveid[$i])
+                    ->where('u_type', '=' , $usertype)->pluck('price');
+                if($price->isNotEmpty() == false){
+                    $boolprice = false;
+                    $this->errbody = $bodyid[$i];
+                    $this->errsleeve = $sleeveid[$i];
+                    $this->errneck = $necktype->n_type;
+                    //return $boolprice;
+                    // Order::where('o_id', '=', $orderidrequest)->delete();
+                    // InvoicePermanent::where('o_id', '=', $orderidrequest)->delete();
+                    break;
+                }
+                $category = Spec::where('s_id', '=', $specid[$i])->pluck('category');
+                $size = Unit::where('o_id', '=', $orderidrequest)->pluck('size');
+                $totsize = count($size);
+                $specs = Unit::where('s_id', '=', $specid[$i])->pluck('s_id');
+                $totunits = count($specs);
+                $specprice = 0;
+                $specquantity = 0;
+                $oneunitprice = 0;
+                for($j = 0; $j < $totunits; $j++){
+                    $size = Unit::where('o_id', '=', $orderidrequest)
+                    ->where('s_id', '=', $specid[$i])
+                    ->pluck('size');
+                    $quantity = Unit::where('o_id', '=', $orderidrequest)
+                    ->where('s_id', '=', $specid[$i])
+                    ->pluck('un_quantity');
+                    $totsize = count($size);
+                    $specquantity += $quantity[$j];
+                    $pricecalc = $this->calcPriceUpdate($price, $category, $size[$j], $quantity[$j]);
+                    $priceperunit = $this->calcPricePerUnitUpdate($price, $category, $size[$j]); 
+                    $specprice += $pricecalc;
+                    $totprice += $pricecalc;
+                }
+                if($boolprice == true){
+                    $oneunitprice += intval($price[0]);
+                    DB::table('invoice_permenant')
+                        ->where('s_id', '=', $specid[$i])
+                        ->update(array('spec_total_price' => $specprice, 'one_unit_price' => $oneunitprice, 'spec_total_quantity' => $specquantity));
+                }
+            }
+            if($boolprice == true){
+                DB::table('invoice')
+                    ->where('o_id', '=', $orderid)
+                    ->update(array('total_price' => $totprice));
+            }
+            $currentpayment = DB::table('receipt')->where('o_id', $orderid)->pluck('total_paid')->first();
+            $currentbalance = $totprice - $currentpayment;
+            DB::table('orders')
+                ->where('o_id', '=', $orderid)
+                ->update(array('balance' => $currentbalance));
+            return $boolprice;
+        }
+    }
+    // method to calculate total price with quantity
+    public function calcPriceUpdate($price, $category, $size, $quantity){
+        $pricecalc = 0;
+        if($category[0] == "Nameset"){
+            $priceint = intval($price[0]);
+            $quantityint = intval($quantity);
+            $pricecalc = $priceint + 4;
+            $pricecalc *= $quantityint;
+            if($size == "4xl" || $size == "5xl"){
+                $pricecalc += 4;
+            }else if($size == "6xl" || $size == "7xl"){
+                $pricecalc += 8;
+            }
+        }else{
+            $pricecalc = intval($price[0]);
+            $quantityint = intval($quantity);
+            $pricecalc *= $quantityint;
+            if($size == "4XL" || $size == "5XL"){
+                $priceint = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc = $priceint + 4;
+                $pricecalc *= $quantityint;
+            }else if($size == "6XL" || $size == "7XL"){
+                $priceint = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc = $priceint + 8;
+                $pricecalc *= $quantityint;
+            }else{
+                $pricecalc = intval($price[0]);
+                $quantityint = intval($quantity);
+                $pricecalc *= $quantityint;
+            }
+        }
+        return $pricecalc;
+    }
+    // method to calculate total price without quantity
+    public function calcPricePerUnitUpdate($price, $category, $size){
+        $pricecalc = 0;
+        if($category[0] == "Nameset"){
+            $priceint = intval($price[0]);
+            $pricecalc = $priceint + 4;
+            if($size == "4xl" || $size == "5xl"){
+                $pricecalc += 4;
+            }else if($size == "6xl" || $size == "7xl"){
+                $pricecalc += 8;
+            }
+        }else{
+            $pricecalc = intval($price[0]);
+            if($size == "4XL" || $size == "5XL"){
+                $priceint = intval($price[0]);
+                $pricecalc = $priceint + 4;
+            }else if($size == "6XL" || $size == "7XL"){
+                $priceint = intval($price[0]);
+                $pricecalc = $priceint + 8;
+            }else{
+                $pricecalc = intval($price[0]);
+            }
+        }
+        return $pricecalc;
+    }
+
 }                
