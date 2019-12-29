@@ -1,7 +1,24 @@
 @extends ('layouts.layout')
 @section ('content')
 <div>
-    <div class="card-header">Dashboard</div>
+    <div class="card-header">Dashboard   
+        <div class="float-lg-right">
+            <div class="row">
+                @php
+                if(isset($start)){$s = $start;}else{$s='';}
+                if(isset($end)){$e = $end;}else{$e='';}
+                @endphp
+                <form class = "form-inline" method="post" action="{{route('filter.dashboard')}}">@csrf
+                <div class="col-sm-1">Start</div>
+                <div class="col-sm-4"><input type="date" name="start" class="form-control-sm" required="" value="{{$s}}"></div>
+                <div class="col-sm-1">End</div>
+                <div class="col-sm-4"><input type="date" name="end" class="form-control-sm" required="" value="{{$e}}"></div>
+                <div class="col-sm-2"><button class="btn-sm" type="submit">Filter</button></div>
+                </form>
+                <button class="btn-sm" onclick="printFunction()"><i class="fa fa-print"></i></button>
+            </div>
+        </div>           
+    </div>
     <div class="card-body">
 
     </div>
@@ -9,7 +26,7 @@
         <div class="container-fluid">
           <div class="row">
             <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-4">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-user"></i></div>
                 <div class="name"><strong class="text-uppercase">Registered Users</strong>
@@ -18,16 +35,16 @@
               </div>
             </div>
             <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-4">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-padnote"></i></div>
-                <div class="name"><strong class="text-uppercase">Pending Application</strong>
+                <div class="name"><strong class="text-uppercase">New Application</strong>
                   <div class="count-number">{{$application}}</div>
                 </div>
               </div>
             </div>
             <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-4">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-check"></i></div>
                 <div class="name"><strong class="text-uppercase">Submited Orders</strong>
@@ -36,7 +53,7 @@
               </div>
             </div>
             <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-4">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-bill"></i></div>
                 <div class="name"><strong class="text-uppercase">Orders Delivered</strong>
@@ -44,8 +61,9 @@
                 </div>
               </div>
             </div>
-            <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+          </div><br><br>
+            <div class="row">
+            <div class="col-xl-3 col-md-4 col-4">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-list"></i></div>
                 <div class="name"><strong class="text-uppercase">Invoice Quoted</strong>
@@ -53,12 +71,27 @@
                 </div>
               </div>
             </div>
-            <!-- Count item widget-->
-            <div class="col-xl-2 col-md-4 col-6">
+            <div class="col-xl-3 col-md-4 col-4">
               <div class="wrapper count-title d-flex">
                 <div class="icon"><i class="icon-list-1"></i></div>
-                <div class="name"><strong class="text-uppercase">Payment Completed</strong>
+                <div class="name"><strong class="text-uppercase">Payment Done</strong>
                   <div class="count-number">{{$payment}}</div>
+                </div>
+              </div>
+            </div>
+                <div class="col-xl-3 col-md-4 col-4">
+              <div class="wrapper count-title d-flex">
+                <div class="icon"><i class="icon-list"></i></div>
+                <div class="name"><strong class="text-uppercase">Total unit</strong>
+                  <div class="count-number">{{$total_unit}}</div>
+                </div>
+              </div>
+            </div>
+                <div class="col-xl-3 col-md-4 col-4">
+              <div class="wrapper count-title d-flex">
+                <div class="icon"><i class="icon-padnote"></i></div>
+                <div class="name"><strong class="text-uppercase">Reprint Rate</strong>
+                  <div class="count-number">{{$reprint_rate}}%</div>
                 </div>
               </div>
             </div>
@@ -70,10 +103,10 @@
         <div class="container-fluid">
           <div class="row d-flex align-items-md-stretch">
             <!-- To Do List-->
-            <div class="col-lg-3 col-md-6">
+<!--            <div class="col-lg-3 col-md-6">
               <div class="card to-do">
                 <h2 class="display h4">Quick Links</h2>
-<!--                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>-->
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
                 <ul class="check-lists list-unstyled">
                   <li class="d-flex align-items-center"> 
                     <a href="{{ route('admin.delivery') }}">Delivery Schedule</a>
@@ -101,12 +134,12 @@
                   </li>
                 </ul>
               </div>
-            </div>
+            </div>-->
             <!-- Pie Chart-->
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-6 col-md-12">
               <div class="card project-progress">
-                <h2 class="display h4">Payment Status</h2>
-                <p>Percentage of complete, deposited and pending payment from overall orders</p>
+                <h2 class="display h4">Payment Status Percentage</h2>
+<!--                <p>Percentage of complete, deposited and pending payment from overall orders</p>-->
                 <div class="pie-chart">
                   <canvas id="paymentChart" width="300" height="300"> </canvas>
                 </div>
@@ -323,6 +356,9 @@ $(document).ready(function () {
     });
 
 });
-    
+ 
+ function printFunction() {
+  window.print();
+}
 </script>
 @endsection
