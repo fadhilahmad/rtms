@@ -17,7 +17,8 @@ class CreateBankDetail extends Migration
             $table->bigIncrements('bd_id');
             $table->string('bank_name');
             $table->string('account_name');
-            $table->integer('account_number');
+            $table->string('account_number');
+            $table->string('bank_logo');
             $table->timestamps();
         });
     }
