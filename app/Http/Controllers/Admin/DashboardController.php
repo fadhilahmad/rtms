@@ -164,8 +164,12 @@ class DashboardController extends Controller
         $reprint = DB::table('reprint')
                     ->sum('r_quantity');
         
-        $reprint_rate = intval($reprint/$total_unit);
-          //dd($labelsale);       
+        if($total_unit==0){
+            $reprint_rate = 0;
+        }else{
+            $reprint_rate = intval($reprint/$total_unit*100);  
+        }
+        
         return view('admin/dashboard',compact('user','application','orders','invoice','payment','income','income2','income3','deliver','com',
                 'pen','depo','total_unit','design','design_p','print','print_p','tailor','tailor_p','dp','pp','tp','labelday','month','labelsale','reprint_rate'));
     }
@@ -330,7 +334,7 @@ class DashboardController extends Controller
         if($total_unit==0){
             $reprint_rate = 0;
         }else{
-            $reprint_rate = intval($reprint/$total_unit);  
+            $reprint_rate = intval($reprint/$total_unit*100);  
         }
           //dd($labelsale);       
         return view('admin/dashboard',compact('user','application','orders','invoice','payment','income','income2','income3','deliver','com',
