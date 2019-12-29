@@ -105,6 +105,7 @@ Route::post('admin/payment', 'Admin\PaymentController@UpdatePayment')->name('adm
 Route::get('admin/job_order/{oid}','Admin\OrderController@orderInfo')->name('order_info')->middleware('admin');
 //admin dashboard
 Route::get('admin/dashboard','Admin\DashboardController@showDashboard')->name('admin.dashboard')->middleware('admin');
+Route::post('admin/dashboard','Admin\DashboardController@filterDashboard')->name('filter.dashboard')->middleware('admin');
 
 //page company profile
 Route::get('admin/system_setting','Admin\SystemSettingController@CompanyProfile')->name('admin.company_profile')->middleware('admin');
