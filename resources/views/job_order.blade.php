@@ -443,7 +443,7 @@
             margin-top:10%;
         }
         .labelimgmockup {
-            padding-left:40%;
+            padding-left:67%;
         }
         .imgmockup {
             /* width: 400px;
