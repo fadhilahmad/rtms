@@ -17,6 +17,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('job_order/{oid}', 'GeneralController@ViewJobOrder')->name('general.joborder');
 Route::get('invoice/{id}', 'GeneralController@ViewInvoice')->name('general.invoice');
 Route::get('receipt/{id}', 'GeneralController@ViewReceipt')->name('general.receipt');
+Route::post('invoice', 'GeneralController@AlterPrice')->name('general.alterprice');
 //////////////////////////////////////////////////////////////ADMIN PAGE///////////////////////////////////////////////////////////////////////
 //page manage_customer dropdown
 Route::get('admin/manage_customer', 'HomeController@adminHome')->name('admin.home')->middleware('admin');
