@@ -7,16 +7,16 @@
    width: 100% !important; 
 }
 td,th {
-text-align: center;
+text-align: left;
 } 
 
 .table .thead-dark th {
     color: black;
-    background-color:yellow;
-    border-color: #32383e;
+    background-color:white;
+    border-color: #0ace9e;
 }
 .table-bordered td {
-    border:1px solid black;
+    border:1px #0ace9e;
 
 }
 .table-bordered td.no-border {
@@ -42,9 +42,11 @@ text-align: center;
 }
 
 .card-header.invoice{
-    background-color: black;
-    color: yellow;
-    font-size: 25px;
+    background-color: #0ace9e;
+    color: white;
+    height:8vh;
+    margin-bottom:40px;
+   
 }
 .card-body {
     padding-top:5px;
@@ -55,18 +57,24 @@ text-align: center;
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header invoice">
-                    <strong>RESIT</strong>
-                    <img src="{{URL::to('/')}}/img/logo.jpeg" style="width:18%; float:right">
+                    <h1 style="font-size:40px">RECEIPT 
+                        @if($settings)
+                        <img src="{{URL::to('/')}}/img/logo/{{$settings->company_logo}}" style="width:110px; float:right; margin-top:-17px">
+                        @endif
+                    </h1>
+                  
                 </div>
                 <div class="card-body">
+                    @if($settings)
                     <div class="row">
-                        <div class="col-md-10">16, Jalan Meru Bistari A12</div>
-                        <div class="col-md-2" >{{$receipts->ref_num}}</div>
+                        <div class="col-md-10"><strong>{{$settings->company_name}}</strong></div>
+                        <div class="col-md-10">
+                            {{$settings->address_first}}<br>
+                            {{$settings->address_second}}<br>
+                            {{$settings->poscode}} {{$settings->state}} , {{$settings->country}}
+                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">Medan Meru Bistari<br>30020 Ipoh, Perak</div>
-                        <div class="col-md-6">+60176350023/+60195556577</div>
-                    </div>
+                    @endif                    
                     <br><br>
                     
                     <div class="row">
@@ -74,7 +82,7 @@ text-align: center;
                         <div class="col-md-2">{{date('d/m/Y', strtotime($receipts->created_at))}}</div>
                     </div>
 
-                    <table class="table table-bordered">
+                    <table class="table">
                         <thead class="thead-dark">
                             <tr>
                             <th scope="col"></th>
