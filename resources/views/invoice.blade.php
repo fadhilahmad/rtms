@@ -184,13 +184,13 @@ text-align: left;
                             
                             <tr>
                                 <td></td>
-                                <td>Jumlah Keseluruhan</td>
+                                <td><strong>Subtotal</strong></td>
                                 @can('isAdmin')
                                 <td></td>
                                 @endcan
-                                <td>{{array_sum ( $total_unit )}}</td>
+                                <td><strong>{{array_sum ( $total_unit )}}</strong></td>
                                 <td></td>
-                                <td>{{--array_sum ( $total_price )--}}{{$invoice->total_price}}</td>
+                                <td><strong>{{--array_sum ( $total_price )--}}{{$invoice->total_price}}</strong></td>
                             </tr>  
 <!--                            <tr>
                                 <td class="no-border"></td>
