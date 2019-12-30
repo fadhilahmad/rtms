@@ -521,7 +521,7 @@ text-align: center;
               <div class="form-group row">
                 <label for="date" class="col-sm-4 col-form-label">Date</label>
                 <div class="col-sm-8">
-                    <input type="date" class="form-control" id="date" name="date" required="required" >
+                    <input type="date" min="{{date('Y-m-d',strtotime($today))}}" class="form-control" id="date" name="date" required="required" >
                     <input type="hidden" name="id" id="itemId">
                     <input type="hidden" name="type" id="type">
                     <input type="hidden" name="table" id="table">
