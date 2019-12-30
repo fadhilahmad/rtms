@@ -177,7 +177,11 @@ class AdminController extends Controller
                 ->whereDate('date','>', Carbon::now())
                 ->get();
         
-        return view('admin/order_setting', compact('body','material','neck','sleeve','delivery','block_day','block_date'));
+        $today = Carbon::now();
+        
+        //dd($today);
+        
+        return view('admin/order_setting', compact('body','material','neck','sleeve','delivery','block_day','block_date','today'));
     }
     
     public function orderList() 
