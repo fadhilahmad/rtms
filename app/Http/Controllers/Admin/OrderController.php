@@ -823,9 +823,9 @@ class OrderController extends Controller
             $quantityint = intval($quantity);
             $pricecalc = $priceint + 4;
             $pricecalc *= $quantityint;
-            if($size == "4xl" || $size == "5xl"){
+            if($size == "4XL" || $size == "5XL"){
                 $pricecalc += 4;
-            }else if($size == "6xl" || $size == "7xl"){
+            }else if($size == "6XL" || $size == "7XL"){
                 $pricecalc += 8;
             }
         }else{
@@ -856,9 +856,9 @@ class OrderController extends Controller
         if($category[0] == "Nameset"){
             $priceint = intval($price[0]);
             $pricecalc = $priceint + 4;
-            if($size == "4xl" || $size == "5xl"){
+            if($size == "4XL" || $size == "5XL"){
                 $pricecalc += 4;
-            }else if($size == "6xl" || $size == "7xl"){
+            }else if($size == "6XL" || $size == "7XL"){
                 $pricecalc += 8;
             }
         }else{
@@ -1255,9 +1255,9 @@ class OrderController extends Controller
             $quantityint = intval($quantity);
             $pricecalc = $priceint + 4;
             $pricecalc *= $quantityint;
-            if($size == "4xl" || $size == "5xl"){
+            if($size == "4XL" || $size == "5XL"){
                 $pricecalc += 4;
-            }else if($size == "6xl" || $size == "7xl"){
+            }else if($size == "6XL" || $size == "7XL"){
                 $pricecalc += 8;
             }
         }else{
