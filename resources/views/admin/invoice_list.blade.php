@@ -30,7 +30,7 @@ text-align: center;
                                 <th scope="col">Total Quantity</th>
                                 <th scope="col">Total Price</th>
                                 <th scope="col">Created Date</th>
-                                <th scope="col">Add Charges</th>
+<!--                                <th scope="col">Add Charges</th>-->
                                 <th scope="col">View</th>
                               </tr>
                             </thead>
@@ -45,7 +45,7 @@ text-align: center;
                                 <td>{{$inv->quantity_total}}</td>
                                 <td>{{$inv->total_price}}</td>
                                 <td>{{date('d/m/Y', strtotime($inv->created_at))}}</td>
-                                <td><button class="btn btn-default addCharges" data-toggle="modal" data-target="#Modal" data-oid="{{$inv->o_id}}">Add</button></td>
+<!--                                <td><button class="btn btn-default addCharges" data-toggle="modal" data-target="#Modal" data-oid="{{$inv->o_id}}">Add</button></td>-->
 <!--                                @if($inv->delivery_type=="Delivery")
                                 <td><button class="btn btn-default addCharges" data-toggle="modal" data-target="#Modal" data-oid="{{$inv->o_id}}">Add</button></td>
                                 @else
