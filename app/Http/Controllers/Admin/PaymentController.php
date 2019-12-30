@@ -129,8 +129,14 @@ class PaymentController extends Controller
                 ->where('o_id',$oid)
                 ->first();
         
+        $invoice = DB::table('invoice')
+                    ->where('o_id',$oid)
+                    ->first();
+        
         $bal = $order->balance;
-        $balance = $bal + $price;
+        $inv = $invoice->total_price;
+        $balance_order = $bal + $price;
+        $balance_invoice = $inv + $price;
         
         DB::table('additional_charges')->insert([
                      'o_id' => $oid,
@@ -142,11 +148,11 @@ class PaymentController extends Controller
         
         DB::table('orders')
                     ->where('o_id', '=', $oid)
-                    ->update(array('balance' => $balance,'updated_at'=>DB::raw('now()')));
+                    ->update(array('balance' => $balance_order,'updated_at'=>DB::raw('now()')));
         
         DB::table('invoice')
                     ->where('o_id', '=', $oid)
-                    ->update(array('total_price' => $balance,'updated_at'=>DB::raw('now()')));
+                    ->update(array('total_price' => $balance_invoice,'updated_at'=>DB::raw('now()')));
         
        // dd($data);
         return response()->json(['success'=>'ok']);
