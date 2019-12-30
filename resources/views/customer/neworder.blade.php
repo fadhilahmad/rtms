@@ -87,7 +87,7 @@
                             </select>
                         </div>
                         
-                        {{-- delivery --}}
+                        {{-- delivery type --}}
                         <label class="col-sm-2 col-form-label">
                             Delivery Type                         
                         </label>
@@ -97,6 +97,14 @@
                                 <option value="Delivery">Delivery</option>
                                 <option value="Self-pickup">Self-pickup</option>
                             </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        {{-- note --}}
+                        <label class="col-sm-2 col-form-label">Note</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control rounded-0" rows="5" name="note" placeholder="Write your note here."></textarea>
                         </div>
                     </div>
                     
@@ -110,14 +118,6 @@
                                 <input type="file" class="custom-file-input" id="customFile" name="cover_image" required>
                                 <label class="custom-file-label" for="customFile">Choose file</label>                               
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        {{-- note --}}
-                        <label class="col-sm-2 col-form-label">Note</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control rounded-0" rows="5" name="note" placeholder="Write your note here."></textarea>
                         </div>
                     </div>
                     
