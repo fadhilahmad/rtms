@@ -127,10 +127,10 @@
                                         </tbody>
                                     </table>
                                     @endif
-                                    <div class="row offset-sm-4" style="margin-top:50px;">
-                                        <input class="col-4" type="text" value="Total" name="col4inputtot" id="totquan" disabled/>
-                                        <input class="col-3" type="text" name="col3inputquan" id="totval"  value="{{ $orders->quantity_total }}" disabled/> <p>PCS</p>
-                                    </div>
+                                 </div>
+                                 <div class="row offset-sm-4" style="margin-top:50px;">
+                                     <input class="col-4" type="text" value="Total" name="col4inputtot" id="totquan" disabled/>
+                                     <input class="col-3" type="text" name="col3inputquan" id="totval"  value="{{ $orders->quantity_total }}" disabled/> <p style="margin-top:4%">&nbsp;PCS</p>
                                  </div>
                             </div>
                            
@@ -478,6 +478,7 @@
         #totquan{
             background-color:yellow; !important;
             -webkit-print-color-adjust: exact; 
+            width: 15%;
         } 
         #totval{
             background-color:red;  !important;
