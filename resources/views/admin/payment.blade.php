@@ -122,7 +122,7 @@ text-align: center;
               <div class="form-group row">
                 <label for="payment" class="col-sm-4 col-form-label">Payment Value</label>
                 <div class="col-sm-8">
-                    <input type="number" min="0" class="form-control" id="payment" name="payment" required="required" >
+                    <input type="number" min="1" class="form-control" id="payment" name="payment" required="required" >
                     <input type="hidden" name="o_id" id="oid">
                 </div>
               </div>         
@@ -180,6 +180,11 @@ $(document).on("click", ".add", function () {
         if (x == "") 
         {
             alert("Payment value must be filled out");
+            return false;
+        }
+        if (x == "0") 
+        {
+            alert("Payment value must grater than 0");
             return false;
         }
         if (y == "") 
