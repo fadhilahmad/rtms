@@ -121,9 +121,11 @@ class AdminController extends Controller
                     ->rightJoin('user', 'leave_day.u_id', '=', 'user.u_id')
                     ->whereIn('user.u_type', array(3,4,5))
                     ->where('user.u_status','=',1)
-                    ->paginate(30); 
+                    ->paginate(30);
+        
+        $leave = LeaveDay::all();
          
-        return view('admin/leave_day', compact('staff'));
+        return view('admin/leave_day', compact('staff','leave'));
     }
     
     public function staffPerformance() 
