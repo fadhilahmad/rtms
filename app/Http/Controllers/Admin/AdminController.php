@@ -22,6 +22,7 @@ use App\Price;
 use App\BlockDay;
 use App\BlockDate;
 use App\Stock;
+use App\Invoice;
 use Carbon\Carbon;
 use DB;
 
@@ -186,6 +187,13 @@ class AdminController extends Controller
     
     public function orderList() 
     {
+        $ye = date('Y')+1;
+        $m = date('m');
+        $y = date('Y');
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) $years[] = $year;
+        
         $order = DB::table('orders')
                     ->Join('user', 'orders.u_id_customer', '=', 'user.u_id')
                     ->where('orders.o_status','<>','9')
@@ -193,7 +201,78 @@ class AdminController extends Controller
                     ->orderBy('orders.delivery_date', 'asc')
                     ->paginate(30);
         
-        return view('admin/admin_orderlist',compact('order'));
+        return view('admin/admin_orderlist',compact('order','y','m','years'));
+    }
+    
+    public function filterOrder(Request $request) 
+    {
+        $data = $request->all();
+       
+        $m = $data['month'];
+        $y = $data['years'];
+        
+        $ye = date('Y')+1;
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) { $years[] = $year ;}
+        
+        $order = DB::table('orders')
+                    ->Join('user', 'orders.u_id_customer', '=', 'user.u_id')
+                    ->where('orders.o_status','<>','9')
+                    ->where('orders.active','=','1')
+                    ->whereMonth('orders.delivery_date','=',$m)
+                    ->whereYear('orders.delivery_date','=',$y)
+                    ->orderBy('orders.delivery_date', 'asc')
+                    ->paginate(30);
+        
+        return view('admin/admin_orderlist',compact('order','m','y','years'));
+    }
+    
+    public function orderHistory() 
+    {
+        $ye = date('Y')+1;
+        $m = date('m');
+        $y = date('Y');
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) $years[] = $year;
+        
+        $order = DB::table('orders')
+                    ->Join('user', 'orders.u_id_customer', '=', 'user.u_id')
+                    ->where('orders.o_status','=','9')
+                    ->where('orders.active','=','1')
+                    ->orderBy('orders.delivery_date', 'asc')
+                    ->paginate(30);
+        
+        $invoice = Invoice::all();
+        
+        return view('admin/order_history',compact('order','invoice','y','m','years'));
+    }
+    
+    public function filterHistory(Request $request) 
+    {
+        $data = $request->all();
+       
+        $m = $data['month'];
+        $y = $data['years'];
+        
+        $ye = date('Y')+1;
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) { $years[] = $year ;}
+        
+        $order = DB::table('orders')
+                    ->Join('user', 'orders.u_id_customer', '=', 'user.u_id')
+                    ->where('orders.o_status','=','9')
+                    ->where('orders.active','=','1')
+                    ->whereMonth('orders.delivery_date','=',$m)
+                    ->whereYear('orders.delivery_date','=',$y)
+                    ->orderBy('orders.delivery_date', 'asc')
+                    ->paginate(30);
+        
+        $invoice = Invoice::all();
+        
+        return view('admin/order_history',compact('order','invoice','m','y','years'));
     }
     
     //manage stock dropdown
@@ -213,13 +292,45 @@ class AdminController extends Controller
     //invoice and receipt dropdown
     public function invoiceList() 
     {
+        $ye = date('Y')+1;
+        $m = date('m');
+        $y = date('Y');
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) $years[] = $year;
+        
         $invoice = DB::table('invoice')
                     ->leftJoin('orders', 'invoice.o_id', '=', 'orders.o_id')
                     ->leftJoin('user', 'orders.u_id_customer', '=', 'user.u_id')
+                    ->where('orders.active','=','1')
                     ->paginate(30);        
         
         
-        return view('admin/invoice_list',compact('invoice'));
+        return view('admin/invoice_list',compact('invoice','y','m','years'));
+    }
+    
+    public function invoiceFilter(Request $request) 
+    {
+        $data = $request->all();
+       
+        $m = $data['month'];
+        $y = $data['years'];
+        
+        $ye = date('Y')+1;
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) { $years[] = $year ;}
+        
+        $invoice = DB::table('invoice')
+                    ->leftJoin('orders', 'invoice.o_id', '=', 'orders.o_id')
+                    ->leftJoin('user', 'orders.u_id_customer', '=', 'user.u_id')
+                    ->where('orders.active','=','1')
+                    ->whereMonth('invoice.created_at','=',$m)
+                    ->whereYear('invoice.created_at','=',$y)
+                    ->paginate(30);        
+        
+        
+        return view('admin/invoice_list',compact('invoice','y','m','years'));
     }
     
     public function invoicePending() 
