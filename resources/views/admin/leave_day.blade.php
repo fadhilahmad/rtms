@@ -45,7 +45,7 @@
                                 <td>{{$sta->al_day}}</td>
                                 <td>{{$sta->el_day}}</td>
                                 <td>{{$sta->mc_day}}</td>
-                                @if($sta->al_day == NULL && $sta->el_day == NULL && $sta->mc_day == NULL)
+                                @if($leave->where('u_id',$sta->u_id)->isempty())
                                 <td>
                                     <button 
                                         class="btn btn-primary add" data-toggle="modal" data-target="#addnew" 
