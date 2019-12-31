@@ -65,7 +65,7 @@
                         </label>
 
                         <div class="col-sm-4">  
-                            <input type="text" name="somedate" id="my_date_picker1" class="form-control"> 
+                            <input type="text" name="somedate" id="my_date_picker1" required="required" class="form-control"> 
                         </div>
                     </div>
                     
