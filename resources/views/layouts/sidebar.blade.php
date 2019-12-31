@@ -45,6 +45,7 @@
               <ul id="orderDropdown" class="collapse list-unstyled ">
                 <li><a href="{{ route('admin.delivery') }}">Delivery Schedule</a></li>
                 <li><a href="{{ route('admin.orderlist') }}">Order List</a></li>
+                <li><a href="{{ route('admin.orderhistory') }}">Order History</a></li>
                 <li><a href="{{ route('admin.neworder') }}">Add Order</a></li>
                 <li><a href="{{ route('admin.ordersetting') }}">Order Setting</a></li>
                 <li><a href="{{ route('admin.pricing') }}">Pricing</a></li>                 
