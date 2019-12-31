@@ -217,31 +217,34 @@ text-align: center;
 
 <script type="text/javascript">
 $(document).on("click", ".endDate", function () {
-     var date = new Date($('#startDate').val());
-     var leave = $(".leave #leaveType").val();
-     var al = $(".days #al").val();
-     var el = $(".days #el").val();
-     var mc = $(".days #mc").val();
-
-    dd = date.getDate()+01;
-    var alday = date.getDate()+ al;
-    var elday = date.getDate()+ el;
-    var mcday = date.getDate()+ mc;
-    mm = date.getMonth() + 1;
-    year = date.getFullYear();
-      if(isNaN(dd)){
-         alert('Please select start date first');
-     }   
-    if (dd < 10) {
-    dd = '0' + dd;
-    } 
-    if (mm < 10) {
-    mm = '0' + mm;
+//     var date = new Date($('#startDate').val());
+//     var leave = $(".leave #leaveType").val();
+//     var al = $(".days #al").val();
+//     var el = $(".days #el").val();
+//     var mc = $(".days #mc").val();
+//
+//    dd = date.getDate()+01;
+//    var alday = date.getDate()+ al;
+//    var elday = date.getDate()+ el;
+//    var mcday = date.getDate()+ mc;
+//    mm = date.getMonth() + 1;
+//    year = date.getFullYear();
+//      if(isNaN(dd)){
+//         alert('Please select start date first');
+//     }   
+//    if (dd < 10) {
+//    dd = '0' + dd;
+//    } 
+//    if (mm < 10) {
+//    mm = '0' + mm;
+//    }
+//    
+//    document.getElementById('endDate').setAttribute("min", year+'-'+mm+'-'+dd);
+    var start = $('#startDate').val();
+    if(start == ""){
+        alert('Please select start date first');
     }
-    
-    document.getElementById('endDate').setAttribute("min", year+'-'+mm+'-'+dd);
-    
-    //console.log(alday);
+    document.getElementById('endDate').setAttribute("min", start);
 });
 
 function validateDay() {
