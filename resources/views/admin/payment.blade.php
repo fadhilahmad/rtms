@@ -13,18 +13,49 @@ text-align: center;
     background-color: #ff6961;
     color: white;
 }
+form, form formbutton { display: inline; }
 </style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Pending Payment List</div>
+                <div class="card-header">Pending Payment List <div class="float-right">Total Pendings : {{$orders->count()}}</div></div>
 
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="{{ route('admin.filterpayment') }}" method="post">
+                                {{ csrf_field() }}
+                            <select name="month" class="form-control-sm" id="bulan">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+
+                            <select name="years" id="tahun" class="form-control-sm">
+                                @foreach($years as $year)
+                                <option value="{{$year}}">{{$year}}</option>
+                                @endforeach
+                            </select>                       
+                            <button class="btn-sm" type="submit" >Filter</button>
+                            </form>
+                            <a href="{{ route('admin.payment') }}"><button class="btn-sm" >Reset</button></a><br>
+                        </div>
+                    </div><br>
                    @if(!$orders->isempty())
                    <table class="table">
                             <thead class="thead-dark">
                               <tr>
+                                <th scope="col">No</th>
                                 <th scope="col">Ref No</th>
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">Phone</th>
@@ -37,13 +68,14 @@ text-align: center;
                               </tr>
                             </thead>
                             <tbody>
-              
+                            @php $no = 1; @endphp
                             @foreach($orders as $ord)
                                 @php                                  
                                     if($ord->o_status =='9'){$css = 'pending';}
                                     else{$css = '';}                               
                                 @endphp
                                 <tr class="{{$css}}">
+                                <td>{{$no}}</td>
                                 <th scope="row">{{$ord->ref_num}}</th>
                                 <td>{{$ord->u_fullname}}</td>
                                 <td>{{$ord->phone}}</td>
@@ -64,7 +96,7 @@ text-align: center;
                                     </button>
                                 </td>
                               </tr>
-                         
+                              @php $no++; @endphp
                               @endforeach
                               {{ $orders->links() }}
                             </tbody>
@@ -212,5 +244,12 @@ $(document).on("click", ".add", function () {
       }
   }
     });
+    
+$(document).ready(function () {
+
+    $("#bulan").val( '{{$m}}' );
+    $("#tahun").val( '{{$y}}' );
+
+});
 </script>
 @endsection
