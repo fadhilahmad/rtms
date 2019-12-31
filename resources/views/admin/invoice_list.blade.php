@@ -9,19 +9,50 @@
 td,th {
 text-align: center;
 } 
+form, form formbutton { display: inline; }
 </style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Invoice List</div>
+                <div class="card-header">Invoice List <div class="float-right">Total Invoices : {{$invoice->count()}}</div></div>
 
                 <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="{{ route('admin.filterinvoice') }}" method="post">
+                                {{ csrf_field() }}
+                            <select name="month" class="form-control-sm" id="bulan">
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
 
+                            <select name="years" id="tahun" class="form-control-sm">
+                                @foreach($years as $year)
+                                <option value="{{$year}}">{{$year}}</option>
+                                @endforeach
+                            </select>                       
+                            <button class="btn-sm" type="submit" >Filter</button>
+                            </form>
+                            <a href="{{ route('admin.invoicelist') }}"><button class="btn-sm" >Reset</button></a><br>
+                        </div>
+                    </div><br>
+                    
                     @if(!$invoice->isempty())
                         <table class="table table-hover">
                             <thead class="thead-dark">
                               <tr>
+                                <th scope="col">No</th>
                                 <th scope="col">Ref Num</th>
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">Phone</th>
@@ -34,9 +65,11 @@ text-align: center;
                                 <th scope="col">View</th>
                               </tr>
                             </thead>
-                            <tbody>                                
+                            <tbody> 
+                                @php $no = 1; @endphp
                                 @foreach($invoice as $inv)
                               <tr>
+                                <td>{{$no}}</td>
                                 <td>{{$inv->ref_num}}</td>
                                 <td>{{$inv->u_fullname}}</td>
                                 <td>{{$inv->phone}}</td>
@@ -53,6 +86,7 @@ text-align: center;
                                 @endif-->
                                 <td><a href="{{route('general.invoice',$inv->o_id)}}"><button class="btn btn-primary">View</button></a></td>
                               </tr>
+                              @php $no++; @endphp
                               @endforeach
                               {{ $invoice->links() }}
                             </tbody>
@@ -154,6 +188,13 @@ $(document).on("click", ".addCharges", function () {
            }
         });
       }
-    });  
+    }); 
+    
+$(document).ready(function () {
+
+    $("#bulan").val( '{{$m}}' );
+    $("#tahun").val( '{{$y}}' );
+
+});
 </script>
 @endsection
