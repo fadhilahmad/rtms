@@ -120,9 +120,11 @@ class GeneralController extends Controller
              $banks = BankDetail::all();
              
              $contacts = ContactNumber::all();
+             
+             $invoice = Invoice::all();
             
             //dd($orders);
-            return view('receipt',compact('receipts','settings','banks','contacts'));        
+            return view('receipt',compact('receipts','settings','banks','contacts','invoice'));        
     }
     
     public function AlterPrice(Request $request)
