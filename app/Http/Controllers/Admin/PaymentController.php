@@ -20,6 +20,12 @@ class PaymentController extends Controller
     
     public function viewPendingPayment()
     {
+        $ye = date('Y')+1;
+        $m = date('m');
+        $y = date('Y');
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) $years[] = $year;
         
         $user = User::all();
 //        $invoice = Invoice::all();
@@ -32,7 +38,35 @@ class PaymentController extends Controller
                 ->paginate(30);
         
         
-        return view('admin/payment',compact('user','receipt','orders'));
+        return view('admin/payment',compact('user','receipt','orders','m','y','years'));
+    }
+    
+    public function PendingFilter(Request $request)
+    {
+        $data = $request->all();
+       
+        $m = $data['month'];
+        $y = $data['years'];
+        
+        $ye = date('Y')+1;
+        
+        $years = [];
+        for ($year=2017; $year <= $ye; $year++) { $years[] = $year ;}
+        
+        $user = User::all();
+//        $invoice = Invoice::all();
+        $receipt = Receipt::all();
+        
+        $orders = DB::table('orders')
+                ->join('invoice','orders.o_id','=','invoice.o_id')
+                ->leftJoin('user','orders.u_id_customer','=','user.u_id')
+                ->where('orders.balance','<>','0')
+                ->whereMonth('orders.delivery_date','=',$m)
+                ->whereYear('orders.delivery_date','=',$y)
+                ->paginate(30);
+        
+        
+        return view('admin/payment',compact('user','receipt','orders','m','y','years'));
     }
     
     public function UpdatePayment(Request $request) 
@@ -71,11 +105,13 @@ class PaymentController extends Controller
                 ->leftJoin('user','orders.u_id_customer','=','user.u_id')
                 ->where('orders.active','=','1')
                 ->where('receipt.re_status','=','1')
+                ->orderBy('receipt.created_at', 'asc')
                 ->paginate(30);
         
+        $invoice = Invoice::all();
         $user = User::all();
         
-        return view('admin/receipt_list',compact('receipts','user','years','m','y'));
+        return view('admin/receipt_list',compact('receipts','user','years','m','y','invoice'));
     }
     
     public function filterReceiptList(Request $request)
@@ -97,11 +133,13 @@ class PaymentController extends Controller
                 ->where('receipt.re_status','=','1')
                 ->whereMonth('receipt.created_at', $m)
                 ->whereYear('receipt.created_at', $y)
+                ->orderBy('receipt.created_at', 'asc')
                 ->paginate(30);
         
         $user = User::all();
+        $invoice = Invoice::all();
         
-        return view('admin/receipt_list',compact('receipts','user','years','m','y'));
+        return view('admin/receipt_list',compact('receipts','user','years','m','y','invoice'));
     }
     
     public function receiptInfo($id)
