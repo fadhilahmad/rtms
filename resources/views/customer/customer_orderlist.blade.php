@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Order List</div>
+                <div class="card-header">Order List <div class="float-right"><a href="{{ route('customer.home') }}"><button class="btn-sm">Add Order</button></a></div></div>
 
                 <div class="card-body">
                     @if(session()->has('message'))
@@ -16,7 +16,7 @@
 
                     <div class="panel-body">
 
-                        @if(count($orders) > 0)
+                        @if(!$ordersdraft->isempty())
 
                             <table class="table table-hover">
                                 <thead class="thead-dark">
