@@ -97,7 +97,7 @@ text-align: left;
                             <th scope="col"><strong></strong></th>
                             @endcan
                             <th scope="col"><strong>Qty</strong></th>
-                            <th scope="col"><strong>Prize</strong>(RM)</th>
+                            <th scope="col"><strong>Price</strong>(RM)</th>
                             <th scope="col"><strong>Total</strong>(RM)</th>
                             </tr>
                         </thead>
