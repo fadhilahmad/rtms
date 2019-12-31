@@ -65,6 +65,11 @@ Route::post('admin/order_setting','Admin\OrderController@updateOrderSetting')->m
 //page order_list
 Route::get('admin/order_list', 'Admin\AdminController@orderList')->name('admin.orderlist')->middleware('admin');
 Route::post('admin/order_list', 'Admin\OrderController@deleteOrder')->name('admin.deleteorder')->middleware('admin');
+Route::post('admin/order_list/filter', 'Admin\AdminController@filterOrder')->name('admin.filterorder')->middleware('admin');
+Route::get('admin/order_list/filter', 'Admin\AdminController@orderList')->middleware('admin');
+//page order history
+Route::get('admin/order_history', 'Admin\AdminController@orderHistory')->name('admin.orderhistory')->middleware('admin');
+Route::post('admin/order_history', 'Admin\AdminController@filterHistory')->name('admin.filterhistory')->middleware('admin');
 //page pricing
 Route::get('admin/pricing', 'Admin\AdminController@pricing')->name('admin.pricing')->middleware('admin');
 Route::post('admin/pricing', 'Admin\OrderController@editPrice')->middleware('admin')->name('admin_pricing');
@@ -77,6 +82,8 @@ Route::post('admin/stock_list', 'Admin\OrderController@updateStock')->middleware
 //page invoice_list
 Route::get('admin/invoice_list', 'Admin\AdminController@invoiceList')->name('admin.invoicelist')->middleware('admin');
 Route::post('admin/invoice_list', 'Admin\PaymentController@addCharges')->middleware('admin');
+Route::post('admin/invoice_list/filter', 'Admin\AdminController@invoiceFilter')->name('admin.filterinvoice')->middleware('admin');
+Route::get('admin/invoice_list/filter', 'Admin\AdminController@invoiceList')->middleware('admin');
 Route::get('admin/invoice_info/{id}', 'Admin\OrderController@invoiceInfo')->name('admin.invoiceinfo')->middleware('admin');
 //page invoice_pending
 Route::get('admin/invoice_pending', 'Admin\AdminController@invoicePending')->name('admin.invoicepending')->middleware('admin');
@@ -102,6 +109,8 @@ Route::get('admin/delivery_schedule', 'Admin\DeliveryScheduleController@viewSche
 //page payment
 Route::get('admin/payment', 'Admin\PaymentController@viewPendingPayment')->name('admin.payment')->middleware('admin');
 Route::post('admin/payment', 'Admin\PaymentController@UpdatePayment')->name('admin.updatepayment')->middleware('admin');
+Route::post('admin/payment/filter', 'Admin\PaymentController@PendingFilter')->name('admin.filterpayment')->middleware('admin');
+Route::get('admin/payment/filter', 'Admin\PaymentController@viewPendingPayment')->middleware('admin');
 //job order page
 Route::get('admin/job_order/{oid}','Admin\OrderController@orderInfo')->name('order_info')->middleware('admin');
 //admin dashboard
