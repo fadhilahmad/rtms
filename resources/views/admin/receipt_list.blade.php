@@ -4,27 +4,24 @@
 <style>
 .table {
    margin: auto;
-   width: 90% !important; 
 }
 td,th {
 text-align: center;
-} 
+}
+form, form formbutton { display: inline; }
 </style>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Payment Receipt</div>
+                <div class="card-header">Payment Receipt <div class="float-right">Total Receipts : {{$receipts->count()}}</div></div>
 
                 <div class="card-body">
-                    <form action="{{ route('admin.filterreceiptlist') }}" method="post">
-                        {{ csrf_field() }}
                     <div class="row">
-                        <div class="col-md-1">
-                            Month
-                        </div>
-                        <div class="col-md-3 bulan">
-                            <select name="month" class="form-control" id="bulan">
+                        <div class="col-md-12">
+                            <form action="{{ route('admin.filterreceiptlist') }}" method="post">
+                                {{ csrf_field() }}
+                            <select name="month" class="form-control-sm" id="bulan">
                                 <option value="1">January</option>
                                 <option value="2">February</option>
                                 <option value="3">March</option>
@@ -38,48 +35,47 @@ text-align: center;
                                 <option value="11">November</option>
                                 <option value="12">December</option>
                             </select>
-                        </div>
-                        <div class="col-md-1">
-                            Year
-                        </div>
-                        <div class="col-md-3 tahun">
-                            <select name="years" id="tahun" class="form-control">
+
+                            <select name="years" id="tahun" class="form-control-sm">
                                 @foreach($years as $year)
                                 <option value="{{$year}}">{{$year}}</option>
                                 @endforeach
-                            </select>
+                            </select>                       
+                            <button class="btn-sm" type="submit" >Filter</button>
+                            </form>
+                            <a href="{{ route('admin.receiptlist') }}"><button class="btn-sm" >Reset</button></a><br>
                         </div>
-                        <div class="col-md-1">
-                            <button type="submit" >Filter</button>
-                        </div>
-                    </div>
-                    </form><br>
+                    </div><br>
                     @if(!$receipts->isempty())                    
                    <table class="table table-hover">
                             <thead class="thead-dark">
                               <tr>
+                                <th scope="col">No</th>
                                 <th scope="col">Ref No</th>
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">File name</th>
                                 <th scope="col">Quantity</th>
+                                <th scope="col">Price</th>
                                 <th scope="col">Payment</th>
                                 <th scope="col">Payment Date</th>
                                 <th scope="col">View</th>
                               </tr>
                             </thead>
                             <tbody>
-              
+                                @php $no = 1; @endphp
                                 @foreach($receipts as $receipt)
                               <tr>
+                                <td>{{$no}}</td>
                                 <th scope="row">{{$receipt->ref_num}}</th>
                                 <td>{{$receipt->u_fullname}}</td>
                                 <td>{{$receipt->file_name}}</td>
                                 <td>{{$receipt->quantity_total}}</td>
+                                <td>{{$invoice->where('o_id',$receipt->o_id)->pluck('total_price')->first()}}</td>
                                 <td>{{$receipt->total_paid}}</td>
                                 <td>{{date('d/m/Y', strtotime($receipt->created_at))}}</td>
                                 <td><a href="{{route('general.receipt',$receipt->re_id)}}"><button class="btn btn-primary">View</button></td>
                               </tr>
-                         
+                              @php $no++; @endphp
                               @endforeach
                               {{ $receipts->links() }}
                             </tbody>
@@ -97,8 +93,8 @@ text-align: center;
 <script type="text/javascript">
 $(document).ready(function () {
 
-    $(".bulan #bulan").val( '{{$m}}' );
-    $(".tahun #tahun").val( '{{$y}}' );
+    $("#bulan").val( '{{$m}}' );
+    $("#tahun").val( '{{$y}}' );
 
 });    
 </script>
