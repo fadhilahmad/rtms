@@ -94,7 +94,17 @@ text-align: left;
                             <tr>
                                 <td>1</td>
                                 <td>{{$receipts->description}}</td>
-                                <td>{{$receipts->total_paid}}</td>
+                                <td><strong>{{$receipts->total_paid}}</strong></td>
+                            </tr>
+                            @php
+                            $harga = $invoice->where('o_id',$receipts->o_id)->pluck('total_price')->first();
+                            $bayaran = $receipts->total_paid;
+                            $baki = $harga - $bayaran;
+                            @endphp
+                            <tr>
+                                <td></td>
+                                <td><strong><div class="float-right">Baki perlu dibayar</div></strong></td>
+                                <td>{{$baki}}</td>
                             </tr>
                             
                         </tbody>
