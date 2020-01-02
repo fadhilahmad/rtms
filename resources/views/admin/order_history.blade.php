@@ -3,6 +3,10 @@
 @section('content')
 <style>
     form, form formbutton { display: inline; }
+    .pending{
+    background-color: #ff6961;
+    color: white;
+}
 </style>
 <div class="container">
     <div class="row justify-content-center">
@@ -21,15 +25,15 @@
                             <form action="{{ route('admin.filterhistory') }}" method="post">
                                 {{ csrf_field() }}
                             <select name="month" class="form-control-sm" id="bulan">
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
+                                <option value="01">January</option>
+                                <option value="02">February</option>
+                                <option value="03">March</option>
+                                <option value="04">April</option>
+                                <option value="05">May</option>
+                                <option value="06">June</option>
+                                <option value="07">July</option>
+                                <option value="08">August</option>
+                                <option value="09">September</option>
                                 <option value="10">October</option>
                                 <option value="11">November</option>
                                 <option value="12">December</option>
@@ -56,13 +60,18 @@
                                 <th scope="col">Quantity</th>
                                 <th scope="col">Delivery Date</th>
                                 <th scope="col">Total Price</th>
+                                <th scope="col">Debt</th>
                                 <th scope="col">Job Order</th>
                               </tr>
                             </thead>
                             <tbody>
                                 @php $no = 1; @endphp
                                 @foreach($order as $ord)
-                              <tr>
+                                @php                                  
+                                    if($ord->balance <>'0'){$css = 'pending';}
+                                    else{$css = '';}                               
+                                @endphp
+                              <tr class="{{$css}}">
                                 <td>{{$no}}</td>
                                 <th scope="row">{{$ord->ref_num}}</th>
                                 <td>{{$ord->u_fullname}}</td>
@@ -70,6 +79,7 @@
                                 <td>{{$ord->quantity_total}}</td>
                                 <td>{{$ord->delivery_date}}</td>
                                 <td>RM {{$invoice->where('o_id',$ord->o_id)->pluck('total_price')->first()}}</td>
+                                <td>{{$ord->balance}}</td>
                                 <td><a href="{{route('general.joborder',$ord->o_id)}}" target="_blank"><button >View</button></a></td>
                               </tr>
                                @php $no ++; @endphp
