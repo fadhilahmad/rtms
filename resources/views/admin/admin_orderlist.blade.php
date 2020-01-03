@@ -52,6 +52,7 @@
                               <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Ref No</th>
+                                <th scope="col">Created Date</th>
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">File name</th>
                                 <th scope="col">Quantity</th>
@@ -66,10 +67,11 @@
                               <tr>
                                 <td>{{$no}}</td>
                                 <th scope="row">{{$ord->ref_num}}</th>
+                                <td>{{date('d/m/Y', strtotime($ord->created_at))}}</td>
                                 <td>{{$ord->u_fullname}}</td>
                                 <td>{{$ord->file_name}}</td>
                                 <td>{{$ord->quantity_total}}</td>
-                                <td>{{$ord->delivery_date}}</td>
+                                <td>{{date('d/m/Y', strtotime($ord->delivery_date))}}</td>
                                 <td>
                                         @if($ord->o_status==1)
                                            Waiting for design
@@ -113,7 +115,7 @@
                                         <input type="hidden" name="o_id" value=" {{$ord->o_id}}">                                 
                                     </form>
                                     
-                                    <a href="{{route('general.joborder',$ord->o_id)}}" target="_blank"><button >Job Order</button></a></td>
+                                    <a href="{{route('general.joborder',$ord->o_id)}}"><button >Job Order</button></a></td>
                               </tr>
                               @php $no ++; @endphp
                               @endforeach
