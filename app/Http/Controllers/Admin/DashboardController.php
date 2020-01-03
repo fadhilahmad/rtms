@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Receipt;
+use DateTime;
+use DateInterval;
+use DatePeriod;
 
 class DashboardController extends Controller
 {
@@ -29,51 +32,57 @@ class DashboardController extends Controller
                     ->count();
         
         $orders = DB::table('orders')
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->count('o_id');
         
         $deliver = DB::table('orders')
                     ->where('o_status','=',9)
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->count('o_id');
         
         $invoice = DB::table('invoice')
-                    ->where('i_status','=',1)
-                    ->count('i_id');
+                    ->leftJoin('orders','orders.o_id','=','invoice.o_id')
+                    ->where('orders.active','=','1')
+                    ->where('invoice.i_status','=',1)
+                    ->count('invoice.i_id');
         
         $payment = DB::table('orders')
                     ->where('balance','=',0)
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->count('o_id');
         
         $income = DB::table('receipt')
-                    ->where('re_status','=',1)
-                    ->sum('total_paid');
+                    ->leftJoin('orders','orders.o_id','=','receipt.o_id')
+                    ->where('orders.active','=','1')
+                    ->where('receipt.re_status','=',1)
+                    ->sum('receipt.total_paid');
         
         $income2 = DB::table('orders')
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->sum('balance');
         
         $income3 = DB::table('invoice')
-                    ->where('i_status','=',1)
-                    ->sum('total_price');
+                    ->leftJoin('orders','orders.o_id','=','invoice.o_id')
+                    ->where('orders.active','=','1')
+                    ->where('invoice.i_status','=',1)
+                    ->sum('invoice.total_price');
         
         $completed = DB::table('orders')
                     ->where('balance','=',0)
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->count();
         
         $pending = DB::table('orders')
                     ->leftJoin('invoice','orders.o_id','=','invoice.o_id')
                     ->whereColumn([['orders.balance', '=', 'invoice.total_price']])
-                ->where('orders.active','=','1')
+                    ->where('orders.active','=','1')
                     ->count();
         
         $deposited = DB::table('orders')
                     ->leftJoin('invoice','orders.o_id','=','invoice.o_id')
                     ->whereColumn([['orders.balance', '!=', 'invoice.total_price']])
                     ->where('orders.balance','!=',0)
-                ->where('orders.active','=','1')
+                    ->where('orders.active','=','1')
                     ->count();
         
         
@@ -92,22 +101,22 @@ class DashboardController extends Controller
 //        $depo = intval($deposited/$orders*100);
         
         $total_unit = DB::table('orders')
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->sum('quantity_total');
         
         $design = DB::table('orders')
                     ->whereNotIn('o_status', [0, 1, 2])
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->sum('quantity_total');
         
         $print = DB::table('orders')
                     ->whereNotIn('o_status', [0, 1, 2,3,4])
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->sum('quantity_total');
         
         $tailor = DB::table('orders')
                     ->whereIn('o_status', [ 7, 9, 10])
-                ->where('active','=','1')
+                    ->where('active','=','1')
                     ->sum('quantity_total');
         
         if($total_unit==0){
@@ -140,29 +149,52 @@ class DashboardController extends Controller
 //        $tp = intval($tailor/$total_unit*100);
         
         $today = date('d');
-        $month = date('m');
+        $month = (int)date('m');
         $year = date('Y');
+                
+        $number = cal_days_in_month(CAL_GREGORIAN,$month , $year);
         
-        $last7 = $today - 7;
-        
-        for($x = $last7; $x <= $today; $x++){
-            $labelday[] = $last7;                      
-            $thisdate = $year . '-' . $month . '-' . $last7;
-            $summ = Receipt::select('total_paid')
-                ->whereDate('created_at', $thisdate)
-                ->sum('total_paid');
-        
+        for($x = 1; $x <= $number; $x++){
+            $labelday[] = $x;                      
+            $thisdate = $year . '-' . $month . '-' . $x;
+//            $summ = Receipt::select('total_paid')
+//                ->whereDate('created_at', $thisdate)
+//                ->sum('total_paid');
+            
+            $summ = DB::table('receipt')
+                        ->leftJoin('orders','orders.o_id','=','receipt.o_id')
+                        ->where('orders.active','=','1')
+                        ->where('receipt.re_status','=','1')
+                        ->whereDate('orders.created_at', $thisdate)
+                        ->sum('receipt.total_paid');
+           
             if(is_null($summ)){
                 $labelsale[] = 0;
             }else{
-               // dd($summ);
                 $labelsale[] = $summ;
             }
-            $last7++;
         }
+//          $last7 = $today - 7;
+//        for($x = $last7; $x <= $today; $x++){
+//            $labelday[] = $last7;                      
+//            $thisdate = $year . '-' . $month . '-' . $last7;
+//            $summ = Receipt::select('total_paid')
+//                ->whereDate('created_at', $thisdate)
+//                ->sum('total_paid');
+//        
+//            if(is_null($summ)){
+//                $labelsale[] = 0;
+//            }else{
+//               // dd($summ);
+//                $labelsale[] = $summ;
+//            }
+//            $last7++;
+//        }
         
         $reprint = DB::table('reprint')
-                    ->sum('r_quantity');
+                    ->leftJoin('orders','orders.o_id','=','reprint.o_id')
+                    ->where('orders.active','=','1')
+                    ->sum('reprint.r_quantity');
         
         if($total_unit==0){
             $reprint_rate = 0;
@@ -181,74 +213,83 @@ class DashboardController extends Controller
         $start = $data['start'];
         $end = $data['end'];
         
+        $ends = new DateTime( $end );
+        $ends = $ends->modify('+1 day');
+        
         $user = DB::table('user')
                     ->whereIn('u_type',['6','7','8','9'])
                     ->where('u_status','=',1)
-                    ->whereBetween('created_at', array($start, $end))
+                    ->whereBetween('created_at', array($start, $ends))
                     ->count();
         
         $application = DB::table('user')
                     ->whereIn('u_type',['6','7','8','9'])
                     ->where('u_status','=',2)
-                ->whereBetween('created_at', array($start, $end))
+                    ->whereBetween('created_at', array($start, $ends))
                     ->count();
         
         $orders = DB::table('orders')
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->count('o_id');
         
         $deliver = DB::table('orders')
                     ->where('o_status','=',9)
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->count('o_id');
         
         $invoice = DB::table('invoice')
-                    ->where('i_status','=',1)
-                ->whereBetween('created_at', array($start, $end))
-                    ->count('i_id');
+                    ->leftJoin('orders','orders.o_id','=','invoice.o_id')
+                    ->where('orders.active','=','1')
+                    ->where('invoice.i_status','=',1)
+                    ->whereBetween('orders.created_at', array($start, $ends))
+                    ->count('invoice.i_id');
         
         $payment = DB::table('orders')
                     ->where('balance','=',0)
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->count('o_id');
         
         $income = DB::table('receipt')
-                    ->where('re_status','=',1)
-                ->whereBetween('created_at', array($start, $end))
-                    ->sum('total_paid');
+                    ->leftJoin('orders','orders.o_id','=','receipt.o_id')
+                    ->where('orders.active','=','1')
+                    ->where('receipt.re_status','=',1)
+                    ->whereBetween('orders.created_at', array($start, $ends))
+                    ->sum('receipt.total_paid');
         
         $income2 = DB::table('orders')
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->sum('balance');
         
         $income3 = DB::table('invoice')
-                    ->where('i_status','=',1)
-                ->whereBetween('created_at', array($start, $end))
-                    ->sum('total_price');
+                    ->leftJoin('orders','orders.o_id','=','invoice.o_id')
+                    ->where('orders.active','=','1')
+                    ->where('invoice.i_status','=',1)
+                    ->whereBetween('orders.created_at', array($start, $ends))
+                    ->sum('invoice.total_price');
         
         $completed = DB::table('orders')
                     ->where('balance','=',0)
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->count();
         
         $pending = DB::table('orders')
                     ->leftJoin('invoice','orders.o_id','=','invoice.o_id')
                     ->whereColumn([['orders.balance', '=', 'invoice.total_price']])
-                ->where('orders.active','=','1')
-                ->whereBetween('orders.created_at', array($start, $end))
+                    ->where('orders.active','=','1')
+                    ->whereBetween('orders.created_at', array($start, $ends))
                     ->count();
         
         $deposited = DB::table('orders')
                     ->leftJoin('invoice','orders.o_id','=','invoice.o_id')
                     ->whereColumn([['orders.balance', '!=', 'invoice.total_price']])
                     ->where('orders.balance','!=',0)
-                ->where('orders.active','=','1')
-                ->whereBetween('orders.created_at', array($start, $end))
+                    ->where('orders.active','=','1')
+                    ->whereBetween('orders.created_at', array($start, $ends))
                     ->count();
         
         
@@ -263,26 +304,26 @@ class DashboardController extends Controller
         }
         
         $total_unit = DB::table('orders')
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->sum('quantity_total');
         
         $design = DB::table('orders')
                     ->whereNotIn('o_status', [0, 1, 2])
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->sum('quantity_total');
         
         $print = DB::table('orders')
                     ->whereNotIn('o_status', [0, 1, 2,3,4])
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->sum('quantity_total');
         
         $tailor = DB::table('orders')
                     ->whereIn('o_status', [ 7, 9, 10])
-                ->where('active','=','1')
-                ->whereBetween('created_at', array($start, $end))
+                    ->where('active','=','1')
+                    ->whereBetween('created_at', array($start, $ends))
                     ->sum('quantity_total');
         
         if($total_unit==0){
@@ -305,31 +346,59 @@ class DashboardController extends Controller
             $tp = intval($tailor/$total_unit*100);  
         }
         
-        $today = date('d');
-        $month = date('m');
-        $year = date('Y');
+        $begin = new DateTime( $start );
         
-        $last7 = $today - 7;
-        
-        for($x = $last7; $x <= $today; $x++){
-            $labelday[] = $last7;                      
-            $thisdate = $year . '-' . $month . '-' . $last7;
-            $summ = Receipt::select('total_paid')
-                ->whereDate('created_at', $thisdate)
-                ->sum('total_paid');
-        
+        $interval = new DateInterval('P1D');
+        $daterange = new DatePeriod($begin, $interval ,$ends);
+        //dd($daterange);
+        foreach($daterange as $range)
+        {
+            $labelday[] = (int)$range->format('d');
+//            $summ = Receipt::select('total_paid')
+//                ->whereDate('created_at', $range->format('Y-m-d'))
+//                ->sum('total_paid');
+            $summ = DB::table('receipt')
+                        ->leftJoin('orders','orders.o_id','=','receipt.o_id')
+                        ->where('orders.active','=','1')
+                        ->where('receipt.re_status','=','1')
+                        ->whereDate('orders.created_at', $range->format('Y-m-d'))
+                        ->sum('receipt.total_paid');
+            
             if(is_null($summ)){
                 $labelsale[] = 0;
             }else{
                // dd($summ);
                 $labelsale[] = $summ;
             }
-            $last7++;
         }
+//        dd($labelday,$labelsale);
+//        $today = date('d');
+//        $month = (int)date('m');
+//        $year = date('Y');
+//        
+//        $last7 = $today - 7;
+//        
+//        for($x = $last7; $x <= $today; $x++){
+//            $labelday[] = $last7;                      
+//            $thisdate = $year . '-' . $month . '-' . $last7;
+//            $summ = Receipt::select('total_paid')
+//                ->whereDate('created_at', $thisdate)
+//                ->sum('total_paid');
+//        
+//            if(is_null($summ)){
+//                $labelsale[] = 0;
+//            }else{
+//               // dd($summ);
+//                $labelsale[] = $summ;
+//            }
+//            $last7++;
+//        }
         
         $reprint = DB::table('reprint')
-                ->whereBetween('created_at', array($start, $end))
-                    ->sum('r_quantity');
+                    ->leftJoin('orders','orders.o_id','=','reprint.o_id')
+                    ->where('orders.active','=','1')
+                    ->whereBetween('orders.created_at', array($start, $ends))
+                    ->sum('reprint.r_quantity');
              
         if($total_unit==0){
             $reprint_rate = 0;
@@ -341,4 +410,4 @@ class DashboardController extends Controller
                 'pen','depo','total_unit','design','design_p','print','print_p','tailor','tailor_p','dp','pp','tp','labelday','month','labelsale','reprint_rate','start','end'));
         
     }
-}
+ }
