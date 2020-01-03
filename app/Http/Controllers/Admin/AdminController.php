@@ -381,31 +381,39 @@ class AdminController extends Controller
     //display admin password form
     public function adminChangePassword () 
     {
-       $admin = Auth::user();
        
-       return view('admin/change_password', compact('admin'));
+       return view('admin/change_password');
       
     }
 
      //change admin password
-    public function updateChangePassword (Request $request,  $id) 
+    public function updateChangePassword (Request $request) 
     {       
-        $this->validate($request, [     
-            'old_password'     => 'required',
-            'new_password'     => 'required|min:8',
-            'confirm_password' => 'required|same:new_password',     
-        ]);
-
-        $admin = User::find($id);
+//        $this->validate($request, [     
+//            'old_password'     => 'required',
+//            'new_password'     => 'required|min:8',
+//            'confirm_password' => 'required|same:new_password',     
+//        ]);
         $data = $request->all();
-
-        if(!\Hash::check($data['old_password'], $admin->password)){
+        
+        $id = Auth::id();
+        $admin = User::find($id);
+        
+        if(!Hash::check($data['old_password'], $admin->password))
+        {
             return back()->with('error','Your current password is incorrect!');              
-                } else {       
-                    $admin->password = Hash::make($request->input('new_password'));        
-            }
-        $admin->save();
-        return back()->with('success','Your new password updated successfully');
+        }
+        elseif($data['new_password'] <> $data['confirm_password'])
+        {
+            return back()->with('error','New password and confirm password did not match!');
+        }
+        else 
+        {       
+            $admin->password = Hash::make($request->input('new_password'));
+            $admin->save();
+            
+            return back()->with('success','Your new password updated successfully');
+        }      
     
     }   
     
