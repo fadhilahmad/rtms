@@ -50,11 +50,12 @@
                         </div>
                     </div><br>
                     @if(!$order->isempty())
-                        <table class="table table-hover">
+                        <table class="table">
                             <thead class="thead-dark">
                               <tr>
                                 <th scope="col">No</th>
                                 <th scope="col">Ref No</th>
+                                <th scope="col">Created Date</th>
                                 <th scope="col">Customer Name</th>
                                 <th scope="col">File name</th>
                                 <th scope="col">Quantity</th>
@@ -74,13 +75,14 @@
                               <tr class="{{$css}}">
                                 <td>{{$no}}</td>
                                 <th scope="row">{{$ord->ref_num}}</th>
+                                <td>{{date('d/m/Y', strtotime($ord->created_at))}}</td>
                                 <td>{{$ord->u_fullname}}</td>
                                 <td>{{$ord->file_name}}</td>
                                 <td>{{$ord->quantity_total}}</td>
-                                <td>{{$ord->delivery_date}}</td>
+                                <td>{{date('d/m/Y', strtotime($ord->delivery_date))}}</td>
                                 <td>RM {{$invoice->where('o_id',$ord->o_id)->pluck('total_price')->first()}}</td>
                                 <td>{{$ord->balance}}</td>
-                                <td><a href="{{route('general.joborder',$ord->o_id)}}" target="_blank"><button >View</button></a></td>
+                                <td><a href="{{route('general.joborder',$ord->o_id)}}"><button >View</button></a></td>
                               </tr>
                                @php $no ++; @endphp
                               @endforeach
