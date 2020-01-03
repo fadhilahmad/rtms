@@ -100,7 +100,7 @@ Route::post('admin/sale', 'Admin\SaleController@showChart')->name('admin.salecha
 Route::get('admin/admin_profile', 'Admin\AdminController@adminProfile')->name('admin.profile')->middleware('admin');
 Route::patch('admin/admin_profile/update/{id}', 'Admin\AdminController@updateProfile')->name('admin.update')->middleware('admin');
 Route::get('admin/change_password', 'Admin\AdminController@adminChangePassword')->name('admin.changePassword')->middleware('admin');
-Route::patch('admin/change_password/update/{id}', 'Admin\AdminController@updateChangePassword')->name('admin.updatePassword')->middleware('admin');
+Route::post('admin/change_password', 'Admin\AdminController@updateChangePassword')->name('admin.updatePassword')->middleware('admin');
 //order info
 Route::get('admin/order_info/{oid}', 'Admin\OrderController@orderInfo')->name('order_info')->middleware('admin');
 //page delivery
