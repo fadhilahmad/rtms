@@ -10,12 +10,13 @@
                 @endphp
                 <form class = "form-inline" method="post" action="{{route('filter.dashboard')}}">@csrf
                 <div class="col-sm-1">Start</div>
-                <div class="col-sm-4"><input type="date" name="start" class="form-control-sm" required="" value="{{$s}}"></div>
+                <div class="col-sm-4"><input type="date" id="start" name="start" class="form-control-sm" required="" value="{{$s}}"></div>
                 <div class="col-sm-1">End</div>
-                <div class="col-sm-4"><input type="date" name="end" class="form-control-sm" required="" value="{{$e}}"></div>
-                <div class="col-sm-2"><button class="btn-sm" type="submit">Filter</button></div>
+                <div class="col-sm-4"><input type="date" id="end" name="end" class="form-control-sm" required="" value="{{$e}}"></div>
+                <button class="btn-sm" type="submit">Filter</button>
                 </form>
-                <button class="btn-sm" onclick="printFunction()"><i class="fa fa-print"></i></button>
+                <a href="{{ route('admin.dashboard') }}"><button class="btn-sm" ><i class="fa fa-refresh"></i></button></a>
+                <a href=""><button class="btn-sm" onclick="printFunction()"><i class="fa fa-print"></i></button></a>
             </div>
         </div>           
     </div>
@@ -148,7 +149,7 @@
             <!-- Line Chart -->
             <div class="col-lg-6 col-md-12 flex-lg-last flex-md-first align-self-baseline">
               <div class="card sales-report">
-                <h2 class="display h4">Payment Collected Last 7 days</h2>
+                <h2 class="display h4">Payment Collected </h2>
 <!--                <p>Payment collected vs Pending</p>-->
                 <br><br>
                 <div class="line-chart">
@@ -244,6 +245,15 @@
 </div>
 <script type="text/javascript">
 /*global $, document, Chart, LINECHART, data, options, window*/
+$(document).on("click", "#end", function () {
+
+    var start = $('#start').val();
+    if(start == ""){
+        alert('Please select start date first');
+    }
+    document.getElementById('end').setAttribute("min", start);
+});
+
 $(document).ready(function () {
 
     'use strict';
@@ -266,7 +276,7 @@ $(document).ready(function () {
         data: {
             labels: [                   
                     @foreach($labelday as $day)    
-                    {{$day}}+'/'+{{$month}},
+                    {{$day}},
                     @endforeach                            
                     ],
             datasets: [
