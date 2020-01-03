@@ -33,7 +33,7 @@
                     <div class="form-group row">
                         {{-- user type --}}
                         <label class="col-sm-2 col-form-label">
-                            User Type
+                            Order for
                         </label>
                         <div class="col-sm-4">
                             <select name="usertype" id="usertype" class="custom-select custom-select-sm" required>                                   
@@ -99,7 +99,7 @@
                         </label>
 
                         <div class="col-sm-4">  
-                            <input type="text" name="somedate" id="my_date_picker1" class="form-control"> 
+                            <input type="text" name="somedate" id="my_date_picker1" required="required" class="form-control"> 
                         </div>
                     </div>
                     
