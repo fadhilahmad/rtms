@@ -34,6 +34,7 @@ class PaymentController extends Controller
         $orders = DB::table('orders')
                 ->join('invoice','orders.o_id','=','invoice.o_id')
                 ->leftJoin('user','orders.u_id_customer','=','user.u_id')
+                ->where('orders.active','=','1')
                 ->where('orders.balance','<>','0')
                 ->paginate(30);
         
@@ -61,6 +62,7 @@ class PaymentController extends Controller
                 ->join('invoice','orders.o_id','=','invoice.o_id')
                 ->leftJoin('user','orders.u_id_customer','=','user.u_id')
                 ->where('orders.balance','<>','0')
+                ->where('orders.active','=','1')
                 ->whereMonth('orders.delivery_date','=',$m)
                 ->whereYear('orders.delivery_date','=',$y)
                 ->paginate(30);
