@@ -4,25 +4,24 @@
 <div class="container">
     <div class="row justify-content-center">
            
-        <div class="card-profile">
+        <div class="card-profile">           
+            <div class="card-header d-flex align-items-center">
+                <h4><i class="fa fa-lock"></i>  Change Password</h4>
+            </div>
+            <div class="card-body">
             @if ($message = Session::get('success'))
                 <div class="alert alert-success">
                     <p>{{ $message }}</p>
                 </div>
             @endif
-             @if ($message = Session::get('error'))
+            @if ($message = Session::get('error'))
                 <div class="alert alert-danger">
                    <p>{{ $message }}</p>
                 </div>
             @endif
-            <div class="card-header d-flex align-items-center">
-                <h4><i class="fa fa-lock"></i>  Change Password</h4>
-            </div>
-            <div class="card-body">
-                <form method="post" action="{{ route('customer.updatePassword', $customer) }}" >
+                <form method="post" action="{{ route('customer.updatePassword') }}" >
                 <!-- <form > -->
                 {{ csrf_field() }}
-                {{ method_field('patch') }}
 
                     <div class="card-body">
                     <div class="form-group row">
