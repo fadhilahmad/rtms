@@ -49,31 +49,38 @@ class DepartmentController extends Controller
     //display staff password form
     public function staffChangePassword () 
     {
-        $staff = Auth::user();
-
-        return view('department/change_password', compact('staff'));
-    
+        return view('department/change_password');   
     }
  
     //change staff password
-    public function updateChangePassword (Request $request,  $id) 
+    public function updateChangePassword (Request $request) 
     {       
-        $this->validate($request, [     
-            'old_password'     => 'required',
-            'new_password'     => 'required|min:8',
-            'confirm_password' => 'required|same:new_password',     
-        ]);
+//        $this->validate($request, [     
+//            'old_password'     => 'required',
+//            'new_password'     => 'required|min:8',
+//            'confirm_password' => 'required|same:new_password',     
+//        ]);
 
-        $staff = User::find($id);
         $data = $request->all();
-
-        if(!\Hash::check($data['old_password'], $staff->password)){
-            return back()->with('error','Your current password is incorrect!');
-                } else{
-                    $staff->password = Hash::make($request->input('new_password'));
+        
+        $id = Auth::id();
+        $user = User::find($id);
+        
+        if(!Hash::check($data['old_password'], $user->password))
+        {
+            return back()->with('error','Your current password is incorrect!');              
         }
-        $staff->save();
-        return back()->with('success','Your new password updated successfully');
+        elseif($data['new_password'] <> $data['confirm_password'])
+        {
+            return back()->with('error','New password and confirm password did not match!');
+        }
+        else 
+        {       
+            $user->password = Hash::make($request->input('new_password'));
+            $user->save();
+            
+            return back()->with('success','Your new password updated successfully');
+        } 
     }
          
     public function departmentOrderlist() 
