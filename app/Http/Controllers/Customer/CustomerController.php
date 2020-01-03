@@ -61,29 +61,38 @@ class CustomerController extends Controller
      //display admin password form
      public function customerChangePassword () 
      {
-        $customer = Auth::user();
-        return view('customer/change_password', compact('customer'));
+        return view('customer/change_password');
      }
  
      //change admin password
-     public function updateChangePassword (Request $request,  $id) 
+     public function updateChangePassword (Request $request) 
      {       
-         $this->validate($request, [     
-             'old_password'     => 'required',
-             'new_password'     => 'required|min:8',
-             'confirm_password' => 'required|same:new_password',     
-         ]);
- 
-         $customer = User::find($id);
-         $data = $request->all();
- 
-         if(!\Hash::check($data['old_password'], $customer->password)){
-             return back()->with('error','Your current password is incorrect!');              
-                 } else {       
-                     $customer->password = Hash::make($request->input('new_password'));        
-             }
-         $customer->save();
-         return back()->with('success','Your new password updated successfully');
+//         $this->validate($request, [     
+//             'old_password'     => 'required',
+//             'new_password'     => 'required|min:8',
+//             'confirm_password' => 'required|same:new_password',     
+//         ]);
+         
+        $data = $request->all();
+        
+        $id = Auth::id();
+        $user = User::find($id);
+        
+        if(!Hash::check($data['old_password'], $user->password))
+        {
+            return back()->with('error','Your current password is incorrect!');              
+        }
+        elseif($data['new_password'] <> $data['confirm_password'])
+        {
+            return back()->with('error','New password and confirm password did not match!');
+        }
+        else 
+        {       
+            $user->password = Hash::make($request->input('new_password'));
+            $user->save();
+            
+            return back()->with('success','Your new password updated successfully');
+        } 
      
     }   
     // method to view new order page for customer
