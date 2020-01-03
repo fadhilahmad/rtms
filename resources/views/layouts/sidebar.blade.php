@@ -1,10 +1,25 @@
+@php
+use App\SystemSetting;
+
+$settings = SystemSetting::first();
+
+if($settings){
+$company = $settings->company_name;
+$system = $settings->system_name;
+}else
+{
+$company = 'R.D. SOLUTION';
+$system = 'Textile Management System';
+}
+@endphp
+
 <nav class="side-navbar">
       <div class="side-navbar-wrapper">
 
         <div class="sidenav-header d-flex align-items-center justify-content-center">
           <div class="sidenav-header-inner text-center">
               <!--  <img src="{{ asset('img/avatar-7.jpg') }}" alt="person" class="img-fluid rounded-circle">-->
-            <h2 class="h5">Rezeal Textile</h2><span>Management System</span>
+            <h2 class="h5">{{ $company }}</h2><span>{{ $system }}</span>
           </div>
           <!-- Small Brand information, appears on minimized sidebar-->
           <!--<div class="sidenav-header-logo"><a href="index.html" class="brand-small text-center"> <strong>R</strong><strong class="text-primary">T</strong></a></div>-->
