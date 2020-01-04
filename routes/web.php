@@ -168,9 +168,9 @@ Route::post('department/job_delivery', 'Department\DeliveryController@completeDe
 
 ///////////////////////////////////////////////////////////CUSTOMER PAGE///////////////////////////////////////////////////////////////////
 
-Route::get('customer/customer_profile', 'Customer\CustomerController@customerProfile')->middleware('customer');
+Route::get('customer/customer_profile', 'Customer\CustomerController@customerProfile')->name('customer.profile')->middleware('customer');
 Route::patch('customer/customer_profile/update/{id}', 'Customer\CustomerController@updateProfile')->name('customer.update')->middleware('customer');
-Route::get('customer/change_password', 'Customer\customerController@CustomerChangePassword')->name('customer.changePassword')->middleware('customer');
+Route::get('customer/change_password', 'Customer\CustomerController@CustomerChangePassword')->name('customer.changePassword')->middleware('customer');
 Route::post('customer/change_password', 'Customer\CustomerController@updateChangePassword')->name('customer.updatePassword')->middleware('customer');
 Route::get('customer/customer_orderlist', 'Customer\CustomerController@customerOrderlist')->name('customer_orderlist')->middleware('customer');
 // Route::get('customer/invoice', 'Customer\customerController@invoice')->middleware('customer');
