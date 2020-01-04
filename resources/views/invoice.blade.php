@@ -67,7 +67,7 @@ text-align: left;
                 <div class="card-body">
                     @if($settings)
                     <div class="row">
-                        <div class="col-md-10"><strong>{{$settings->company_name}}</strong></div>
+                        <div class="col-md-10"><strong>{{$settings->company_name}}</strong></div><div class="float-right">REF {{$orders->ref_num}}</div>
                         <div class="col-md-10">
                             {{$settings->address_first}}<br>
                             {{$settings->address_second}}<br>
@@ -83,8 +83,8 @@ text-align: left;
                     <br><br>
                     
                     <div>
-                        <!-- <div class="col-md-9">Bil Kepada : {{$user->u_fullname}}</div> -->
-                        <!-- <div class="col-md-8">{{$user->u_fullname}}</div> -->
+                        <div class="float-lg-left">Invoice to : {{$user->u_fullname}}</div> 
+<!--                         <div class="col-md-8">{{$user->u_fullname}}</div> -->
                         <div style=" float:right">{{date('d/m/Y', strtotime($invoice->created_at))}}</div>
                     </div>
 
@@ -147,7 +147,7 @@ text-align: left;
                                 @can('isAdmin')
                                 <td>
                                     <form class="form-inline" action="{{route('general.alterprice')}}" method="POST">{{ csrf_field() }}
-                                            <button class="" type="submit" onclick="return confirm('Are you sure to delete this additional charge?')" ><i class="fa fa-trash"></i></button>                         
+                                            <button class="d-print-none" type="submit" onclick="return confirm('Are you sure to delete this additional charge?')" ><i class="fa fa-trash"></i></button>                         
                                             <input type="hidden" name="oid" value=" {{$oid}}">
                                             <input type="hidden" name="ac_id" value=" {{$charge->ac_id}}">
                                             <input type="hidden" name="operation" value="delete_charge">                                 
@@ -168,7 +168,7 @@ text-align: left;
                                 @can('isAdmin')
                                 <td>
                                     <form class="form-inline" action="{{route('general.alterprice')}}" method="POST">{{ csrf_field() }}
-                                            <button class="" type="submit" onclick="return confirm('Are you sure to delete this discount?')" ><i class="fa fa-trash"></i></button>                         
+                                            <button class="d-print-none" type="submit" onclick="return confirm('Are you sure to delete this discount?')" ><i class="fa fa-trash"></i></button>                         
                                             <input type="hidden" name="oid" value=" {{$oid}}">
                                             <input type="hidden" name="dis_id" value=" {{$discount->dis_id}}">
                                             <input type="hidden" name="operation" value="delete_discount">                                 
@@ -230,14 +230,14 @@ text-align: left;
                     
                     @can('isAdmin')
                     <div class="row">                        
-                            <button class="btn btn-primary addCharges" data-toggle="modal" data-target="#Modal" data-oid="{{$oid}}">Add Charges</button>
+                            <button class="btn btn-primary addCharges d-print-none" data-toggle="modal" data-target="#Modal" data-oid="{{$oid}}">Add Charges</button>
                             &nbsp;
-                            <button class="btn btn-primary addDiscount" data-toggle="modal" data-target="#discountModal" data-oid="{{$oid}}">Add Discount</button>                       
+                            <button class="btn btn-primary addDiscount d-print-none" data-toggle="modal" data-target="#discountModal" data-oid="{{$oid}}">Add Discount</button>                       
                     </div>
                     @endcan
                     <div class="row">
                         <div class="col-md-10"></div>
-                        <div class="col-md-2"><button class="print" onclick="printFunction()"><i class="fa fa-print"></i></button></div>
+                        <div class="col-md-2"><button class="print d-print-none" onclick="printFunction()"><i class="fa fa-print"></i></button></div>
                     </div>
                 </div>
             </div>
