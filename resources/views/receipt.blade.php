@@ -67,7 +67,7 @@ text-align: left;
                 <div class="card-body">
                     @if($settings)
                     <div class="row">
-                        <div class="col-md-10"><strong>{{$settings->company_name}}</strong></div>
+                        <div class="col-md-10"><strong>{{$settings->company_name}}</strong></div><div class="float-right">REF {{$receipts->ref_num}}</div>
                         <div class="col-md-10">
                             {{$settings->address_first}}<br>
                             {{$settings->address_second}}<br>
@@ -115,7 +115,7 @@ text-align: left;
                     </div><br><br>
                     <div class="row">
                         <div class="col-md-10"></div>
-                        <div class="col-md-2"><button class="print" onclick="printFunction()"><i class="fa fa-print"></i></button></div>
+                        <div class="col-md-2"><button class="print d-print-none" onclick="printFunction()"><i class="fa fa-print"></i></button></div>
                     </div>
                 </div>
             </div>
