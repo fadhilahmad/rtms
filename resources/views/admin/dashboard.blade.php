@@ -8,15 +8,15 @@
                 if(isset($start)){$s = $start;}else{$s='';}
                 if(isset($end)){$e = $end;}else{$e='';}
                 @endphp
-                <form class = "form-inline" method="post" action="{{route('filter.dashboard')}}">@csrf
+                <form class = "form-inline d-print-none" method="post" action="{{route('filter.dashboard')}}">@csrf
                 <div class="col-sm-1">Start</div>
                 <div class="col-sm-4"><input type="date" id="start" name="start" class="form-control-sm" required="" value="{{$s}}"></div>
                 <div class="col-sm-1">End</div>
                 <div class="col-sm-4"><input type="date" id="end" name="end" class="form-control-sm" required="" value="{{$e}}"></div>
                 <button class="btn-sm" type="submit">Filter</button>
                 </form>
-                <a href="{{ route('admin.dashboard') }}"><button class="btn-sm" ><i class="fa fa-refresh"></i></button></a>
-                <a href=""><button class="btn-sm" onclick="printFunction()"><i class="fa fa-print"></i></button></a>
+                <a href="{{ route('admin.dashboard') }}"><button class="btn-sm d-print-none" ><i class="fa fa-refresh"></i></button></a>
+                <a href=""><button class="btn-sm d-print-none" onclick="printFunction()"><i class="fa fa-print"></i></button></a>
             </div>
         </div>           
     </div>
