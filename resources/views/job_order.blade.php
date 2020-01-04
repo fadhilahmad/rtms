@@ -75,7 +75,7 @@
                             <div class="form-group row" name="rowformdiv">
                                 <label class="col-sm-2" name="colsm1lbl">Person in charge</label>
                                 <div class="col-sm-10">
-                                : <input id="pic" name="pic" type="text" value="{{ $pic->u_fullname }}" disabled="">
+                                : <input id="pic" name="pic" type="text" value="{{ $pic->username }}" disabled="">
                                 </div>
                             </div>
                             <!-- collar colour field -->                                
