@@ -289,7 +289,7 @@
                             </div>
                             <div class="form-group row">       
                                 <div class="col-sm-8 offset-sm-3">
-                                    <div class="col-md-2"><button class="print" onclick="printFunction()"><i class="fa fa-print"></i></button></div>                                                         
+                                    <div class="col-md-2"><button class="print d-print-none" onclick="printFunction()"><i class="fa fa-print"></i></button></div>                                                         
                                 </div>
                             </div>
                         </div>              
