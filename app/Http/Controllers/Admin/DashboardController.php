@@ -373,7 +373,7 @@ class DashboardController extends Controller
         }
 //        dd($labelday,$labelsale);
 //        $today = date('d');
-//        $month = (int)date('m');
+        $month = (int)date('m');
 //        $year = date('Y');
 //        
 //        $last7 = $today - 7;
