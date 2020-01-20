@@ -434,12 +434,14 @@ class OrderController extends Controller
         $deliverydate = $request->input('somedate');
         $deliverytype = $request->input('dealtype');
         $orderstatus = 2; // set to drafted
-        $customerid = $request->input('usertype');
+        $custid = $request->input('usertype');
         $customername = auth()->user()->username;
         $active = 1;
         $designerid = $request->input('designer'); 
         $printid = null;
         $taylorid = null; 
+
+        $customerid = User::where('u_id', $custid)->pluck('u_type')->first();
 
         $usertypename;
         if($customerid == '6'){
@@ -488,7 +490,7 @@ class OrderController extends Controller
         $order->delivery_type = $deliverytype;
         $order->delivery_date = $deliverydate;
         $order->o_status = $orderstatus;
-        $order->u_id_customer = $customerid;
+        $order->u_id_customer = $custid;
         $order->u_id_designer = $designerid;
         $order->u_id_print = $printid;
         $order->u_id_taylor = $taylorid;
@@ -893,12 +895,15 @@ class OrderController extends Controller
         $currentmockupdesign = $request->input('namemockupimg');
         $refnum = null; 
         $orderstatus = 2; // set to drafted 
-        $customerid = $request->input('usertype');
+        // $customerid = $request->input('usertype');
         $customername = $request->input('custuname');
         $active = 1;
         $printid = null;
         $taylorid = null; 
 
+        $custid = $request->input('usertype');
+        $customerid = User::where('u_id', $custid)->pluck('u_type')->first();
+        
         $usertypename;
         if($customerid == '6'){
             $usertypename = 'Agent Tier One';

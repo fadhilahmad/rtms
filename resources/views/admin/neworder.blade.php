@@ -40,7 +40,7 @@
                                 @if(count($users) > 0)
                                     <option value="" selected disabled>--Please select user--</option>
                                     @foreach ($users as $user)
-                                        <option value="{{ $user->u_type }}">{{ $user->username }}</option>
+                                        <option value="{{ $user->u_id }}">{{ $user->username }}</option>
                                     @endforeach
                                 @else
                                     <option value="">No user registered</option>
@@ -410,7 +410,7 @@
 
     if(deliverysetting != ""){
         var date = new Date();
-        date.setDate(date.getDate() + deliverysetting.min_day);
+        date.setDate(date.getDate() + parseInt(deliverysetting.min_day));
     }else{
         var date = new Date();
     }

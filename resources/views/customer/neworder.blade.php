@@ -376,7 +376,7 @@
 
     if(deliverysetting != ""){
         var date = new Date();
-        date.setDate(date.getDate() + deliverysetting.min_day);
+        date.setDate(date.getDate() + parseInt(deliverysetting.min_day));
     }else{
         var date = new Date();
     }
