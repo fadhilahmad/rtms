@@ -895,15 +895,15 @@ class OrderController extends Controller
         $currentmockupdesign = $request->input('namemockupimg');
         $refnum = null; 
         $orderstatus = 2; // set to drafted 
-        // $customerid = $request->input('usertype');
+        $customerid = $request->input('usertype');
         $customername = $request->input('custuname');
         $active = 1;
         $printid = null;
         $taylorid = null; 
 
-        $custid = $request->input('usertype');
-        $customerid = User::where('u_id', $custid)->pluck('u_type')->first();
-        
+        $ip = InvoicePermanent::where('o_id', '=', $orderid)->pluck('s_id');
+        $totip = count($ip);
+
         $usertypename;
         if($customerid == '6'){
             $usertypename = 'Agent Tier One';
@@ -1134,7 +1134,7 @@ class OrderController extends Controller
             }
         }
         Spec::where('o_id', $orderid)->whereNotIn('s_id', $arrset)->delete();
-        $boolprice = $this->requestConfirmUpdate($orderid, $customerid);
+        $boolprice = $this->requestConfirmUpdate($orderid, $customerid, $totip);
         if($boolprice != false){
             $curmkpimg = $request->input('namemockupimg');
             $designid = $request->input('idmockupimg');
@@ -1178,7 +1178,8 @@ class OrderController extends Controller
             ->update(array('u_id_designer' => $designerid, 'd_url' => $mockupdesign));
     } 
 
-    public function requestConfirmUpdate($orderid, $usertype){
+    public function requestConfirmUpdate($orderid, $usertype, $totip){
+        
         $orderidrequest = $orderid;
         $boolprice = true;
         if($orderidrequest != null){
@@ -1200,14 +1201,12 @@ class OrderController extends Controller
                     ->where('b_id', '=' , $bodyid[$i])
                     ->where('sl_id', '=' , $sleeveid[$i])
                     ->where('u_type', '=' , $usertype)->pluck('price');
+
                 if($price->isNotEmpty() == false){
                     $boolprice = false;
                     $this->errbody = $bodyid[$i];
                     $this->errsleeve = $sleeveid[$i];
                     $this->errneck = $necktype->n_type;
-                    //return $boolprice;
-                    // Order::where('o_id', '=', $orderidrequest)->delete();
-                    // InvoicePermanent::where('o_id', '=', $orderidrequest)->delete();
                     break;
                 }
                 $category = Spec::where('s_id', '=', $specid[$i])->pluck('category');
@@ -1234,9 +1233,21 @@ class OrderController extends Controller
                 }
                 if($boolprice == true){
                     $oneunitprice += intval($price[0]);
-                    DB::table('invoice_permenant')
-                        ->where('s_id', '=', $specid[$i])
-                        ->update(array('spec_total_price' => $specprice, 'one_unit_price' => $oneunitprice, 'spec_total_quantity' => $specquantity));
+
+                    if(($i+1) <= $totip){
+                        DB::table('invoice_permenant')
+                            ->where('s_id', '=', $specid[$i])
+                            ->update(array('spec_total_price' => $specprice, 'one_unit_price' => $oneunitprice, 'spec_total_quantity' => $specquantity));
+                    }else{
+                        $invoicePermanent = new InvoicePermanent;
+                        $invoicePermanent->s_id = $specid[$i];
+                        $invoicePermanent->o_id = $orderidrequest;
+                        $invoicePermanent->spec_total_price = $specprice;
+                        $invoicePermanent->one_unit_price = $oneunitprice;
+                        $invoicePermanent->spec_total_quantity = $specquantity;
+                        $invoicePermanent->save();
+                    }
+                    
                 }
             }
             if($boolprice == true){
@@ -1245,6 +1256,9 @@ class OrderController extends Controller
                     ->update(array('total_price' => $totprice));
             }
             $currentpayment = DB::table('receipt')->where('o_id', $orderid)->pluck('total_paid')->first();
+            if($currentpayment == null){
+                $currentpayment = 0;
+            }
             $currentbalance = $totprice - $currentpayment;
             DB::table('orders')
                 ->where('o_id', '=', $orderid)
